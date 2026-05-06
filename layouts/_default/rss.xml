@@ -1,0 +1,56 @@
+{{- /* layouts/_default/rss.xml — Task #162 / Task #152
+     Section-aware RSS feed template.
+     Fiction: full .Content
+     Editions & Shelf: .Summary + cover image in <enclosure>
+     About: excluded via outputs: ["HTML"] in front matter
+*/ -}}
+{{- printf "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?>" | safeHTML }}
+<rss
+  version="2.0"
+  xmlns:atom="http://www.w3.org/2005/Atom"
+  xmlns:dc="http://purl.org/dc/elements/1.1/"
+  xml:lang="{{ .Site.Language.Lang }}"
+>
+  <channel>
+    <title>{{ .Title }} | {{ .Site.Title }}</title>
+    <link>{{ .Permalink }}</link>
+    <description>{{ with .Description }}{{ . }}{{ else }}{{ .Site.Params.description }}{{ end }}</description>
+    <language>{{ .Site.Language.Lang }}</language>
+    <lastBuildDate>{{ now.Format "Mon, 02 Jan 2006 15:04:05 -0700" }}</lastBuildDate>
+    <atom:link href="{{ .Permalink }}index.xml" rel="self" type="application/rss+xml"/>
+    <managingEditor>{{ .Site.Params.author | default .Site.Title }}</managingEditor>
+    <generator>Hugo {{ hugo.Version }}</generator>
+
+    {{- range .Pages -}}
+      <item>
+        <title>{{ .Title | html }}</title>
+        <link>{{ .Permalink }}</link>
+        <pubDate>{{ .Date.Format "Mon, 02 Jan 2006 15:04:05 -0700" }}</pubDate>
+        <guid isPermaLink="true">{{ .Permalink }}</guid>
+        <author>{{ $.Site.Params.author | default $.Site.Title }}</author>
+        <dc:creator>{{ $.Site.Params.author | default $.Site.Title }}</dc:creator>
+        {{- /* .Section as primary category, then front matter tags */}}
+        {{- with .Section -}}
+          <category>{{ . }}</category>
+        {{- end -}}
+        {{- with .Params.tags -}}
+          {{- range . -}}
+            <category>{{ . }}</category>
+          {{- end -}}
+        {{- end -}}
+        {{- /* Fiction: full content. Shelf + Editions: summary + cover image meta */}}
+        {{- if eq .Section "fiction" -}}
+          <description>{{ .Content | html }}</description>
+        {{- else -}}
+          <description>
+            {{- with .Params.cover -}}&lt;img src="{{ . | absURL }}" alt="{{ $.Title }}" /&gt;{{ end }}
+            {{ .Summary | html }}
+          </description>
+          {{- with .Params.cover -}}
+            <enclosure url="{{ . | absURL }}" length="0" type="image/jpeg"/>
+          {{- end -}}
+        {{- end -}}
+      </item>
+    {{- end -}}
+  </channel>
+</rss>
