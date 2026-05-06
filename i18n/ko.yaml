@@ -1,0 +1,40 @@
+# i18n/ko.yaml — Korean translations (primary language)
+
+# Navigation & site-wide
+search: "검색"
+toggle_dark_mode: "다크 모드 전환"
+all_rights_reserved: "All rights reserved."
+see_all: "전체 보기"
+go_home: "홈으로"
+
+# Homepage sections
+recent_reads: "최근에 읽은 책"
+latest_editions: "최신 에디션"
+latest_fiction: "최신 픽션"
+
+# Shelf section
+shelf_title: "책장"
+shelf_desc: "읽고, 리뷰하고, 추천하는 책들."
+author: "저자"
+published: "출판"
+rating: "평점"
+genre: "장르"
+
+# Editions section
+editions_title: "에디션"
+editions_desc: "테마별로 선별한 큐레이션 컬렉션."
+edition_no: "에디션"
+
+# Fiction section
+fiction_title: "픽션"
+fiction_desc: "오리지널 단편소설과 시리즈."
+words: "단어"
+
+# 404
+not_found_title: "페이지를 찾을 수 없습니다"
+not_found_desc: "찾으시는 페이지가 없거나 이동되었습니다."
+
+# Search
+search_unavailable: "검색은 개발 모드에서 사용할 수 없습니다. 먼저 `npm run build`를 실행하세요."
+search_placeholder: "검색어를 입력하세요..."
+search_no_results: "검색 결과가 없습니다."

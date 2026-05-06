@@ -1,0 +1,40 @@
+# i18n/en.yaml — English translations
+
+# Navigation & site-wide
+search: "Search"
+toggle_dark_mode: "Toggle dark mode"
+all_rights_reserved: "All rights reserved."
+see_all: "See all"
+go_home: "Go home"
+
+# Homepage sections
+recent_reads: "Recent Reads"
+latest_editions: "Latest Editions"
+latest_fiction: "Latest Fiction"
+
+# Shelf section
+shelf_title: "Shelf"
+shelf_desc: "Books I've read, reviewed, and recommended."
+author: "Author"
+published: "Published"
+rating: "Rating"
+genre: "Genre"
+
+# Editions section
+editions_title: "Editions"
+editions_desc: "Curated collections, themed and numbered."
+edition_no: "Edition"
+
+# Fiction section
+fiction_title: "Fiction"
+fiction_desc: "Original stories and serials."
+words: "words"
+
+# 404
+not_found_title: "Page not found"
+not_found_desc: "The page you're looking for doesn't exist or has been moved."
+
+# Search
+search_unavailable: "Search is not available in development mode. Run `npm run build` first."
+search_placeholder: "Search..."
+search_no_results: "No results found."
