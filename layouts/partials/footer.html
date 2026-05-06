@@ -1,14 +1,14 @@
-<footer class="border-t border-zinc-200 dark:border-zinc-800 mt-16">
-  <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-zinc-500 dark:text-zinc-400">
+<footer class="border-t border-olive-200 dark:border-olive-800 mt-16">
+  <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-olive-500 dark:text-olive-400">
     <p>© {{ now.Year }} {{ .Site.Title }}. {{ i18n "all_rights_reserved" | default "All rights reserved." }}</p>
     <div class="flex items-center gap-4">
       {{- range .AlternativeOutputFormats -}}
         {{- if eq .Rel "alternate" -}}
-          <a href="{{ .Permalink }}" class="hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors" aria-label="RSS feed">RSS</a>
+          <a href="{{ .Permalink }}" class="hover:text-olive-900 dark:hover:text-olive-100 transition-colors" aria-label="RSS feed">RSS</a>
         {{- end -}}
       {{- end -}}
       {{- with .Site.Params.github -}}
-        <a href="{{ . }}" class="hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors" rel="noopener noreferrer" target="_blank">GitHub</a>
+        <a href="{{ . }}" class="hover:text-olive-900 dark:hover:text-olive-100 transition-colors" rel="noopener noreferrer" target="_blank">GitHub</a>
       {{- end -}}
     </div>
   </div>

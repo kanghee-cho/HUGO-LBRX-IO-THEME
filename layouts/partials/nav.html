@@ -1,9 +1,9 @@
-<nav class="hidden md:flex items-center gap-6 text-sm font-medium text-zinc-600 dark:text-zinc-400" aria-label="Main navigation">
+<nav class="hidden md:flex items-center gap-6 text-sm font-medium text-olive-600 dark:text-olive-400" aria-label="Main navigation">
   {{- $currentPage := . -}}
   {{- range .Site.Menus.main -}}
     <a
       href="{{ .URL | relLangURL }}"
-      class="hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors{{ if $currentPage.IsMenuCurrent "main" . }} text-zinc-900 dark:text-zinc-100 font-semibold{{ end }}"
+      class="hover:text-olive-900 dark:hover:text-olive-100 transition-colors{{ if $currentPage.IsMenuCurrent "main" . }} text-olive-900 dark:text-olive-100 font-semibold{{ end }}"
       {{- if $currentPage.IsMenuCurrent "main" . }} aria-current="page"{{ end }}
     >
       {{ .Name }}

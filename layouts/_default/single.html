@@ -4,24 +4,24 @@
   data-pagefind-meta="title:{{ .Title }},section:{{ .Section }},language:{{ .Site.Language.Lang }}"
 >
   <header class="mb-10" data-pagefind-ignore>
-    <time class="text-sm text-zinc-500 dark:text-zinc-400" datetime="{{ .Date.Format "2006-01-02" }}">
+    <time class="text-sm text-olive-500 dark:text-olive-400" datetime="{{ .Date.Format "2006-01-02" }}">
       {{ .Date.Format "2 January 2006" }}
     </time>
-    <h1 class="mt-2 font-serif text-4xl font-bold text-zinc-900 dark:text-zinc-100 leading-tight">
+    <h1 class="mt-2 font-sans text-4xl font-bold text-olive-900 dark:text-olive-100 leading-tight">
       {{ .Title }}
     </h1>
     {{- with .Description -}}
-      <p class="mt-4 text-lg text-zinc-600 dark:text-zinc-400">{{ . }}</p>
+      <p class="mt-4 text-lg text-olive-600 dark:text-olive-400">{{ . }}</p>
     {{- end -}}
     {{- with .Params.tags -}}
       <div class="mt-4 flex flex-wrap gap-2">
         {{- range . -}}
-          <span class="px-2 py-0.5 text-xs rounded-full bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300">{{ . }}</span>
+          <span class="px-2 py-0.5 text-xs rounded-full bg-olive-100 dark:bg-olive-800 text-olive-700 dark:text-olive-300">{{ . }}</span>
         {{- end -}}
       </div>
     {{- end -}}
   </header>
-  <div class="prose prose-zinc dark:prose-invert max-w-none">
+  <div class="prose prose dark:prose-invert max-w-none">
     {{ .Content }}
   </div>
 </article>
