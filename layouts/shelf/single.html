@@ -1,8 +1,11 @@
 {{ define "main" }}
-<article data-pagefind-body>
+<article
+  data-pagefind-body
+  data-pagefind-meta="title:{{ .Title }},section:{{ .Section }},language:{{ .Site.Language.Lang }}"
+>
   <div class="md:grid md:grid-cols-[12rem,1fr] md:gap-12">
     {{- /* Book cover + metadata sidebar */}}
-    <aside class="mb-8 md:mb-0">
+    <aside class="mb-8 md:mb-0" data-pagefind-ignore>
       {{- with .Params.cover -}}
         <div class="aspect-[2/3] overflow-hidden rounded-lg shadow-md w-48 md:w-full">
           <img src="{{ . }}" alt="{{ $.Title }} cover" class="w-full h-full object-cover" loading="lazy">
@@ -12,7 +15,7 @@
         {{- with .Params.author -}}
           <div>
             <dt class="text-zinc-500 dark:text-zinc-400 text-xs uppercase tracking-wider">{{ i18n "author" | default "Author" }}</dt>
-            <dd class="font-medium text-zinc-900 dark:text-zinc-100 mt-0.5">{{ . }}</dd>
+            <dd class="font-medium text-zinc-900 dark:text-zinc-100 mt-0.5" data-pagefind-meta="author">{{ . }}</dd>
           </div>
         {{- end -}}
         {{- with .Params.published -}}

@@ -1,6 +1,9 @@
 {{ define "main" }}
-<article data-pagefind-body>
-  <header class="mb-10">
+<article
+  data-pagefind-body
+  data-pagefind-meta="title:{{ .Title }},section:{{ .Section }},language:{{ .Site.Language.Lang }}"
+>
+  <header class="mb-10" data-pagefind-ignore>
     <p class="text-sm text-zinc-500 dark:text-zinc-400 uppercase tracking-wider mb-2">
       {{- with .Params.edition_number -}}
         {{ i18n "edition_no" | default "Edition" }} #{{ . }} ·

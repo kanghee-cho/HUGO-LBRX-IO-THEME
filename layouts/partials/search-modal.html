@@ -1,19 +1,72 @@
-{{- /* Search modal — Pagefind JS API integration implemented in Feature #135 */}}
+{{- /* search-modal.html — Task #164
+     Full Tailwind-styled Pagefind search overlay.
+     Opened/closed by search.js via data-search-open / Cmd+K / Escape.
+     search.js lazy-loads /pagefind/pagefind.js on first open.
+*/ -}}
 <div
   id="search-modal"
-  class="hidden fixed inset-0 z-50"
+  hidden
+  aria-hidden="true"
   role="dialog"
   aria-modal="true"
   aria-label="{{ i18n "search" | default "Search" }}"
+  class="fixed inset-0 z-50"
 >
-  <div id="search-backdrop" class="absolute inset-0 bg-black/50 backdrop-blur-sm"></div>
-  <div class="relative flex items-start justify-center min-h-screen pt-16 px-4">
-    <div class="w-full max-w-2xl bg-white dark:bg-zinc-900 rounded-xl shadow-2xl overflow-hidden ring-1 ring-zinc-200 dark:ring-zinc-700">
-      <div id="search-container" class="p-6">
-        <p class="text-zinc-500 dark:text-zinc-400 text-sm text-center py-8">
-          {{ i18n "search_unavailable" | default "Search is not available in development mode. Run `npm run build` first." }}
-        </p>
+  {{- /* Backdrop */}}
+  <div
+    id="search-backdrop"
+    class="absolute inset-0 bg-black/50 backdrop-blur-sm"
+    aria-hidden="true"
+  ></div>
+
+  {{- /* Dialog panel */}}
+  <div class="relative flex items-start justify-center min-h-screen pt-[10vh] px-4 pb-16">
+    <div class="w-full max-w-2xl bg-white dark:bg-zinc-900 rounded-2xl shadow-2xl ring-1 ring-zinc-200 dark:ring-zinc-700 overflow-hidden">
+
+      {{- /* Search input row */}}
+      <div class="flex items-center gap-3 px-4 py-3 border-b border-zinc-200 dark:border-zinc-700">
+        <svg class="w-5 h-5 flex-none text-zinc-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z"/>
+        </svg>
+        <input
+          id="search-input"
+          type="search"
+          autocomplete="off"
+          spellcheck="false"
+          placeholder="{{ i18n "search_placeholder" | default "Search…" }}"
+          class="flex-1 bg-transparent text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 outline-none text-base"
+          aria-label="{{ i18n "search" | default "Search" }}"
+        >
+        <button
+          data-search-close
+          class="flex-none text-xs text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-300 border border-zinc-200 dark:border-zinc-700 rounded px-1.5 py-0.5 transition-colors"
+          aria-label="Close search"
+        >
+          Esc
+        </button>
+      </div>
+
+      {{- /* Results container */}}
+      <div
+        id="search-results"
+        class="max-h-[60vh] overflow-y-auto p-2"
+        role="listbox"
+        aria-label="{{ i18n "search" | default "Search results" }}"
+      >
+        {{- /* Populated by search.js */}}
+      </div>
+
+      {{- /* Footer hint */}}
+      <div class="px-4 py-2 border-t border-zinc-100 dark:border-zinc-800 flex items-center justify-between text-xs text-zinc-400">
+        <span><kbd class="font-mono">↑↓</kbd> navigate · <kbd class="font-mono">↵</kbd> open · <kbd class="font-mono">Esc</kbd> close</span>
+        <span>Pagefind</span>
       </div>
     </div>
   </div>
 </div>
+
+{{- /* search.js — only injected in production (Pagefind index requires hugo --minify) */}}
+{{- if hugo.IsProduction -}}
+  {{- $searchjs := resources.Get "js/search.js" | js.Build (dict "minify" true) -}}
+  <script src="{{ $searchjs.RelPermalink }}" defer></script>
+{{- end -}}

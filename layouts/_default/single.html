@@ -1,6 +1,9 @@
 {{ define "main" }}
-<article data-pagefind-body>
-  <header class="mb-10">
+<article
+  data-pagefind-body
+  data-pagefind-meta="title:{{ .Title }},section:{{ .Section }},language:{{ .Site.Language.Lang }}"
+>
+  <header class="mb-10" data-pagefind-ignore>
     <time class="text-sm text-zinc-500 dark:text-zinc-400" datetime="{{ .Date.Format "2006-01-02" }}">
       {{ .Date.Format "2 January 2006" }}
     </time>
