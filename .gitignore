@@ -1,0 +1,38 @@
+# Hugo build output
+public/
+resources/_gen/
+.hugo_build.lock
+
+# Node
+node_modules/
+npm-debug.log*
+
+# Tailwind / PostCSS generated
+assets/css/main.min.css
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.venv/
+venv/
+*.egg-info/
+dist/
+build/
+.pytest_cache/
+
+# Environment / secrets
+.env
+.env.local
+.env.*.local
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo

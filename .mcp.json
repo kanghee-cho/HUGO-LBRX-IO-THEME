@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "azure-devops-mcp": {
+      "type": "stdio",
+      "command": "uv",
+      "args": [
+        "run",
+        "python",
+        "main.py"
+      ],
+      "cwd": "./azure-devops-mcp"
+    }
+  }
+}
