@@ -1,0 +1,12 @@
+name = "lbrx-io"
+license = "MIT"
+licenselink = "https://github.com/lbrx/hugo-lbrx-io-theme/blob/main/LICENSE"
+description = "A literary personal brand theme for Hugo — focused on books, curated editions, and original fiction."
+homepage = "https://lbrx.io"
+tags = ["blog", "books", "fiction", "minimal", "dark-mode", "i18n", "pagefind"]
+features = ["filter tags"]
+min_version = "0.120.0"
+
+[author]
+  name = "LBRX"
+  homepage = "https://lbrx.io"
