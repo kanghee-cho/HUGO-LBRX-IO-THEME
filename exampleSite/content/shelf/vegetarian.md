@@ -4,7 +4,7 @@ date: 2024-01-15
 draft: false
 description: "한강의 데뷔작이자 맨부커 인터내셔널 수상작. 폭력과 욕망, 그리고 인간의 본성에 대한 날카로운 탐구."
 author: "한강"
-published: "2007"
+publish_year: "2007"
 genre: "Literary Fiction"
 rating: 5
 cover: ""

@@ -1,5 +1,5 @@
 baseURL = "https://example.com/"
-languageCode = "ko"
+locale = "ko"
 defaultContentLanguage = "ko"
 title = "LBRX.IO"
 theme = "hugo-lbrx-io-theme"
@@ -10,16 +10,17 @@ disableKinds = ["taxonomy", "term"]
 [params]
   description = "책, 에디션, 그리고 픽션."
   github = "https://github.com/lbrx"
+  author = "LBRX"
 
 [languages]
   [languages.ko]
-    languageName = "한국어"
+    label = "한국어"
     weight = 1
     contentDir = "content"
     [languages.ko.params]
       description = "책, 에디션, 그리고 픽션."
   [languages.en]
-    languageName = "English"
+    label = "English"
     weight = 2
     contentDir = "content.en"
     [languages.en.params]
