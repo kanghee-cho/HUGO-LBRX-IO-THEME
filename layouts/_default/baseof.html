@@ -12,5 +12,7 @@
     {{- partial "search-modal.html" . -}}
     {{- $js := resources.Get "js/theme-toggle.js" | js.Build (dict "minify" hugo.IsProduction) -}}
     <script src="{{ $js.RelPermalink }}" defer></script>
+    {{- $navjs := resources.Get "js/nav.js" | js.Build (dict "minify" hugo.IsProduction) -}}
+    <script src="{{ $navjs.RelPermalink }}" defer></script>
   </body>
 </html>

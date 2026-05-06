@@ -10,3 +10,25 @@
     </a>
   {{- end -}}
 </nav>
+
+{{- /* Mobile nav dropdown — controlled by nav.js via data-nav-menu */}}
+<div
+  id="mobile-nav"
+  data-nav-menu
+  hidden
+  class="md:hidden absolute top-16 left-0 right-0 z-30 border-b border-olive-200 dark:border-olive-800 bg-olive-50 dark:bg-olive-950 shadow-lg"
+  aria-label="Mobile navigation"
+>
+  <nav class="mx-auto max-w-5xl px-4 py-4 flex flex-col gap-1 text-sm font-medium">
+    {{- $currentPage := . -}}
+    {{- range .Site.Menus.main -}}
+      <a
+        href="{{ .URL | relLangURL }}"
+        class="block px-3 py-3 rounded-lg text-olive-700 dark:text-olive-300 hover:bg-olive-100 dark:hover:bg-olive-900 hover:text-olive-900 dark:hover:text-olive-100 transition-colors{{ if $currentPage.IsMenuCurrent "main" . }} bg-olive-100 dark:bg-olive-900 text-olive-900 dark:text-olive-100 font-semibold{{ end }}"
+        {{- if $currentPage.IsMenuCurrent "main" . }} aria-current="page"{{ end }}
+      >
+        {{ .Name }}
+      </a>
+    {{- end -}}
+  </nav>
+</div>
