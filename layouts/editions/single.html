@@ -1,0 +1,24 @@
+{{ define "main" }}
+<article data-pagefind-body>
+  <header class="mb-10">
+    <p class="text-sm text-zinc-500 dark:text-zinc-400 uppercase tracking-wider mb-2">
+      {{- with .Params.edition_number -}}
+        {{ i18n "edition_no" | default "Edition" }} #{{ . }} ·
+      {{- end -}}
+      <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "January 2006" }}</time>
+    </p>
+    <h1 class="font-serif text-4xl font-bold text-zinc-900 dark:text-zinc-100 leading-tight">{{ .Title }}</h1>
+    {{- with .Description -}}
+      <p class="mt-4 text-lg text-zinc-600 dark:text-zinc-400">{{ . }}</p>
+    {{- end -}}
+    {{- with .Params.cover -}}
+      <div class="mt-6 aspect-video overflow-hidden rounded-xl shadow-md">
+        <img src="{{ . }}" alt="{{ $.Title }} cover" class="w-full h-full object-cover" loading="lazy">
+      </div>
+    {{- end -}}
+  </header>
+  <div class="prose prose-zinc dark:prose-invert max-w-none">
+    {{ .Content }}
+  </div>
+</article>
+{{ end }}

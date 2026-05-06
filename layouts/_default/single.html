@@ -1,0 +1,25 @@
+{{ define "main" }}
+<article data-pagefind-body>
+  <header class="mb-10">
+    <time class="text-sm text-zinc-500 dark:text-zinc-400" datetime="{{ .Date.Format "2006-01-02" }}">
+      {{ .Date.Format "2 January 2006" }}
+    </time>
+    <h1 class="mt-2 font-serif text-4xl font-bold text-zinc-900 dark:text-zinc-100 leading-tight">
+      {{ .Title }}
+    </h1>
+    {{- with .Description -}}
+      <p class="mt-4 text-lg text-zinc-600 dark:text-zinc-400">{{ . }}</p>
+    {{- end -}}
+    {{- with .Params.tags -}}
+      <div class="mt-4 flex flex-wrap gap-2">
+        {{- range . -}}
+          <span class="px-2 py-0.5 text-xs rounded-full bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300">{{ . }}</span>
+        {{- end -}}
+      </div>
+    {{- end -}}
+  </header>
+  <div class="prose prose-zinc dark:prose-invert max-w-none">
+    {{ .Content }}
+  </div>
+</article>
+{{ end }}

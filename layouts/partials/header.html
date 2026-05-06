@@ -1,0 +1,36 @@
+<header class="sticky top-0 z-40 w-full border-b border-zinc-200 dark:border-zinc-800 bg-white/90 dark:bg-zinc-950/90 backdrop-blur-sm">
+  <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
+    <a href="{{ "/" | relLangURL }}" class="font-serif text-xl font-semibold tracking-tight hover:opacity-75 transition-opacity flex-none">
+      {{ .Site.Title }}
+    </a>
+    {{- partial "nav.html" . -}}
+    <div class="flex items-center gap-2 flex-none">
+      {{- /* Search trigger — Cmd+K */}}
+      <button
+        id="search-open"
+        class="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 border border-zinc-200 dark:border-zinc-700 hover:border-zinc-400 dark:hover:border-zinc-500 transition-colors"
+        aria-label="{{ i18n "search" | default "Search" }}"
+      >
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z"/>
+        </svg>
+        <kbd class="hidden sm:inline text-xs text-zinc-400">⌘K</kbd>
+      </button>
+      {{- /* Dark mode toggle */}}
+      <button
+        id="theme-toggle"
+        class="p-2 rounded-md text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+        aria-label="{{ i18n "toggle_dark_mode" | default "Toggle dark mode" }}"
+      >
+        {{- /* Sun icon — shown in dark mode */}}
+        <svg id="icon-sun" class="w-5 h-5 hidden dark:block" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m8.66-9H21M3 12H2m15.07-7.07-.7.7M6.64 17.36l-.7.7m12.02 0-.7-.7M6.64 6.64l-.7-.7M12 7a5 5 0 1 0 0 10A5 5 0 0 0 12 7z"/>
+        </svg>
+        {{- /* Moon icon — shown in light mode */}}
+        <svg id="icon-moon" class="w-5 h-5 block dark:hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+</header>

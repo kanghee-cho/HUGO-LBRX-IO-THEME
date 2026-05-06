@@ -1,0 +1,59 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }} | {{ .Site.Title }}{{ end }}</title>
+
+{{- /* Dark mode FOUC prevention — must run synchronously before first paint */}}
+<script>
+  (function () {
+    var saved = localStorage.getItem('lbrx-theme');
+    var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    if (saved === 'dark' || (!saved && prefersDark)) {
+      document.documentElement.classList.add('dark');
+    }
+  })();
+</script>
+
+{{- /* CSS via Hugo Pipes + PostCSS (Tailwind) */}}
+{{- $css := resources.Get "css/main.css" | postCSS (dict "config" "./postcss.config.js") -}}
+{{- if hugo.IsProduction -}}
+  {{- $css = $css | minify | fingerprint -}}
+{{- end -}}
+<link rel="stylesheet" href="{{ $css.RelPermalink }}"{{ if hugo.IsProduction }} integrity="{{ $css.Data.Integrity }}"{{ end }}>
+
+{{- /* Canonical */}}
+<link rel="canonical" href="{{ .Permalink }}">
+
+{{- /* Meta description */}}
+{{- with .Description -}}
+  <meta name="description" content="{{ . }}">
+{{- else -}}
+  {{- with .Site.Params.description -}}
+    <meta name="description" content="{{ . }}">
+  {{- end -}}
+{{- end -}}
+
+{{- /* Open Graph */}}
+<meta property="og:type" content="{{ if .IsPage }}article{{ else }}website{{ end }}">
+<meta property="og:title" content="{{ .Title }}">
+<meta property="og:url" content="{{ .Permalink }}">
+{{- with .Params.cover -}}
+  <meta property="og:image" content="{{ . | absURL }}">
+{{- end -}}
+{{- with .Description -}}
+  <meta property="og:description" content="{{ . }}">
+{{- end -}}
+
+{{- /* RSS auto-discovery */}}
+{{- range .AlternativeOutputFormats -}}
+  {{- if eq .Rel "alternate" -}}
+    <link rel="{{ .Rel }}" type="{{ .MediaType.Type }}" href="{{ .Permalink }}" title="{{ $.Site.Title }}">
+  {{- end -}}
+{{- end -}}
+
+{{- /* Pagefind (production only — not available in hugo server) */}}
+{{- if hugo.IsProduction -}}
+  <link href="/pagefind/pagefind-ui.css" rel="stylesheet">
+  <script src="/pagefind/pagefind-ui.js" defer></script>
+{{- end -}}
+
+<link rel="icon" type="image/x-icon" href="/favicon.ico">

@@ -1,0 +1,24 @@
+{{ define "main" }}
+<article data-pagefind-body class="max-w-2xl mx-auto">
+  <header class="mb-10">
+    <div class="flex items-center gap-3 mb-3">
+      <time class="text-sm text-zinc-500 dark:text-zinc-400" datetime="{{ .Date.Format "2006-01-02" }}">
+        {{ .Date.Format "2 January 2006" }}
+      </time>
+      {{- with .Params.genre -}}
+        <span class="text-xs px-2 py-0.5 rounded-full bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400">{{ . }}</span>
+      {{- end -}}
+      {{- with .Params.word_count -}}
+        <span class="text-xs text-zinc-400 dark:text-zinc-500">~{{ . }} {{ i18n "words" | default "words" }}</span>
+      {{- end -}}
+    </div>
+    <h1 class="font-serif text-4xl font-bold text-zinc-900 dark:text-zinc-100 leading-tight">{{ .Title }}</h1>
+    {{- with .Description -}}
+      <p class="mt-4 text-lg text-zinc-600 dark:text-zinc-400 italic">{{ . }}</p>
+    {{- end -}}
+  </header>
+  <div class="prose prose-zinc dark:prose-invert max-w-none font-serif leading-relaxed">
+    {{ .Content }}
+  </div>
+</article>
+{{ end }}

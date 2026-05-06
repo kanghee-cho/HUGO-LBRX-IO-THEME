@@ -1,0 +1,17 @@
+{{ define "main" }}
+<div class="text-center py-24">
+  <p class="font-serif text-8xl font-bold text-zinc-200 dark:text-zinc-800 select-none">404</p>
+  <h1 class="mt-4 font-serif text-3xl font-bold text-zinc-900 dark:text-zinc-100">
+    {{ i18n "not_found_title" | default "Page not found" }}
+  </h1>
+  <p class="mt-4 text-zinc-600 dark:text-zinc-400">
+    {{ i18n "not_found_desc" | default "The page you're looking for doesn't exist or has been moved." }}
+  </p>
+  <a
+    href="{{ "/" | relLangURL }}"
+    class="mt-8 inline-block px-6 py-3 rounded-lg bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 font-medium hover:opacity-80 transition-opacity"
+  >
+    {{ i18n "go_home" | default "Go home" }}
+  </a>
+</div>
+{{ end }}
