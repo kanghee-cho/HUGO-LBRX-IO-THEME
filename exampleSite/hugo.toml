@@ -1,0 +1,54 @@
+baseURL = "https://example.com/"
+languageCode = "ko"
+defaultContentLanguage = "ko"
+title = "LBRX.IO"
+theme = "hugo-lbrx-io-theme"
+
+# Disable RSS for about section (set per-page via outputs front matter)
+disableKinds = ["taxonomy", "term"]
+
+[params]
+  description = "책, 에디션, 그리고 픽션."
+  github = "https://github.com/lbrx"
+
+[languages]
+  [languages.ko]
+    languageName = "한국어"
+    weight = 1
+    contentDir = "content"
+    [languages.ko.params]
+      description = "책, 에디션, 그리고 픽션."
+  [languages.en]
+    languageName = "English"
+    weight = 2
+    contentDir = "content.en"
+    [languages.en.params]
+      description = "Books, editions, and fiction."
+
+[outputs]
+  home = ["HTML", "RSS"]
+  section = ["HTML", "RSS"]
+  page = ["HTML"]
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = false
+
+[menus]
+  [[menus.main]]
+    name = "책장"
+    url = "/shelf/"
+    weight = 1
+  [[menus.main]]
+    name = "에디션"
+    url = "/editions/"
+    weight = 2
+  [[menus.main]]
+    name = "픽션"
+    url = "/fiction/"
+    weight = 3
+  [[menus.main]]
+    name = "소개"
+    url = "/about/"
+    weight = 4
