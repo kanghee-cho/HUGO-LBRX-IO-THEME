@@ -1,11 +1,11 @@
 {{ define "main" }}
 <section>
   <header class="mb-12">
-    <h1 class="font-sans text-5xl font-bold text-olive-900 dark:text-olive-100 leading-tight">
+    <h1 class="font-sans text-3xl sm:text-5xl font-bold text-olive-900 dark:text-olive-100 leading-tight">
       {{ .Site.Title }}
     </h1>
     {{- with .Site.Params.description -}}
-      <p class="mt-4 text-xl text-olive-600 dark:text-olive-400 max-w-2xl">{{ . }}</p>
+      <p class="mt-4 text-lg sm:text-xl text-olive-600 dark:text-olive-400 max-w-2xl">{{ . }}</p>
     {{- end -}}
   </header>
 
