@@ -1,28 +1,148 @@
 {{ define "main" }}
+{{- $lang   := .Site.Language.Lang -}}
+{{- /* 연작 회차 감지: 부모 섹션이 fiction의 하위 섹션이면 serial episode */}}
+{{- $isEpisode := and .Parent (eq .Parent.Params.fiction_type "serial") -}}
+{{- $series    := cond $isEpisode .Parent nil -}}
 <article
   data-pagefind-body
   data-pagefind-meta="title:{{ .Title }},section:{{ .Section }},language:{{ .Site.Language.Lang }}"
-  class="max-w-2xl mx-auto"
+  class="max-w-prose mx-auto"
 >
+
+  {{- /* ── 연작: 상단 시리즈 헤더 */}}
+  {{- if $isEpisode -}}
+    {{- $episodes := $series.Pages.ByParam "episode" -}}
+    {{- $current  := .Params.episode | default 0 -}}
+    <div class="mb-8 p-4 rounded-xl bg-olive-50 dark:bg-olive-900/40 border border-olive-200 dark:border-olive-800" data-pagefind-ignore>
+      <div class="flex items-center justify-between gap-3 flex-wrap">
+        <a href="{{ $series.RelPermalink }}"
+          class="flex items-center gap-1.5 text-xs text-olive-500 dark:text-olive-400 hover:text-olive-800 dark:hover:text-olive-200 transition-colors font-medium">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
+          </svg>
+          {{ i18n "fiction_series_back" | default "시리즈로 돌아가기" }}
+        </a>
+        {{- /* 회차 선택 드롭다운 */}}
+        {{- if gt (len $episodes) 1 -}}
+          <div class="relative">
+            <select
+              onchange="location.href=this.value"
+              class="text-xs text-olive-700 dark:text-olive-300 bg-white dark:bg-olive-900 border border-olive-200 dark:border-olive-700 rounded-lg px-2.5 py-1.5 pr-7 appearance-none cursor-pointer focus:outline-none focus:ring-1 focus:ring-olive-400">
+              {{- range $episodes -}}
+                <option value="{{ .RelPermalink }}"{{ if eq .Params.episode $current }} selected{{ end }}>
+                  {{- if eq $lang "ko" -}}{{ .Params.episode | default "?" }}화{{- else -}}{{ i18n "episode_label" | default "Ep." }} {{ .Params.episode | default "?" }}{{- end }} — {{ .Title }}
+                </option>
+              {{- end -}}
+            </select>
+            <svg class="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 w-3 h-3 text-olive-400" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
+            </svg>
+          </div>
+        {{- end -}}
+      </div>
+      <p class="mt-2 text-sm font-semibold text-olive-800 dark:text-olive-200">
+        {{ $series.Title }}
+        {{- with .Params.episode }}
+          <span class="font-normal text-olive-500 dark:text-olive-400 ml-1">·
+            {{- if eq $lang "ko" }} {{ . }}화{{- else }} {{ i18n "episode_label" | default "Ep." }} {{ . }}{{- end -}}
+          </span>
+        {{- end -}}
+      </p>
+    </div>
+  {{- end -}}
+
+  {{- /* ── 페이지 헤더 */}}
   <header class="mb-10" data-pagefind-ignore>
-    <div class="flex items-center gap-3 mb-3">
+    <div class="flex items-center gap-3 mb-3 flex-wrap">
       <time class="text-sm text-olive-500 dark:text-olive-400" datetime="{{ .Date.Format "2006-01-02" }}">
-        {{ .Date.Format "2 January 2006" }}
+        {{- if eq $lang "ko" -}}{{ .Date.Format "2006. 1. 2." }}{{- else -}}{{ .Date.Format "2 January 2006" }}{{- end -}}
       </time>
-      {{- with .Params.genre -}}
-        <span class="text-xs px-2 py-0.5 rounded-full bg-olive-100 dark:bg-olive-800 text-olive-600 dark:text-olive-400">{{ . }}</span>
-      {{- end -}}
-      {{- with .Params.word_count -}}
-        <span class="text-xs text-olive-400 dark:text-olive-500">~{{ . }} {{ i18n "words" | default "words" }}</span>
+      {{- if not $isEpisode -}}
+        <span class="text-xs px-2 py-0.5 rounded-full bg-olive-100 dark:bg-olive-800 text-olive-600 dark:text-olive-400 font-medium">
+          {{ i18n "fiction_standalone" | default "단편" }}
+        </span>
+        {{- with .Params.genre -}}
+          <span class="text-xs text-olive-400 dark:text-olive-500">{{ . }}</span>
+        {{- end -}}
+        {{- with .Params.word_count -}}
+          <span class="text-xs text-olive-400 dark:text-olive-500">~{{ . }} {{ i18n "words" | default "words" }}</span>
+        {{- end -}}
       {{- end -}}
     </div>
     <h1 class="font-sans text-2xl sm:text-4xl font-bold text-olive-900 dark:text-olive-100 leading-tight">{{ .Title }}</h1>
     {{- with .Description -}}
       <p class="mt-4 text-lg text-olive-600 dark:text-olive-400 italic">{{ . }}</p>
     {{- end -}}
+    {{- with .Params.credited_to -}}
+      <div class="mt-3 flex justify-end">
+        {{- partial "member-chip.html" (dict "name" . "label" (i18n "written_by" | default "작가")) -}}
+      </div>
+    {{- end -}}
   </header>
-  <div class="prose prose dark:prose-invert max-w-none font-sans leading-relaxed">
+
+  {{- /* ── 본문 */}}
+  <div class="prose dark:prose-invert prose-fiction max-w-none font-sans leading-relaxed">
     {{ .Content }}
   </div>
+
+  {{- /* ── 하단 네비게이션 */}}
+  {{- if $isEpisode -}}
+    {{- /* 연작: 이전/다음 회차 */}}
+    {{- $episodes  := $series.Pages.ByParam "episode" -}}
+    {{- $epNum     := .Params.episode | default 0 -}}
+    {{- $prevEp    := "" -}}
+    {{- $nextEp    := "" -}}
+    {{- range $i, $ep := $episodes -}}
+      {{- if eq $ep.Permalink $.Permalink -}}
+        {{- if gt $i 0 -}}{{- $prevEp = index $episodes (sub $i 1) -}}{{- end -}}
+        {{- if lt $i (sub (len $episodes) 1) -}}{{- $nextEp = index $episodes (add $i 1) -}}{{- end -}}
+      {{- end -}}
+    {{- end -}}
+    {{- if or $prevEp $nextEp -}}
+      <nav class="mt-10 pt-6 border-t border-olive-200 dark:border-olive-800 flex items-center justify-between gap-4" aria-label="Episode navigation" data-pagefind-ignore>
+        {{- if $prevEp -}}
+          <a href="{{ $prevEp.RelPermalink }}" class="flex items-center gap-2 text-sm text-olive-600 dark:text-olive-400 hover:text-olive-900 dark:hover:text-olive-100 transition-colors min-w-0">
+            <svg class="w-4 h-4 flex-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
+            </svg>
+            <span class="truncate">{{ $prevEp.Title }}</span>
+          </a>
+        {{- else -}}<span></span>{{- end -}}
+        {{- if $nextEp -}}
+          <a href="{{ $nextEp.RelPermalink }}" class="flex items-center gap-2 text-sm text-olive-600 dark:text-olive-400 hover:text-olive-900 dark:hover:text-olive-100 transition-colors min-w-0 text-right">
+            <span class="truncate">{{ $nextEp.Title }}</span>
+            <svg class="w-4 h-4 flex-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+            </svg>
+          </a>
+        {{- end -}}
+      </nav>
+    {{- end -}}
+  {{- else -}}
+    {{- /* 단편: 이전/다음 단편 */}}
+    {{- $prev := .PrevInSection -}}
+    {{- $next := .NextInSection -}}
+    {{- if or $prev $next -}}
+      <nav class="mt-10 pt-6 border-t border-olive-200 dark:border-olive-800 flex items-center justify-between gap-4" aria-label="Story navigation" data-pagefind-ignore>
+        {{- if $prev -}}
+          <a href="{{ $prev.RelPermalink }}" class="flex items-center gap-2 text-sm text-olive-600 dark:text-olive-400 hover:text-olive-900 dark:hover:text-olive-100 transition-colors min-w-0">
+            <svg class="w-4 h-4 flex-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
+            </svg>
+            <span class="truncate">{{ $prev.Title }}</span>
+          </a>
+        {{- else -}}<span></span>{{- end -}}
+        {{- if $next -}}
+          <a href="{{ $next.RelPermalink }}" class="flex items-center gap-2 text-sm text-olive-600 dark:text-olive-400 hover:text-olive-900 dark:hover:text-olive-100 transition-colors min-w-0 text-right">
+            <span class="truncate">{{ $next.Title }}</span>
+            <svg class="w-4 h-4 flex-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+            </svg>
+          </a>
+        {{- end -}}
+      </nav>
+    {{- end -}}
+  {{- end -}}
+
 </article>
 {{ end }}

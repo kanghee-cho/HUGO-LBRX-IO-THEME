@@ -1,0 +1,69 @@
+{{/*
+  layouts/partials/member-chip.html
+  Usage: {{ partial "member-chip.html" (dict "name" .Params.credited_to "label" "큐레이션" "variant" "olive") }}
+  Params:
+    name     (string) — member name matching members[].name in about/index.md
+    label    (string) — role label, e.g. "리뷰", "큐레이션", "작가"
+    variant  (string) — "olive" (default, for shelf/fiction) | "neutral" (for edition colored bg)
+*/}}
+{{- $name    := .name -}}
+{{- $label   := .label -}}
+{{- $variant := .variant | default "olive" -}}
+{{- if $name -}}
+  {{- $aboutPage := site.GetPage "about" -}}
+  {{- $member := false -}}
+  {{- if $aboutPage -}}
+    {{- range $aboutPage.Params.members -}}
+      {{- if eq .id $name -}}
+        {{- $member = . -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+
+  {{- /* 변형별 클래스 */}}
+  {{- $cardCls  := "bg-white dark:bg-olive-900/60 border-olive-300 dark:border-olive-700" -}}
+  {{- $labelCls := "text-olive-500 dark:text-olive-500" -}}
+  {{- $nameCls  := "text-olive-900 dark:text-olive-200" -}}
+  {{- $initCls  := "bg-olive-200 dark:bg-olive-700 text-olive-700 dark:text-olive-300" -}}
+  {{- if eq $variant "neutral" -}}
+    {{- $cardCls  = "bg-white/90 dark:bg-black/30 border-white dark:border-white/10" -}}
+    {{- $labelCls = "text-stone-500 dark:text-stone-500" -}}
+    {{- $nameCls  = "text-stone-900 dark:text-stone-100" -}}
+    {{- $initCls  = "bg-stone-200 dark:bg-stone-700 text-stone-700 dark:text-stone-200" -}}
+  {{- end -}}
+
+  <div class="inline-flex items-center gap-3 rounded-xl border {{ $cardCls }} px-4 py-1.5">
+    {{- /* 아바타 */}}
+    {{- if $member -}}
+      {{- $photo := index $member "photo" -}}
+      {{- $displayName := $member.name -}}
+      {{- if $photo -}}
+        {{- $img := resources.Get $photo -}}
+        {{- if $img -}}
+          <img src="{{ $img.RelPermalink }}" alt="{{ $displayName }}"
+               class="w-8 h-8 rounded-full object-cover flex-none ring-2 ring-white/60 dark:ring-black/30">
+        {{- else -}}
+          <span class="w-8 h-8 rounded-full {{ $initCls }} flex items-center justify-center text-xs font-bold flex-none">
+            {{- $displayName | truncate 1 "" -}}
+          </span>
+        {{- end -}}
+      {{- else -}}
+        <span class="w-8 h-8 rounded-full {{ $initCls }} flex items-center justify-center text-xs font-bold flex-none">
+          {{- $displayName | truncate 1 "" -}}
+        </span>
+      {{- end -}}
+    {{- else -}}
+      <span class="w-8 h-8 rounded-full {{ $initCls }} flex items-center justify-center text-xs font-bold flex-none">
+        {{- $name | truncate 1 "" -}}
+      </span>
+    {{- end -}}
+    {{- /* 텍스트 */}}
+    <div class="flex flex-col leading-tight">
+      {{- if $label -}}
+        <span class="text-[10px] font-semibold uppercase tracking-wider {{ $labelCls }}">{{ $label }}</span>
+      {{- end -}}
+      <span class="text-sm font-semibold {{ $nameCls }}">{{ if $member }}{{ $member.name }}{{ else }}{{ $name }}{{ end }}</span>
+    </div>
+  </div>
+{{- end -}}
+

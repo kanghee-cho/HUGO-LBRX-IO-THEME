@@ -15,6 +15,7 @@ genre: "소설"
 mood_tags: []
 recommended_for: ""
 tags: []
+credited_to: "kh-cho"
 cover: ""
 date: 2026-04-29T12:00:00+09:00
 ---

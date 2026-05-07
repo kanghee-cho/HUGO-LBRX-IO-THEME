@@ -66,6 +66,8 @@ edition_view: "자세히 보기"
 edition_archive: "지난 에디션"
 edition_no_books: "아직 선정된 책이 없습니다."
 edition_empty: "아직 에디션이 없습니다."
+edition_prev: "이전 에디션"
+edition_next: "다음 에디션"
 
 # Fiction section
 fiction_title: "픽션"
@@ -75,6 +77,38 @@ words: "단어"
 no_cover: "이미지 없음"
 not_found_desc: "찾으시는 페이지가 없거나 이동되었습니다."
 rss_feed: "RSS 피드"
+
+# Fiction
+fiction_standalone: "단편"
+fiction_standalone_recent: "최신단편"
+fiction_serial: "연작"
+fiction_serial_recent: "최신연작"
+fiction_status_ongoing: "연재 중"
+fiction_status_complete: "완결"
+fiction_series_episodes: "회차 목록"
+fiction_series_back: "시리즈로 돌아가기"
+episode_label: "화"
+episode_prev: "이전 화"
+episode_next: "다음 화"
+fiction_prev: "이전 글"
+fiction_next: "다음 글"
+
+# About section
+about_space: "공간"
+about_space_coming_soon: "준비 중입니다. 곧 찾아오실 수 있습니다."
+about_space_address: "주소"
+about_space_hours: "영업시간"
+about_space_map: "지도"
+about_brand: "브랜드"
+about_brand_colors: "색상"
+about_brand_fonts: "서체"
+about_members: "함께하는 사람"
+about_contact: "연락처"
+
+# Member attribution
+reviewed_by: "리뷰"
+curated_by: "큐레이션"
+written_by: "작가"
 
 # Search
 search_unavailable: "검색은 개발 모드에서 사용할 수 없습니다. 먼저 `npm run build`를 실행하세요."

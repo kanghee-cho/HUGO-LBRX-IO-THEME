@@ -4,7 +4,7 @@
   "description": "A literary Hugo theme for lbrx.io — books, editions, and fiction.",
   "private": true,
   "scripts": {
-    "dev": "concurrently \"hugo server --disableFastRender\" \"npx tailwindcss -i ./assets/css/main.css -o ./assets/css/main.min.css --watch\"",
+    "dev": "concurrently \"hugo server --source exampleSite --themesDir=../.. --disableFastRender\" \"npx tailwindcss -i ./assets/css/main.css -o ./assets/css/main.min.css --watch\"",
     "build": "hugo --minify && npx pagefind --site public",
     "css:build": "npx tailwindcss -i ./assets/css/main.css -o ./assets/css/main.min.css --minify"
   },
