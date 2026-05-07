@@ -56,13 +56,14 @@
         <a href="{{ .RelPermalink }}" class="group block">
           {{- /* 커버 */}}
           {{- with .Params.cover -}}
-            <div class="aspect-[2/3] overflow-hidden rounded-md bg-olive-100 dark:bg-olive-800 shadow-sm">
+            <div class="aspect-[2/3] overflow-hidden relative book-3d">
               <img
                 src="{{ . }}"
                 alt="{{ $.Title }}"
-                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                class="w-full h-full object-cover"
                 loading="lazy"
               >
+              <div class="book-spine"></div>
             </div>
           {{- else -}}
             <div class="aspect-[2/3] rounded-md bg-white dark:bg-black flex flex-col items-center justify-center shadow-sm gap-1.5">
