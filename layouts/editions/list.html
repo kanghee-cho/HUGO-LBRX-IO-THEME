@@ -15,7 +15,7 @@
 
   {{- if $pages -}}
 
-  {{- /* ── 현재 에디션 (가장 최근 발행) */}}
+  {{- /* ── 현재 에디션 (가장 최근 발행) — 항상 고정 표시 */}}
   {{- $current := index $pages 0 -}}
   {{- $palette := partial "edition-palette.html" ($current.Params.accent_color | default "emerald") -}}
   <div class="rounded-2xl {{ $palette.cardBg }} border {{ $palette.border }} p-5 sm:p-7 mb-10">
@@ -51,7 +51,7 @@
     {{- /* 책 그리드 */}}
     {{- $books := $current.Params.books -}}
     {{- if $books -}}
-      <ul class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5">
+      <ul class="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-4 sm:gap-5">
         {{- range $books -}}
           {{- $slug   := .slug -}}
           {{- $reason := .reason -}}
@@ -91,9 +91,12 @@
     {{- end -}}
   </div>
 
-  {{- /* ── 지난 에디션 아카이브 */}}
-  {{- $archive := after 1 $pages -}}
-  {{- if $archive -}}
+  {{- /* ── 지난 에디션 아카이브 (페이지네이션, 5개씩) */}}
+  {{- $archiveAll := after 1 $pages -}}
+  {{- if $archiveAll -}}
+    {{- $pag := .Paginate $archiveAll 5 -}}
+    {{- $archive := $pag.Pages -}}
+    {{- $total   := len $archiveAll -}}
     <div>
       <div class="flex items-center gap-3 mb-5">
         <h2 class="text-xs font-semibold uppercase tracking-widest text-olive-500 dark:text-olive-400">
@@ -101,7 +104,7 @@
         </h2>
         <div class="flex-1 h-px bg-olive-200 dark:bg-olive-800"></div>
         <span class="text-xs text-olive-400 dark:text-olive-500 tabular-nums">
-          {{ len $archive }}{{ if eq $lang "ko" }}편{{ else }} editions{{ end }}
+          {{ $total }}{{ if eq $lang "ko" }}편{{ else }} editions{{ end }}
         </span>
       </div>
       <ul class="space-y-3">
@@ -109,7 +112,7 @@
           {{- $ap := partial "edition-palette.html" (.Params.accent_color | default "emerald") -}}
           <li>
             <a href="{{ .RelPermalink }}"
-              class="group flex items-center gap-4 border-l-4 {{ $ap.strip }} pl-4 py-2.5 rounded-r-xl transition-colors {{ $ap.hoverBg }}">
+              class="group flex items-center gap-4 border-l-4 {{ $ap.strip }} pl-4 pr-4 py-2.5 rounded-r-xl transition-colors {{ $ap.hoverBg }}">
               <div class="flex-1 min-w-0">
                 <p class="text-[11px] {{ $ap.meta }} mb-0.5">
                   {{- with .Params.edition_number -}}{{ i18n "edition_no" | default "에디션" }} #{{ . }} · {{- end -}}
@@ -120,13 +123,16 @@
                 <h3 class="font-sans text-sm font-semibold {{ $ap.title }} group-hover:opacity-70 transition-opacity line-clamp-1">{{ .Title }}</h3>
                 {{- with .Description -}}<p class="text-xs {{ $ap.meta }} mt-0.5 line-clamp-1">{{ . }}</p>{{- end -}}
               </div>
-              {{- /* 책 커버 섬네일 최대 4장 */}}
+              {{- /* 책 커버 섬네일: mobile 3 / sm 4 / lg 6 */}}
               {{- with .Params.books -}}
                 <div class="flex gap-1 flex-none">
-                  {{- range first 4 . -}}
-                    {{- $b := site.GetPage (printf "shelf/%s" .slug) -}}
+                  {{- range $i, $item := first 6 . -}}
+                    {{- $b := site.GetPage (printf "shelf/%s" $item.slug) -}}
                     {{- if and $b $b.Params.cover -}}
-                      <div class="w-7 h-10 overflow-hidden rounded-sm shadow-sm flex-none">
+                      {{- $vis := "" -}}
+                      {{- if eq $i 3 -}}{{- $vis = "hidden sm:block" -}}{{- end -}}
+                      {{- if or (eq $i 4) (eq $i 5) -}}{{- $vis = "hidden lg:block" -}}{{- end -}}
+                      <div class="w-7 h-10 overflow-hidden rounded-sm shadow-sm flex-none {{ $vis }}">
                         <img src="{{ $b.Params.cover }}" alt="{{ $b.Title }}" class="w-full h-full object-cover" loading="lazy">
                       </div>
                     {{- end -}}
@@ -137,6 +143,81 @@
           </li>
         {{- end -}}
       </ul>
+
+      {{- /* ── 페이지네이션 nav */}}
+      {{- if gt $pag.TotalPages 1 -}}
+        {{- $c      := $pag.PageNumber -}}
+        {{- $t      := $pag.TotalPages -}}
+        {{- $wStart := math.Max 1 (sub $c 1) -}}
+        {{- $wEnd   := math.Min $t (add $c 1) -}}
+        {{- $pageSize := (index $pag.Pagers 0).NumberOfElements -}}
+        {{- $from   := add (mul (sub $c 1) $pageSize) 1 -}}
+        {{- $to     := add $from (sub $pag.NumberOfElements 1) -}}
+        <nav class="mt-10 flex flex-col items-center gap-3" aria-label="Pagination">
+          <div class="flex items-center gap-1 flex-wrap justify-center">
+            {{- if gt $c 1 -}}
+              <a href="{{ (index $pag.Pagers 0).URL }}"
+                class="inline-flex items-center gap-1 px-3 py-2 rounded-lg text-sm font-medium text-olive-700 dark:text-olive-300 border border-olive-200 dark:border-olive-700 hover:bg-olive-100 dark:hover:bg-olive-900 transition-colors"
+                aria-label="{{ if eq $lang "ko" }}첫 페이지{{ else }}First page{{ end }}">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M11 19l-7-7 7-7M18 19l-7-7 7-7"/></svg>
+              </a>
+            {{- end -}}
+            {{- if $pag.HasPrev -}}
+              <a href="{{ $pag.Prev.URL }}"
+                class="inline-flex items-center gap-1 px-3 py-2 rounded-lg text-sm font-medium text-olive-700 dark:text-olive-300 border border-olive-200 dark:border-olive-700 hover:bg-olive-100 dark:hover:bg-olive-900 transition-colors">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+                <span class="hidden sm:inline">{{- if eq $lang "ko" }}이전{{ else }}Prev{{ end -}}</span>
+              </a>
+            {{- end -}}
+            {{- if gt $wStart 1 -}}
+              <a href="{{ (index $pag.Pagers 0).URL }}"
+                class="w-9 h-9 inline-flex items-center justify-center rounded-lg text-sm font-medium text-olive-700 dark:text-olive-300 border border-olive-200 dark:border-olive-700 hover:bg-olive-100 dark:hover:bg-olive-900 transition-colors">1</a>
+              {{- if gt $wStart 2 -}}
+                <span class="w-9 h-9 inline-flex items-center justify-center text-olive-400 dark:text-olive-600 text-sm select-none">…</span>
+              {{- end -}}
+            {{- end -}}
+            {{- range $pag.Pagers -}}
+              {{- $n := .PageNumber -}}
+              {{- if and (ge $n $wStart) (le $n $wEnd) -}}
+                <a href="{{ .URL }}"
+                  class="w-9 h-9 inline-flex items-center justify-center rounded-lg text-sm font-medium transition-colors
+                    {{- if eq $n $c }} bg-olive-600 dark:bg-olive-500 text-white
+                    {{- else }} text-olive-700 dark:text-olive-300 border border-olive-200 dark:border-olive-700 hover:bg-olive-100 dark:hover:bg-olive-900
+                    {{- end }}"
+                  {{- if eq $n $c }} aria-current="page"{{ end }}>{{ $n }}</a>
+              {{- end -}}
+            {{- end -}}
+            {{- if lt $wEnd $t -}}
+              {{- if lt $wEnd (sub $t 1) -}}
+                <span class="w-9 h-9 inline-flex items-center justify-center text-olive-400 dark:text-olive-600 text-sm select-none">…</span>
+              {{- end -}}
+              <a href="{{ (index $pag.Pagers (sub $t 1)).URL }}"
+                class="w-9 h-9 inline-flex items-center justify-center rounded-lg text-sm font-medium text-olive-700 dark:text-olive-300 border border-olive-200 dark:border-olive-700 hover:bg-olive-100 dark:hover:bg-olive-900 transition-colors">{{ $t }}</a>
+            {{- end -}}
+            {{- if $pag.HasNext -}}
+              <a href="{{ $pag.Next.URL }}"
+                class="inline-flex items-center gap-1 px-3 py-2 rounded-lg text-sm font-medium text-olive-700 dark:text-olive-300 border border-olive-200 dark:border-olive-700 hover:bg-olive-100 dark:hover:bg-olive-900 transition-colors">
+                <span class="hidden sm:inline">{{- if eq $lang "ko" }}다음{{ else }}Next{{ end -}}</span>
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+              </a>
+            {{- end -}}
+            {{- if lt $c $t -}}
+              <a href="{{ (index $pag.Pagers (sub $t 1)).URL }}"
+                class="inline-flex items-center gap-1 px-3 py-2 rounded-lg text-sm font-medium text-olive-700 dark:text-olive-300 border border-olive-200 dark:border-olive-700 hover:bg-olive-100 dark:hover:bg-olive-900 transition-colors"
+                aria-label="{{ if eq $lang "ko" }}마지막 페이지{{ else }}Last page{{ end }}">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13 5l7 7-7 7M6 5l7 7-7 7"/></svg>
+              </a>
+            {{- end -}}
+          </div>
+          <p class="text-xs text-olive-400 dark:text-olive-500 tabular-nums">
+            {{- if eq $lang "ko" -}}
+              총 {{ $total }}편 중 {{ $from }}–{{ $to }}편
+            {{- else -}}
+              Showing {{ $from }}–{{ $to }} of {{ $total }} editions
+            {{- end -}}
+          </p>
+        </nav>
+      {{- end -}}
     </div>
   {{- end -}}
 

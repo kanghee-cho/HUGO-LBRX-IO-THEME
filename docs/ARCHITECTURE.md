@@ -46,9 +46,11 @@ HUGO-LBRX-IO-THEME/
 │   │   ├── head.html                 # <head>: charset, viewport, title, CSS, OG meta
 │   │   ├── header.html               # Site header + nav (data-pagefind-ignore)
 │   │   ├── footer.html               # Site footer (data-pagefind-ignore)
-│   │   ├── nav.html                  # Navigation links + search trigger button
+│   │   ├── nav.html                  # Navigation — desktop CSS-only dropdown, mobile indented sub-items
 │   │   ├── theme-toggle.html         # Dark/light toggle button
 │   │   ├── search-modal.html         # Pagefind Cmd+K modal overlay
+│   │   ├── shelf-pagination.html     # Reusable pagination nav component
+│   │   ├── status-badge.html         # Reading status badge (read/reading/wishlist/abandoned)
 │   │   ├── book-card.html            # Reusable book card component
 │   │   └── fiction-card.html         # Reusable fiction card component
 │   ├── shelf/
@@ -58,8 +60,11 @@ HUGO-LBRX-IO-THEME/
 │   │   ├── list.html                 # Editions index page
 │   │   └── single.html              # Single Edition entry (data-pagefind-body)
 │   ├── fiction/
-│   │   ├── list.html                 # Fiction index (stories + series)
-│   │   └── single.html              # Single story or chapter (data-pagefind-body)
+│   │   ├── list.html                 # Fiction index (overview: series + standalones)
+│   │   ├── fiction-serials.html      # /fiction/serials/ — serial-only list
+│   │   ├── fiction-standalone.html   # /fiction/standalone/ — standalone list with pagination
+│   │   ├── series.html               # Serial series detail page (episode list)
+│   │   └── single.html              # Single story or episode (data-pagefind-body)
 │   ├── about/
 │   │   └── single.html              # About me page
 │   └── 404.html
@@ -100,16 +105,221 @@ HUGO-LBRX-IO-THEME/
 ## Content Types
 
 ### Shelf
-Personal bookshelf. Each entry represents one book with front matter fields for title, author, status (reading / finished / want-to-read), rating, cover image, and tags.
+
+Personal bookshelf. Each entry represents one book.
+
+**Create a book entry:**
+```bash
+hugo new shelf/book-slug.md
+# e.g. hugo new shelf/norwegian-wood.md
+```
+
+**Key front matter fields:**
+
+| Field | Type | Description |
+|---|---|---|
+| `author` | string | Author name |
+| `status` | string | `read` / `reading` / `wishlist` / `abandoned` |
+| `rating` | float | `0.5`–`5.0` (half-star supported) |
+| `cover` | string | Image URL or path |
+| `genre` | string | Genre label |
+| `read_date` | string | Completion date `YYYY-MM-DD` |
+| `owned` | bool | Whether the physical book is owned |
+| `call_number` | string | Library shelf number (e.g. `KOR-HAN-001`) |
+
+The `slug` (filename without `.md`) is the identifier used when referencing the book in Editions.
+
+---
 
 ### Editions
-Curated book Editions. Each entry is a content file listing selected books with short annotations. Editions can be organized by any theme or criteria (season, mood, topic, etc.).
+
+Curated book collections. Each entry lists selected shelf books with annotations.
+
+**Create an edition:**
+```bash
+hugo new editions/2025-spring.md
+```
+
+**Key front matter fields:**
+
+| Field | Type | Description |
+|---|---|---|
+| `edition_number` | int | Display serial number (e.g. `3` → shown as `#3`) |
+| `accent_color` | string | One of: `rose` `pink` `fuchsia` `violet` `indigo` `sky` `cyan` `teal` `emerald` `lime` `amber` `orange` |
+| `books` | list | Array of `{slug, reason}` objects |
+
+**`books` field example:**
+```yaml
+books:
+  - slug: norwegian-wood      # shelf 파일명 (확장자 제외)
+    reason: "상실의 시대를 관통하는 조용한 슬픔"
+  - slug: the-great-gatsby
+    reason: "꿈과 환멸 사이의 아름다운 비극"
+```
+
+**Layout features:**
+- Accent color palette system (`edition-palette.html` partial) — 12 colors, each providing `cardBg`, `headerBg`, `title`, `meta`, `reason`, `border`, `strip`, `hoverBg` class sets
+- List page: current edition (full book grid) + paginated archive list (5 per page) with responsive thumbnail strip
+- Book grid breakpoints: `grid-cols-3 sm:grid-cols-4 lg:grid-cols-6` (matches shelf)
+- Single page: header banner, book grid, editor's note prose, previous/next edition navigation
+- Pagination uses `.Paginate $archiveAll 5`; current edition (index 0) is rendered outside the paginator
+
+---
 
 ### Fiction
-Original creative writing. Supports both standalone short stories and multi-part series. Series use Hugo's page bundle convention: a directory with `_index.md` as the series root and numbered chapter files inside.
+
+Original creative writing. Two types: **standalone** short stories and **serials** (multi-episode).
+
+#### Standalone Short Story
+
+```bash
+hugo new fiction/my-story.md
+```
+
+**Key front matter fields:**
+
+| Field | Type | Description |
+|---|---|---|
+| `fiction_type` | string | Always `standalone` |
+| `genre` | string | Genre label (e.g. `단편소설`, `시`) |
+| `word_count` | int | Approximate word/character count |
+
+Use `---` in Markdown body to insert a `✦` ornament section separator.
+
+#### Serial — Series Index
+
+```bash
+hugo new fiction/series-name/_index.md --kind fiction-series
+```
+
+**Key front matter fields:**
+
+| Field | Type | Description |
+|---|---|---|
+| `fiction_type` | string | Always `serial` |
+| `layout` | string | Always `series` |
+| `status` | string | `ongoing` / `complete` |
+| `genre` | string | Genre label |
+
+#### Serial — Episode
+
+```bash
+hugo new fiction/series-name/episode-1.md --kind fiction-episode
+```
+
+**Key front matter fields:**
+
+| Field | Type | Description |
+|---|---|---|
+| `episode` | int | Episode number (used for ordering and display) |
+| `word_count` | int | Approximate word/character count |
+
+Episodes are sorted by `episode` parameter ascending.  
+The episode single page auto-detects its parent series and shows the series header + episode dropdown + prev/next episode navigation.
+
+**Content directory structure:**
+```
+content/fiction/
+  _index.md                       # Fiction section index (overview)
+  serials/
+    _index.md                     # /fiction/serials/ — serial list page (layout: fiction-serials)
+  standalone/
+    _index.md                     # /fiction/standalone/ — standalone list page (layout: fiction-standalone, paginated)
+    standalone-story.md           # 단편 (url override: /fiction/standalone-story/)
+    another-story.md
+  my-series/
+    _index.md                     # 연작 인덱스 (fiction_type: serial, layout: series)
+    episode-1.md                  # 1화
+    episode-2.md                  # 2화
+```
+
+> **URL override:** Standalone stories use `url: "/fiction/slug/"` in front matter to keep clean URLs (e.g. `/fiction/my-story/`) even though they are stored under `content/fiction/standalone/`.
+
+**Fiction sub-navigation:**
+
+The `픽션` nav item in `hugo.toml` has `identifier = "fiction"` with two child menu items:
+- `연작` → `/fiction/serials/` (layout: `fiction-serials`, paginated 5/page)
+- `단편` → `/fiction/standalone/` (layout: `fiction-standalone`, paginated 5/page)
+
+`nav.html` renders a **CSS-only hover dropdown** on desktop (using Tailwind `group`/`group-hover`) and **always-visible indented sub-items** on mobile. No JavaScript required.
+
+**Fiction index page (`/fiction/`) — overview layout:**
+
+The main fiction page shows a curated preview with "전체 보기" links, not a full list:
+- **최신연작** — 2 most recent serials (by Hugo default order) + link to `/fiction/serials/`
+- **최신단편** — 3 most recent standalones + link to `/fiction/standalone/`
+- "전체 보기" button appears only when total count exceeds the preview limit (>2 for serials, >3 for standalones)
+
+**Pagination rules across Fiction layouts:**
+
+| Layout | Trigger | Per page |
+|---|---|---|
+| `fiction/list.html` (index) | Preview only — no pagination | 2 serials + 3 standalones |
+| `fiction-serials.html` | Always paginated | 5 serials/page |
+| `fiction-standalone.html` | Always paginated | 5 standalones/page |
+| `series.html` (episode list) | >5 episodes | 5 episodes/page |
+
+**i18n keys for Fiction index section headings:**
+
+| Key | ko | en |
+|---|---|---|
+| `fiction_serial_recent` | 최신연작 | Latest Serials |
+| `fiction_standalone_recent` | 최신단편 | Latest Stories |
+
+---
 
 ### About
-A single-page section (`about/_index.md`). No list view. Mapped to `layouts/about/single.html`.
+
+`about/index.md` — type: `"about"`, mapped to `layouts/about/single.html`.
+
+Structured into 3 sections, all data managed via front matter YAML:
+
+**Space section** (`space.*`):
+- `ready: false` → shows "준비중" banner only
+- `ready: true` → renders name, address, hours table, Google Maps iframe
+- `map_embed`: Google Maps embed URL (from 공유 → 지도 퍼가기 → `src` value)
+
+**Brand/CI section** (`brand.*`):
+- `logo_light` / `logo_dark`: SVG/PNG paths relative to `exampleSite/assets/`
+- `colors`: array of `{name, hex, desc}` — renders as color swatches
+- `fonts`: array of `{role, name, stack}` — renders font name in its own stack
+
+**Members section** (`members.*`):
+- Array of `{name, photo, bio, email}`
+- `photo`: path relative to `exampleSite/assets/`
+- `email`: displayed as plain selectable text (no `mailto:` link)
+
+**i18n keys** (about section):
+
+| Key | ko | en |
+|---|---|---|
+| `about_space` | 공간 | Space |
+| `about_space_coming_soon` | 준비 중입니다 | Coming soon |
+| `about_space_address` | 주소 | Address |
+| `about_space_hours` | 영업시간 | Hours |
+| `about_space_map` | 지도 | Map |
+| `about_brand` | 브랜드 | Brand |
+| `about_brand_colors` | 색상 | Colors |
+| `about_brand_fonts` | 서체 | Typography |
+| `about_members` | 함께하는 사람 | People |
+| `about_contact` | 연락처 | Contact |
+
+---
+
+### Favicon
+
+`layouts/partials/head.html` supports 4 favicon formats:
+
+```html
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+```
+
+Files go in `exampleSite/static/`. `favicon.svg` and `site.webmanifest` are included as placeholders. PNG/ICO files can be generated at [realfavicongenerator.net](https://realfavicongenerator.net).
+
+`site.webmanifest` theme color: `#6b7c2d` (olive-600), background: `#fafaf5` (olive-50).
 
 ---
 
@@ -118,7 +328,8 @@ A single-page section (`about/_index.md`). No list view. Mapped to `layouts/abou
 ### Development
 ```bash
 npm run dev
-# Runs: hugo server + Tailwind CSS watch (concurrently)
+# Runs: hugo server --source exampleSite --themesDir=../.. + Tailwind CSS watch (concurrently)
+# Must be run from theme root (HUGO-LBRX-IO-THEME/)
 # NOTE: Pagefind search index is NOT generated in dev mode.
 ```
 
@@ -199,6 +410,14 @@ Translation strings (nav labels, section headings, search placeholder, "no resul
 | i18n approach | Hugo built-in | Zero extra dependencies; file-suffix bilingual posts |
 | Archetypes | Per section | Ensures correct front matter for each content type |
 | RSS strategy | Global + Fiction + Editions | Fiction readers & book curation subscribers have separate feeds |
+| Book grid breakpoints | `grid-cols-3 sm:grid-cols-4 lg:grid-cols-6` | Matches shelf grid for visual consistency across all book-display contexts |
+| Edition accent palette | Dynamic class strings in `edition-palette.html` | Tailwind JIT detects full class strings; palette partial returns a dict |
+| Fiction sub-navigation | Separate `/fiction/serials/` + `/fiction/standalone/` pages | Enables per-section pagination; Hugo `.Paginate` requires a list/section page, not a single page |
+| Status badge style | Outline/border style for all 4 statuses | Visually distinct without heavy background fills; olive outline for `read` signals completion |
+| Standalone stories in sub-folder | `content/fiction/standalone/` + `url` override | Required to enable `.Paginate` on the standalone section page while preserving clean `/fiction/slug/` URLs |
+| Fiction sub-navigation | Separate `/fiction/serials/` + `/fiction/standalone/` pages | Enables per-section pagination; Hugo `.Paginate` requires a list/section page, not a single page |
+| Status badge style | Outline/border style for all 4 statuses | Visually distinct without heavy background fills; olive outline for `read` signals completion |
+| Standalone stories in sub-folder | `content/fiction/standalone/` + `url` override | Required to enable `.Paginate` on the standalone section page while preserving clean `/fiction/slug/` URLs |
 
 ---
 

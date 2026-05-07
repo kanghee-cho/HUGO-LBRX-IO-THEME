@@ -9,16 +9,16 @@
 
 {{- if eq $status "read" -}}
   {{- $label = i18n "status_read" | default "Finished" -}}
-  {{- $classes = "bg-olive-100 text-olive-700 dark:bg-olive-900 dark:text-olive-300" -}}
+  {{- $classes = "bg-transparent text-olive-700 border border-olive-600 dark:text-olive-300 dark:border-olive-500" -}}
 {{- else if eq $status "reading" -}}
   {{- $label = i18n "status_reading" | default "Reading" -}}
-  {{- $classes = "bg-sky-100 text-sky-700 dark:bg-sky-900 dark:text-sky-300" -}}
+  {{- $classes = "bg-sky-100 text-sky-700 border border-sky-400 dark:bg-sky-900/50 dark:text-sky-300 dark:border-sky-600" -}}
 {{- else if eq $status "wishlist" -}}
   {{- $label = i18n "status_wishlist" | default "Wishlist" -}}
-  {{- $classes = "bg-amber-100 text-amber-700 dark:bg-amber-900 dark:text-amber-300" -}}
+  {{- $classes = "bg-amber-50 text-amber-700 border border-amber-400 dark:bg-amber-900/40 dark:text-amber-300 dark:border-amber-600" -}}
 {{- else if eq $status "abandoned" -}}
   {{- $label = i18n "status_abandoned" | default "Abandoned" -}}
-  {{- $classes = "bg-neutral-100 text-neutral-500 dark:bg-neutral-800 dark:text-neutral-400" -}}
+  {{- $classes = "bg-neutral-200 text-neutral-600 border border-neutral-700 dark:bg-neutral-700 dark:text-neutral-200 dark:border-neutral-300" -}}
 {{- end -}}
 
 {{- with $label -}}

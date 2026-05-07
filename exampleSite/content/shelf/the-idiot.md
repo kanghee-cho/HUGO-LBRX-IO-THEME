@@ -15,6 +15,7 @@ genre: "소설"
 mood_tags: []
 recommended_for: ""
 tags: []
+credited_to: "kh-cho"
 cover: "https://picsum.photos/seed/idiot/400/600"
 date: 2026-04-28T12:00:00+09:00
 ---

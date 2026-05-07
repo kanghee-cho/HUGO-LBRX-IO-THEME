@@ -23,11 +23,16 @@
         {{ len . }}{{ if eq $lang "ko" }}권 큐레이션{{ else }} books curated{{ end }}
       </p>
     {{- end -}}
+    {{- with .Params.credited_to -}}
+      <div class="mt-4 flex justify-end">
+        {{- partial "member-chip.html" (dict "name" . "label" (i18n "curated_by" | default "큐레이션") "variant" "neutral") -}}
+      </div>
+    {{- end -}}
   </header>
 
   {{- /* ── 책 그리드 */}}
   {{- with .Params.books -}}
-    <ul class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5 sm:gap-6 mb-12" data-pagefind-ignore>
+    <ul class="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-5 sm:gap-6 mb-12" data-pagefind-ignore>
       {{- range . -}}
         {{- $slug   := .slug -}}
         {{- $reason := .reason -}}
@@ -73,6 +78,32 @@
     <div class="prose dark:prose-invert max-w-none">
       {{ . }}
     </div>
+  {{- end -}}
+
+  {{- /* ── 이전 / 다음 에디션 네비게이션 */}}
+  {{- $prev := .PrevInSection -}}
+  {{- $next := .NextInSection -}}
+  {{- if or $prev $next -}}
+    <nav class="mt-10 pt-6 border-t border-olive-200 dark:border-olive-800 flex items-center justify-between gap-4" aria-label="Edition navigation" data-pagefind-ignore>
+      {{- if $prev -}}
+        <a href="{{ $prev.RelPermalink }}" class="group flex items-center gap-2 text-sm text-olive-600 dark:text-olive-400 hover:text-olive-900 dark:hover:text-olive-100 transition-colors min-w-0">
+          <svg class="w-4 h-4 flex-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
+          </svg>
+          <span class="truncate">{{ $prev.Title }}</span>
+        </a>
+      {{- else -}}
+        <span></span>
+      {{- end -}}
+      {{- if $next -}}
+        <a href="{{ $next.RelPermalink }}" class="group flex items-center gap-2 text-sm text-olive-600 dark:text-olive-400 hover:text-olive-900 dark:hover:text-olive-100 transition-colors min-w-0 text-right">
+          <span class="truncate">{{ $next.Title }}</span>
+          <svg class="w-4 h-4 flex-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+          </svg>
+        </a>
+      {{- end -}}
+    </nav>
   {{- end -}}
 
 </article>

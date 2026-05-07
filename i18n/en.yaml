@@ -66,6 +66,8 @@ edition_view: "View Edition"
 edition_archive: "Past Editions"
 edition_no_books: "No books selected yet."
 edition_empty: "No editions yet."
+edition_prev: "Previous Edition"
+edition_next: "Next Edition"
 
 # Fiction section
 fiction_title: "Fiction"
@@ -75,6 +77,38 @@ words: "words"
 no_cover: "No image"
 not_found_desc: "The page you're looking for doesn't exist or has been moved."
 rss_feed: "RSS Feed"
+
+# Fiction
+fiction_standalone: "Short Story"
+fiction_standalone_recent: "Latest Stories"
+fiction_serial: "Serial"
+fiction_serial_recent: "Latest Serials"
+fiction_status_ongoing: "Ongoing"
+fiction_status_complete: "Complete"
+fiction_series_episodes: "Episodes"
+fiction_series_back: "Back to Series"
+episode_label: "Ep."
+episode_prev: "Previous Episode"
+episode_next: "Next Episode"
+fiction_prev: "Previous"
+fiction_next: "Next"
+
+# About section
+about_space: "Space"
+about_space_coming_soon: "Coming soon. We'll be ready to welcome you shortly."
+about_space_address: "Address"
+about_space_hours: "Hours"
+about_space_map: "Map"
+about_brand: "Brand"
+about_brand_colors: "Colors"
+about_brand_fonts: "Typography"
+about_members: "People"
+about_contact: "Contact"
+
+# Member attribution
+reviewed_by: "Review by"
+curated_by: "Curated by"
+written_by: "Written by"
 
 # Search
 search_unavailable: "Search is not available in development mode. Run `npm run build` first."

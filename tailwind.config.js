@@ -11,6 +11,14 @@ module.exports = {
     'sm:grid-cols-4', 'lg:grid-cols-6',
     // RSS icon orange colors
     'text-orange-400', 'hover:text-orange-500', 'dark:text-orange-400', 'dark:hover:text-orange-300',
+    // Status badge border colors
+    'border-neutral-700', 'border-neutral-300',
+    'bg-neutral-200', 'bg-neutral-700',
+    'text-neutral-600', 'text-neutral-200',
+    'bg-sky-100', 'border-sky-400', 'text-sky-700',
+    'bg-sky-900/50', 'border-sky-600', 'text-sky-300',
+    'bg-amber-50', 'border-amber-400', 'text-amber-700',
+    'bg-amber-900/40', 'border-amber-600', 'text-amber-300',
   ],
   theme: {
     extend: {

@@ -70,8 +70,19 @@ disableKinds = ["taxonomy", "term"]
     weight = 2
   [[languages.ko.menus.main]]
     name = "픽션"
+    identifier = "fiction"
     url = "/fiction/"
     weight = 3
+  [[languages.ko.menus.main]]
+    name = "연작"
+    parent = "fiction"
+    url = "/fiction/serials/"
+    weight = 1
+  [[languages.ko.menus.main]]
+    name = "단편"
+    parent = "fiction"
+    url = "/fiction/standalone/"
+    weight = 2
   [[languages.ko.menus.main]]
     name = "소개"
     url = "/about/"
@@ -88,8 +99,19 @@ disableKinds = ["taxonomy", "term"]
     weight = 2
   [[languages.en.menus.main]]
     name = "Fiction"
+    identifier = "fiction"
     url = "/fiction/"
     weight = 3
+  [[languages.en.menus.main]]
+    name = "Serials"
+    parent = "fiction"
+    url = "/fiction/serials/"
+    weight = 1
+  [[languages.en.menus.main]]
+    name = "Standalone"
+    parent = "fiction"
+    url = "/fiction/standalone/"
+    weight = 2
   [[languages.en.menus.main]]
     name = "About"
     url = "/about/"

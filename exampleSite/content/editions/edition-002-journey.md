@@ -5,6 +5,7 @@ draft: false
 edition_number: 2
 description: "집을 떠난다는 것. 낯선 길 위에서 자기 자신을 찾는 네 권의 책."
 accent_color: "sky"
+credited_to: "kh-cho"
 books:
   - slug: "on-the-road"
     reason: "자유를 향한 질주, 그 허무함까지. 케루악이 남긴 가장 날것의 여행기."
