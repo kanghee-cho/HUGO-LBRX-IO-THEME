@@ -21,7 +21,7 @@
   {{- /* ── 오늘의 책장 그리드 (JS가 6권 선택해서 표시) ── */}}
   <ul
     id="shelf-today-grid"
-    class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-3 sm:gap-4"
+    class="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-3 sm:gap-4"
     aria-label="{{ i18n "shelf_today" | default "Today's Shelf" }}"
   >
     {{- range .Pages -}}
@@ -102,7 +102,7 @@
       </div>
       <ul
         id="shelf-rest-grid"
-        class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-3 sm:gap-4"
+        class="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-3 sm:gap-4"
         aria-label="{{ i18n "shelf_all" | default "Full Shelf" }}"
       ></ul>
     </div>
