@@ -15,10 +15,16 @@
 
   {{- /* ── 오늘의 책장 (1페이지에만 표시) */}}
   {{- if eq $paginator.PageNumber 1 -}}
-  {{- $sorted     := sort .Pages "Title" -}}
-  {{- $n          := len $sorted -}}
-  {{- $seed       := mod (add (mul now.Year 365) now.YearDay) $n -}}
-  {{- $todayBooks := first 6 (append (after $seed $sorted) (first $seed $sorted)) -}}
+  {{- /* 오늘의 책장: 각 책의 고유 점수(title·filename 길이 기반 해시 + 날짜)로 선택
+       → 책이 추가·삭제돼도 기존 선택이 바뀌지 않음 */}}
+  {{- $dayNum := add (mul now.Year 365) now.YearDay -}}
+  {{- $picks := slice -}}
+  {{- range .Pages -}}
+    {{- $h     := mod (add (mul (len .Title) 1009) (mul (len .File.ContentBaseName) 101)) 9973 -}}
+    {{- $score := mod (add $h $dayNum) 9973 -}}
+    {{- $picks  = $picks | append (dict "score" $score "p" .) -}}
+  {{- end -}}
+  {{- $todayBooks := first 6 (sort $picks "score") -}}
   {{- if $todayBooks -}}
     <div class="rounded-2xl bg-olive-100 dark:bg-olive-900 border border-olive-200 dark:border-olive-800 p-5 sm:p-7 mb-10">
       <div class="flex items-start justify-between mb-5">
@@ -43,11 +49,12 @@
       </div>
       <ul class="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-3 sm:gap-4">
         {{- range $todayBooks -}}
-          {{- $uid := .File.UniqueID -}}
-          {{- $title := .Title -}}
+          {{- $book := .p -}}
+          {{- $uid := $book.File.UniqueID -}}
+          {{- $title := $book.Title -}}
           <li>
-            <a href="{{ .RelPermalink }}" class="group block">
-              {{- with .Params.cover -}}
+            <a href="{{ $book.RelPermalink }}" class="group block">
+              {{- with $book.Params.cover -}}
                 <div class="aspect-[2/3] overflow-hidden relative book-3d">
                   <img src="{{ . }}" alt="{{ $title }}" class="w-full h-full object-cover" loading="lazy">
                   <div class="book-spine"></div>
@@ -61,10 +68,10 @@
                 </div>
               {{- end -}}
               <div class="mt-1.5 space-y-0.5 pl-1">
-                <h3 class="text-xs font-semibold text-olive-900 dark:text-olive-100 group-hover:text-olive-600 dark:group-hover:text-olive-300 transition-colors line-clamp-2 leading-snug">{{ .Title }}</h3>
-                {{- with .Params.author -}}<p class="text-[10px] text-olive-500 dark:text-olive-400">{{ . }}</p>{{- end -}}
-                {{- with .Params.rating -}}<div class="pt-0.5">{{- partial "star-rating.html" (dict "rating" . "size" "sm" "uid" $uid) -}}</div>{{- end -}}
-                {{- with .Params.status -}}<div>{{- partial "status-badge.html" (dict "status" .) -}}</div>{{- end -}}
+                <h3 class="text-xs font-semibold text-olive-900 dark:text-olive-100 group-hover:text-olive-600 dark:group-hover:text-olive-300 transition-colors line-clamp-2 leading-snug">{{ $book.Title }}</h3>
+                {{- with $book.Params.author -}}<p class="text-[10px] text-olive-500 dark:text-olive-400">{{ . }}</p>{{- end -}}
+                {{- with $book.Params.rating -}}<div class="pt-0.5">{{- partial "star-rating.html" (dict "rating" . "size" "sm" "uid" $uid) -}}</div>{{- end -}}
+                {{- with $book.Params.status -}}<div>{{- partial "status-badge.html" (dict "status" .) -}}</div>{{- end -}}
               </div>
             </a>
           </li>
