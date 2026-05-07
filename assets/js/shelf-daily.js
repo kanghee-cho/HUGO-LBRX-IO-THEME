@@ -58,28 +58,23 @@
 
     if (!btn || !restSection || !restGrid) return;
 
-    // Collect rest cards sorted by date desc
-    var restCards = cards
-      .filter(function (_, i) { return !todaySet.has(i); })
-      .sort(function (a, b) {
-        return (b.getAttribute('data-date') || '').localeCompare(a.getAttribute('data-date') || '');
-      });
+    // All cards sorted by date desc for the full shelf view (cloned — today's stay in today grid too)
+    var allSorted = cards.slice().sort(function (a, b) {
+      return (b.getAttribute('data-date') || '').localeCompare(a.getAttribute('data-date') || '');
+    });
 
-    if (!restCards.length) {
-      // Fewer than 6 books — hide the button entirely
-      var wrap = document.getElementById('shelf-show-all-wrap');
-      if (wrap) wrap.style.display = 'none';
-      return;
-    }
-
-    // Update rest count label
+    // Update total count label
     if (restCount) restCount.textContent = cards.length + '권';
 
-    // Move rest cards into restGrid (out of today grid, into separate section)
-    restCards.forEach(function (card) {
-      card.classList.add('hidden');
-      restGrid.appendChild(card);
+    // Populate restGrid with clones of ALL cards sorted by date desc
+    // (today's 6 remain visible in todayGrid; full shelf shows everything)
+    allSorted.forEach(function (card) {
+      var clone = card.cloneNode(true);
+      clone.classList.add('hidden');
+      restGrid.appendChild(clone);
     });
+
+    var restClones = Array.from(restGrid.querySelectorAll('[data-shelf-card]'));
 
     var expanded = false;
     var labelOpen  = btn.getAttribute('data-label-open')  || '전체 책장 보기';
@@ -90,9 +85,9 @@
       btn.setAttribute('aria-expanded', String(expanded));
 
       if (expanded) {
-        // Show rest section and all its cards
+        // Show rest section and all cloned cards
         restSection.classList.remove('hidden');
-        restCards.forEach(function (card) { card.classList.remove('hidden'); });
+        restClones.forEach(function (card) { card.classList.remove('hidden'); });
         if (btnLabel) btnLabel.textContent = labelClose;
         if (btnIcon) btnIcon.style.transform = 'rotate(180deg)';
         // Scroll to rest section smoothly
@@ -100,7 +95,7 @@
       } else {
         // Hide rest section
         restSection.classList.add('hidden');
-        restCards.forEach(function (card) { card.classList.add('hidden'); });
+        restClones.forEach(function (card) { card.classList.add('hidden'); });
         if (btnLabel) btnLabel.textContent = labelOpen;
         if (btnIcon) btnIcon.style.transform = '';
       }
