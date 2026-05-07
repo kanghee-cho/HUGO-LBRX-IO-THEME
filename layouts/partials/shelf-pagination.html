@@ -17,7 +17,7 @@
   <nav class="mt-12 flex flex-col items-center gap-3" aria-label="Pagination">
     <div class="flex items-center gap-1 flex-wrap justify-center">
 
-      {{- /* ⇤ First page — only shown when not on page 1 */}}
+      {{- /* ⇤ First page */}}
       {{- if gt $c 1 -}}
         <a href="{{ (index $pag.Pagers 0).URL }}"
            class="inline-flex items-center gap-1 px-3 py-2 rounded-lg text-sm font-medium text-olive-700 dark:text-olive-300 border border-olive-200 dark:border-olive-700 hover:bg-olive-100 dark:hover:bg-olive-900 transition-colors"
@@ -35,7 +35,7 @@
           <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
             <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
           </svg>
-          {{- if eq $lang "ko" }}이전{{ else }}Prev{{ end -}}
+          <span class="hidden sm:inline">{{- if eq $lang "ko" }}이전{{ else }}Prev{{ end -}}</span>
         </a>
       {{- end -}}
 
@@ -74,14 +74,13 @@
       {{- if $pag.HasNext -}}
         <a href="{{ $pag.Next.URL }}"
            class="inline-flex items-center gap-1 px-3 py-2 rounded-lg text-sm font-medium text-olive-700 dark:text-olive-300 border border-olive-200 dark:border-olive-700 hover:bg-olive-100 dark:hover:bg-olive-900 transition-colors">
-          {{- if eq $lang "ko" }}다음{{ else }}Next{{ end -}}
+          <span class="hidden sm:inline">{{- if eq $lang "ko" }}다음{{ else }}Next{{ end -}}</span>
           <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
             <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
           </svg>
         </a>
       {{- end -}}
-
-      {{- /* ⇥ Last page — only shown when not on last page */}}
+      {{- /* ⇥ Last page */}}
       {{- if lt $c $t -}}
         <a href="{{ (index $pag.Pagers (sub $t 1)).URL }}"
            class="inline-flex items-center gap-1 px-3 py-2 rounded-lg text-sm font-medium text-olive-700 dark:text-olive-300 border border-olive-200 dark:border-olive-700 hover:bg-olive-100 dark:hover:bg-olive-900 transition-colors"
