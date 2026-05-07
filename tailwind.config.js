@@ -9,6 +9,8 @@ module.exports = {
     // Grid column classes used dynamically — must survive CSS purge
     'grid-cols-2', 'grid-cols-3', 'grid-cols-4', 'grid-cols-5', 'grid-cols-6',
     'sm:grid-cols-4', 'lg:grid-cols-6',
+    // RSS icon orange colors
+    'text-orange-400', 'hover:text-orange-500', 'dark:text-orange-400', 'dark:hover:text-orange-300',
   ],
   theme: {
     extend: {
