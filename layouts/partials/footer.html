@@ -2,15 +2,15 @@
   <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-olive-500 dark:text-olive-400">
     <p>© {{ now.Year }} {{ .Site.Title }}. {{ i18n "all_rights_reserved" | default "All rights reserved." }}</p>
     <div class="flex items-center gap-3">
-      {{- /* RSS icon — separated from social by a divider */}}
+      {{- /* RSS icon — orange, separated from social by a | divider */}}
       {{- range .AlternativeOutputFormats -}}
         {{- if eq .Rel "alternate" -}}
-          <a href="{{ .Permalink }}" class="hover:text-olive-700 dark:hover:text-olive-200 transition-colors" aria-label="{{ i18n "rss_feed" | default "RSS Feed" }}" target="_blank" rel="noopener noreferrer">
+          <a href="{{ .Permalink }}" class="text-orange-400 hover:text-orange-500 dark:text-orange-400 dark:hover:text-orange-300 transition-colors" aria-label="{{ i18n "rss_feed" | default "RSS Feed" }}" target="_blank" rel="noopener noreferrer">
             <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
               <path d="M6.18 15.64a2.18 2.18 0 0 1 2.18 2.18C8.36 19.01 7.38 20 6.18 20C4.98 20 4 19.01 4 17.82a2.18 2.18 0 0 1 2.18-2.18M4 4.44A15.56 15.56 0 0 1 19.56 20h-2.83A12.73 12.73 0 0 0 4 7.27V4.44m0 5.66a9.9 9.9 0 0 1 9.9 9.9h-2.83A7.07 7.07 0 0 0 4 12.93V10.1z"/>
             </svg>
           </a>
-          <span class="w-px h-4 bg-olive-200 dark:bg-olive-700 rounded-full" aria-hidden="true"></span>
+          <span class="text-olive-300 dark:text-olive-700 select-none mx-1" aria-hidden="true">|</span>
         {{- end -}}
       {{- end -}}
       {{- /* Social icons — order and URLs driven by [[params.social]] in hugo.toml */}}
