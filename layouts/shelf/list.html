@@ -65,9 +65,11 @@
               >
             </div>
           {{- else -}}
-            <div class="aspect-[2/3] rounded-md bg-gradient-to-b from-olive-100 to-olive-200 dark:from-olive-800 dark:to-olive-900 flex flex-col items-center justify-center shadow-sm px-2 gap-2">
-              <span class="text-olive-500 dark:text-olive-400 text-[10px] text-center leading-tight line-clamp-3 font-medium">{{ .Title }}</span>
-              <span class="text-olive-400 dark:text-olive-500 text-[9px]">{{ .Params.author }}</span>
+            <div class="aspect-[2/3] rounded-md bg-olive-100 dark:bg-olive-800 flex flex-col items-center justify-center shadow-sm gap-1.5">
+              <svg class="w-6 h-6 text-olive-300 dark:text-olive-600" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+              </svg>
+              <span class="text-[9px] text-olive-400 dark:text-olive-500 font-medium">{{ i18n "no_cover" | default "No image" }}</span>
             </div>
           {{- end -}}
           {{- /* 카드 정보 */}}

@@ -67,8 +67,7 @@ fiction_title: "Fiction"
 fiction_desc: "Original stories and serials."
 words: "words"
 
-# 404
-not_found_title: "Page not found"
+no_cover: "No image"
 not_found_desc: "The page you're looking for doesn't exist or has been moved."
 
 # Search
