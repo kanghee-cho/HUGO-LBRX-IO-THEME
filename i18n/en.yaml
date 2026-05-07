@@ -21,6 +21,7 @@ shelf_today: "Today's Shelf"
 shelf_today_desc: "A selection chosen for today"
 shelf_show_all: "View full shelf"
 shelf_collapse: "Collapse"
+shelf_all: "Full Shelf"
 
 # Book metadata — bibliographic
 author: "Author"

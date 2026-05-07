@@ -18,11 +18,11 @@
     <div class="flex-1 h-px bg-olive-200 dark:bg-olive-800"></div>
   </div>
 
-  {{- /* ── 전체 그리드 (JS가 오늘의 책장 6권만 초기 표시) ── */}}
+  {{- /* ── 오늘의 책장 그리드 (JS가 6권 선택해서 표시) ── */}}
   <ul
-    id="shelf-grid"
-    class="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4"
-    aria-label="{{ i18n "shelf_title" | default "Shelf" }}"
+    id="shelf-today-grid"
+    class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-3 sm:gap-4"
+    aria-label="{{ i18n "shelf_today" | default "Today's Shelf" }}"
   >
     {{- range .Pages -}}
       {{- $uid := .File.UniqueID -}}
@@ -57,7 +57,6 @@
             {{- with .Params.author -}}
               <p class="text-[10px] text-olive-500 dark:text-olive-400">{{ . }}</p>
             {{- end -}}
-            {{- /* 별점 + 상태 배지 (작은 사이즈) */}}
             <div class="flex items-center gap-1.5 flex-wrap pt-0.5">
               {{- with .Params.rating -}}
                 {{- partial "star-rating.html" (dict "rating" . "size" "sm" "uid" $uid) -}}
@@ -72,21 +71,40 @@
     {{- end -}}
   </ul>
 
-  {{- /* ── 전체 보기 버튼 ────────────────────────────── */}}
+  {{- /* ── 전체 보기 버튼 (책이 6권 이상일 때만) ────── */}}
   {{- if gt (len .Pages) 6 -}}
-    <div class="mt-10 flex flex-col items-center gap-2">
+    <div id="shelf-show-all-wrap" class="mt-10 flex flex-col items-center gap-2">
       <div class="w-full h-px bg-olive-200 dark:bg-olive-800 mb-2"></div>
       <button
         id="shelf-show-all"
         class="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-medium text-olive-700 dark:text-olive-300 border border-olive-300 dark:border-olive-700 hover:bg-olive-50 dark:hover:bg-olive-900 transition-colors"
         aria-expanded="false"
+        data-label-open="{{ i18n "shelf_show_all" | default "View full shelf" }}"
+        data-label-close="{{ i18n "shelf_collapse" | default "Collapse" }}"
+        data-count="{{ len .Pages }}"
       >
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 10h16M4 14h16M4 18h16"/>
+        <svg id="shelf-show-all-icon" class="w-4 h-4 transition-transform duration-200" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
         </svg>
-        {{ i18n "shelf_show_all" | default "View full shelf" }}
-        <span class="text-olive-400 dark:text-olive-500 text-xs">({{ len .Pages }})</span>
+        <span id="shelf-show-all-label">{{ i18n "shelf_show_all" | default "View full shelf" }}</span>
+        <span id="shelf-show-all-count" class="text-olive-400 dark:text-olive-500 text-xs">({{ len .Pages }})</span>
       </button>
+    </div>
+
+    {{- /* ── 전체 책장 섹션 (전체보기 클릭 후 표시) ─── */}}
+    <div id="shelf-rest-section" class="hidden mt-12">
+      <div class="flex items-center gap-3 mb-5">
+        <h2 class="text-xs font-semibold uppercase tracking-widest text-olive-500 dark:text-olive-400">
+          {{ i18n "shelf_all" | default "Full Shelf" }}
+        </h2>
+        <div class="flex-1 h-px bg-olive-200 dark:bg-olive-800"></div>
+        <span id="shelf-rest-count" class="text-xs text-olive-400 dark:text-olive-500"></span>
+      </div>
+      <ul
+        id="shelf-rest-grid"
+        class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-3 sm:gap-4"
+        aria-label="{{ i18n "shelf_all" | default "Full Shelf" }}"
+      ></ul>
     </div>
   {{- end -}}
 </section>

@@ -1,8 +1,9 @@
 /**
- * shelf-daily.js — Daily deterministic book rotation [#192]
+ * shelf-daily.js — Daily deterministic book rotation [#194]
  *
- * Uses dayOfYear as an LCG seed to pick 6 books consistently for the day.
- * "전체 보기" toggles all remaining cards sorted by date desc.
+ * - #shelf-today-grid: all cards rendered here, JS shows today's 6
+ * - #shelf-rest-section / #shelf-rest-grid: remaining books shown after expand
+ * - #shelf-show-all: button toggles expand/collapse, label updates accordingly
  */
 (function () {
   'use strict';
@@ -16,14 +17,12 @@
     for (var i = result.length - 1; i > 0; i--) {
       s = (Math.imul(1664525, s) + 1013904223) >>> 0;
       var j = s % (i + 1);
-      var tmp = result[i];
-      result[i] = result[j];
-      result[j] = tmp;
+      var tmp = result[i]; result[i] = result[j]; result[j] = tmp;
     }
     return result;
   }
 
-  /** Day-of-year (1–366) — changes every midnight, consistent across time zones using UTC */
+  /** Day-of-year (1–366) based on UTC date — same for all visitors on same UTC day */
   function getDayOfYear() {
     var now = new Date();
     var start = Date.UTC(now.getUTCFullYear(), 0, 0);
@@ -32,78 +31,80 @@
   }
 
   document.addEventListener('DOMContentLoaded', function () {
-    var grid = document.getElementById('shelf-grid');
-    var showAllBtn = document.getElementById('shelf-show-all');
-    if (!grid) return;
+    var todayGrid   = document.getElementById('shelf-today-grid');
+    var restSection = document.getElementById('shelf-rest-section');
+    var restGrid    = document.getElementById('shelf-rest-grid');
+    var btn         = document.getElementById('shelf-show-all');
+    var btnLabel    = document.getElementById('shelf-show-all-label');
+    var btnIcon     = document.getElementById('shelf-show-all-icon');
+    var restCount   = document.getElementById('shelf-rest-count');
 
-    var cards = Array.from(grid.querySelectorAll('[data-shelf-card]'));
+    if (!todayGrid) return;
+
+    var cards = Array.from(todayGrid.querySelectorAll('[data-shelf-card]'));
     if (!cards.length) return;
 
+    // Deterministic daily shuffle
     var seed = getDayOfYear();
-    var indices = cards.map(function (_, i) { return i; });
-    var shuffled = lcgShuffle(indices, seed);
+    var shuffled = lcgShuffle(cards.map(function (_, i) { return i; }), seed);
 
-    // Split: today's 6 vs rest
     var todayIndices = shuffled.slice(0, DAILY_COUNT);
     var todaySet = new Set(todayIndices);
 
-    // Show today's cards in shuffled order
+    // Show today's 6 in shuffled order
     todayIndices.forEach(function (idx) {
       cards[idx].classList.remove('hidden');
     });
 
-    if (!showAllBtn) return;
+    if (!btn || !restSection || !restGrid) return;
 
-    // Collect remaining cards (not in today's set) sorted by date desc
-    var restCards = cards.filter(function (_, i) { return !todaySet.has(i); });
-    restCards.sort(function (a, b) {
-      var da = a.getAttribute('data-date') || '';
-      var db = b.getAttribute('data-date') || '';
-      return db.localeCompare(da); // desc
+    // Collect rest cards sorted by date desc
+    var restCards = cards
+      .filter(function (_, i) { return !todaySet.has(i); })
+      .sort(function (a, b) {
+        return (b.getAttribute('data-date') || '').localeCompare(a.getAttribute('data-date') || '');
+      });
+
+    if (!restCards.length) {
+      // Fewer than 6 books — hide the button entirely
+      var wrap = document.getElementById('shelf-show-all-wrap');
+      if (wrap) wrap.style.display = 'none';
+      return;
+    }
+
+    // Update rest count label
+    if (restCount) restCount.textContent = restCards.length + '권';
+
+    // Move rest cards into restGrid (out of today grid, into separate section)
+    restCards.forEach(function (card) {
+      card.classList.add('hidden');
+      restGrid.appendChild(card);
     });
 
     var expanded = false;
+    var labelOpen  = btn.getAttribute('data-label-open')  || '전체 책장 보기';
+    var labelClose = btn.getAttribute('data-label-close') || '접기';
 
-    showAllBtn.addEventListener('click', function () {
+    btn.addEventListener('click', function () {
       expanded = !expanded;
-      showAllBtn.setAttribute('aria-expanded', String(expanded));
+      btn.setAttribute('aria-expanded', String(expanded));
 
       if (expanded) {
-        // Move rest cards to end of grid in sorted order, then show
-        restCards.forEach(function (card) {
-          grid.appendChild(card);
-          card.classList.remove('hidden');
-        });
-        showAllBtn.querySelector('svg').setAttribute('style', 'transform:rotate(180deg)');
-        var textNode = showAllBtn.childNodes[showAllBtn.childNodes.length - 2];
-        if (textNode) {
-          // Update button label (find the text node between svg and span)
-          var spans = showAllBtn.querySelectorAll('span');
-          if (spans.length) {
-            var labelEl = showAllBtn.querySelector('.shelf-btn-label');
-            if (!labelEl) {
-              // wrap text in span if not already
-              Array.from(showAllBtn.childNodes).forEach(function (node) {
-                if (node.nodeType === Node.TEXT_NODE && node.textContent.trim()) {
-                  var s = document.createElement('span');
-                  s.className = 'shelf-btn-label';
-                  s.textContent = node.textContent;
-                  showAllBtn.replaceChild(s, node);
-                }
-              });
-            }
-            labelEl = showAllBtn.querySelector('.shelf-btn-label');
-            if (labelEl) labelEl.setAttribute('data-original', labelEl.textContent);
-          }
-        }
-        showAllBtn.setAttribute('data-original-text', showAllBtn.textContent.trim());
+        // Show rest section and all its cards
+        restSection.classList.remove('hidden');
+        restCards.forEach(function (card) { card.classList.remove('hidden'); });
+        if (btnLabel) btnLabel.textContent = labelClose;
+        if (btnIcon) btnIcon.style.transform = 'rotate(180deg)';
+        // Scroll to rest section smoothly
+        restSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
       } else {
-        // Collapse: hide rest cards
-        restCards.forEach(function (card) {
-          card.classList.add('hidden');
-        });
-        showAllBtn.querySelector('svg').removeAttribute('style');
+        // Hide rest section
+        restSection.classList.add('hidden');
+        restCards.forEach(function (card) { card.classList.add('hidden'); });
+        if (btnLabel) btnLabel.textContent = labelOpen;
+        if (btnIcon) btnIcon.style.transform = '';
       }
     });
   });
 })();
+
