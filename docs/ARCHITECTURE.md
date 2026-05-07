@@ -7,6 +7,138 @@ It is built around four content sections with a Tailwind CSS build pipeline, Hug
 
 ---
 
+## Theme Installation
+
+### Prerequisites
+
+| Requirement | Version |
+|---|---|
+| Hugo Extended | v0.115.0+ |
+| Node.js | v18+ |
+| npm | v9+ |
+| Git | any |
+
+### Step 1 — Add Theme as Git Submodule
+
+```bash
+# From your Hugo site root
+git submodule add https://dev.azure.com/lbrx/_git/HUGO-LBRX-IO-THEME themes/lbrx-io
+git submodule update --init --recursive
+```
+
+Or clone directly (without submodule):
+```bash
+git clone https://dev.azure.com/lbrx/_git/HUGO-LBRX-IO-THEME themes/lbrx-io
+```
+
+### Step 2 — Install Dependencies and Build CSS
+
+```bash
+cd themes/lbrx-io
+npm install
+npm run css:build   # generates assets/css/main.min.css
+cd ../..
+```
+
+> ⚠️ `assets/css/main.min.css` is gitignored. Run `npm run css:build` after every fresh clone or theme update.
+
+### Step 3 — Configure `hugo.toml`
+
+Copy and customize the example config:
+```bash
+cp themes/lbrx-io/exampleSite/hugo.toml hugo.toml
+```
+
+Minimum required settings:
+```toml
+baseURL = "https://yoursite.com/"
+title   = "Your Site Title"
+theme   = "lbrx-io"
+
+defaultContentLanguage = "ko"  # or "en"
+disableKinds = ["taxonomy", "term"]
+
+[params]
+  description = "짧은 사이트 소개"
+  author      = "Your Name"
+  email       = "you@example.com"
+
+[pagination]
+  pagerSize = 12
+```
+
+For full menu and bilingual config, see `exampleSite/hugo.toml`.
+
+### Step 4 — Content Directory Structure
+
+```
+content/
+├── about/
+│   └── index.md        # type: "about" required in front matter
+├── shelf/
+│   └── my-book.md
+├── editions/
+│   ├── _index.md
+│   └── edition-01/
+│       └── index.md
+└── fiction/
+    ├── serials/
+    │   └── my-serial/
+    │       ├── _index.md   # fiction_type: "serial" required
+    │       └── chapter-01.md
+    └── standalone/
+        └── my-story.md
+```
+
+### Step 5 — About Page Setup
+
+`content/about/index.md` must include `type: "about"` and the member list for the attribution chip system:
+```yaml
+---
+title: "소개"
+type: "about"
+space:
+  ready: false
+members:
+  - id: "your-id"          # stable slug — used in credited_to fields
+    name: "표시 이름"
+    photo: "members/photo.jpg"  # relative to assets/
+    bio: "소개글"
+    email: "you@example.com"
+brand:
+  colors: []
+  fonts: []
+---
+```
+
+### Step 6 — Member Attribution
+
+Add `credited_to` to any shelf/edition/fiction content file using the member's `id`:
+```yaml
+credited_to: "your-id"
+```
+
+The `member-chip` partial looks up `id` in the About page front matter and displays the member's `name`. Changing the name in `about/index.md` updates all chips site-wide without touching content files.
+
+### Step 7 — Development and Build
+
+```bash
+# Development (Hugo only — CSS already built)
+hugo server -D
+
+# Development with CSS hot-reload (two terminals)
+# Terminal 1
+cd themes/lbrx-io && npx tailwindcss -i ./assets/css/main.css -o ./assets/css/main.min.css --watch
+# Terminal 2
+hugo server -D
+
+# Production build
+cd themes/lbrx-io && npm run css:build && cd ../..
+hugo --minify
+```
+
+---
+
 ## Tech Stack
 
 | Component | Choice | Rationale |

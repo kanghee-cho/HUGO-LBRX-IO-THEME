@@ -274,6 +274,123 @@ members:
 
 ---
 
+## 내 사이트에 테마 적용하기
+
+### 사전 준비
+
+- Hugo Extended v0.115.0 이상
+- Node.js v18 이상, npm v9 이상
+- Git
+
+### 1단계 — 테마 추가
+
+```bash
+# Hugo 사이트 루트에서
+git submodule add https://dev.azure.com/lbrx/_git/HUGO-LBRX-IO-THEME themes/lbrx-io
+git submodule update --init --recursive
+```
+
+또는 직접 클론:
+```bash
+git clone https://dev.azure.com/lbrx/_git/HUGO-LBRX-IO-THEME themes/lbrx-io
+```
+
+### 2단계 — CSS 빌드
+
+```bash
+cd themes/lbrx-io
+npm install
+npm run css:build   # assets/css/main.min.css 생성
+cd ../..
+```
+
+> ⚠️ `assets/css/main.min.css`는 `.gitignore`에 포함되어 있습니다.  
+> **클론 또는 테마 업데이트 후 반드시 `npm run css:build`를 실행하세요.**
+
+### 3단계 — `hugo.toml` 설정
+
+```bash
+cp themes/lbrx-io/exampleSite/hugo.toml hugo.toml  # 예시 설정 복사
+```
+
+최소 필수 설정:
+```toml
+baseURL = "https://yoursite.com/"
+title   = "사이트 제목"
+theme   = "lbrx-io"
+
+defaultContentLanguage = "ko"
+disableKinds = ["taxonomy", "term"]
+
+[params]
+  description = "사이트 소개"
+  author      = "이름"
+  email       = "you@example.com"
+
+[pagination]
+  pagerSize = 12
+```
+
+전체 메뉴 및 다국어 설정은 `exampleSite/hugo.toml` 참고.
+
+### 4단계 — 콘텐츠 구조 생성
+
+```
+content/
+├── about/index.md        # type: "about" 필수
+├── shelf/
+├── editions/
+└── fiction/
+    ├── serials/
+    └── standalone/
+```
+
+### 5단계 — 소개 페이지 (`about/index.md`)
+
+```yaml
+---
+title: "소개"
+type: "about"
+space:
+  ready: false
+members:
+  - id: "my-id"          # credited_to에서 참조하는 고유 ID
+    name: "표시 이름"
+    photo: "members/photo.jpg"
+    bio: "소개글"
+    email: "you@example.com"
+brand:
+  colors: []
+  fonts: []
+---
+```
+
+### 6단계 — 작성자 표시 (`credited_to`)
+
+책장·에디션·픽션 파일에 `credited_to: "my-id"` 추가하면  
+소개 페이지의 `id`로 멤버를 찾아 이름·사진을 자동 표시합니다.  
+소개 페이지에서 이름을 바꾸면 전체 사이트에 즉시 반영됩니다.
+
+### 7단계 — 실행 및 빌드
+
+```bash
+# 개발 서버
+hugo server -D
+
+# CSS 변경 시 (터미널 2개)
+# 터미널 1 — CSS 감시
+cd themes/lbrx-io && npx tailwindcss -i ./assets/css/main.css -o ./assets/css/main.min.css --watch
+
+# 터미널 2 — Hugo 서버
+hugo server -D
+
+# 프로덕션 빌드
+cd themes/lbrx-io && npm run css:build && cd ../..
+hugo --minify
+```
+
+---
+
 ## 라이선스
 
 MIT
