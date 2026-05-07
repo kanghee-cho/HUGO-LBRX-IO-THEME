@@ -81,14 +81,16 @@
             {{- with .Params.author -}}
               <p class="text-[10px] text-olive-500 dark:text-olive-400">{{ . }}</p>
             {{- end -}}
-            <div class="flex items-center gap-1.5 flex-wrap pt-0.5">
-              {{- with .Params.rating -}}
+            {{- with .Params.rating -}}
+              <div class="pt-0.5">
                 {{- partial "star-rating.html" (dict "rating" . "size" "sm" "uid" $uid) -}}
-              {{- end -}}
-              {{- with .Params.status -}}
+              </div>
+            {{- end -}}
+            {{- with .Params.status -}}
+              <div>
                 {{- partial "status-badge.html" (dict "status" .) -}}
-              {{- end -}}
-            </div>
+              </div>
+            {{- end -}}
           </div>
         </a>
       </li>
