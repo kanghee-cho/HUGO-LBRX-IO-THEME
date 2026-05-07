@@ -73,7 +73,7 @@
     }
 
     // Update rest count label
-    if (restCount) restCount.textContent = restCards.length + '권';
+    if (restCount) restCount.textContent = cards.length + '권';
 
     // Move rest cards into restGrid (out of today grid, into separate section)
     restCards.forEach(function (card) {
