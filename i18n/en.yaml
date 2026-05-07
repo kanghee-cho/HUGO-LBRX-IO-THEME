@@ -2,7 +2,9 @@
 
 # Navigation & site-wide
 search: "Search"
+search_placeholder: "Search..."
 toggle_dark_mode: "Toggle dark mode"
+open_menu: "Open menu"
 all_rights_reserved: "All rights reserved."
 see_all: "See all"
 go_home: "Go home"
@@ -15,10 +17,44 @@ latest_fiction: "Latest Fiction"
 # Shelf section
 shelf_title: "Shelf"
 shelf_desc: "Books I've read, reviewed, and recommended."
+shelf_today: "Today's Shelf"
+shelf_today_desc: "A selection chosen for today"
+shelf_show_all: "View full shelf"
+shelf_collapse: "Collapse"
+
+# Book metadata — bibliographic
 author: "Author"
-published: "Published"
+publisher: "Publisher"
+published: "Year"
+isbn: "ISBN"
+pages: "Pages"
+translator: "Translator"
+original_title: "Original title"
+
+# Book metadata — physical/library
+call_number: "Call No."
+owned: "Owned"
+owned_yes: "In collection"
+owned_no: "Not owned"
+condition: "Condition"
+condition_new: "New"
+condition_good: "Good"
+condition_fair: "Fair"
+condition_poor: "Poor"
+
+# Book metadata — reading record
+status: "Status"
+status_read: "Finished"
+status_reading: "Reading"
+status_wishlist: "Wishlist"
+status_abandoned: "Abandoned"
 rating: "Rating"
+read_date: "Finished on"
+
+# Book metadata — curation
 genre: "Genre"
+mood_tags: "Mood"
+recommended_for: "Recommended for"
 
 # Editions section
 editions_title: "Editions"
@@ -36,5 +72,4 @@ not_found_desc: "The page you're looking for doesn't exist or has been moved."
 
 # Search
 search_unavailable: "Search is not available in development mode. Run `npm run build` first."
-search_placeholder: "Search..."
 search_no_results: "No results found."

@@ -2,7 +2,9 @@
 
 # Navigation & site-wide
 search: "검색"
+search_placeholder: "검색어를 입력하세요..."
 toggle_dark_mode: "다크 모드 전환"
+open_menu: "메뉴 열기"
 all_rights_reserved: "All rights reserved."
 see_all: "전체 보기"
 go_home: "홈으로"
@@ -15,10 +17,44 @@ latest_fiction: "최신 픽션"
 # Shelf section
 shelf_title: "책장"
 shelf_desc: "읽고, 리뷰하고, 추천하는 책들."
+shelf_today: "오늘의 책장"
+shelf_today_desc: "오늘을 위해 골라온 책들"
+shelf_show_all: "전체 책장 보기"
+shelf_collapse: "접기"
+
+# Book metadata — bibliographic
 author: "저자"
-published: "출판"
+publisher: "출판사"
+published: "출판연도"
+isbn: "ISBN"
+pages: "페이지"
+translator: "번역"
+original_title: "원제"
+
+# Book metadata — physical/library
+call_number: "서고번호"
+owned: "보유"
+owned_yes: "소장"
+owned_no: "미소장"
+condition: "책 상태"
+condition_new: "새것"
+condition_good: "양호"
+condition_fair: "보통"
+condition_poor: "불량"
+
+# Book metadata — reading record
+status: "독서 상태"
+status_read: "완독"
+status_reading: "읽는 중"
+status_wishlist: "위시리스트"
+status_abandoned: "포기"
 rating: "평점"
+read_date: "완독일"
+
+# Book metadata — curation
 genre: "장르"
+mood_tags: "분위기"
+recommended_for: "추천 대상"
 
 # Editions section
 editions_title: "에디션"
@@ -36,5 +72,4 @@ not_found_desc: "찾으시는 페이지가 없거나 이동되었습니다."
 
 # Search
 search_unavailable: "검색은 개발 모드에서 사용할 수 없습니다. 먼저 `npm run build`를 실행하세요."
-search_placeholder: "검색어를 입력하세요..."
 search_no_results: "검색 결과가 없습니다."

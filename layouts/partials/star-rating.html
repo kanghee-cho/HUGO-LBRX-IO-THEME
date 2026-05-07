@@ -1,0 +1,41 @@
+{{- /*
+  star-rating.html — Half-star SVG rating display
+  Usage: {{ partial "star-rating.html" (dict "rating" .Params.rating "size" "sm") }}
+  Params:
+    rating  — float 0.0–5.0 (0.5 increments)
+    size    — "sm" (default) | "md" | "lg"
+*/ -}}
+{{- $rating := .rating | default 0 -}}
+{{- $size := .size | default "sm" -}}
+{{- $svgSize := "w-4 h-4" -}}
+{{- if eq $size "md" -}}{{- $svgSize = "w-5 h-5" -}}{{- end -}}
+{{- if eq $size "lg" -}}{{- $svgSize = "w-6 h-6" -}}{{- end -}}
+
+<span class="flex items-center gap-0.5" aria-label="{{ $rating }}/5 별점" role="img">
+  {{- range $i := seq 1 5 -}}
+    {{- $filled := sub $rating (sub $i 1) -}}
+    {{- if ge $filled 1.0 -}}
+      {{- /* Full star */}}
+      <svg class="{{ $svgSize }} text-olive-500 dark:text-olive-400 flex-none" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+      </svg>
+    {{- else if ge $filled 0.25 -}}
+      {{- /* Half star */}}
+      <svg class="{{ $svgSize }} flex-none" viewBox="0 0 20 20" aria-hidden="true">
+        <defs>
+          <linearGradient id="half-{{ $i }}">
+            <stop offset="50%" stop-color="currentColor" class="text-olive-500 dark:text-olive-400"/>
+            <stop offset="50%" stop-color="currentColor" class="text-olive-200 dark:text-olive-700"/>
+          </linearGradient>
+        </defs>
+        <path fill="url(#half-{{ $i }})" d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+      </svg>
+    {{- else -}}
+      {{- /* Empty star */}}
+      <svg class="{{ $svgSize }} text-olive-200 dark:text-olive-700 flex-none" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+      </svg>
+    {{- end -}}
+  {{- end -}}
+  <span class="ml-1 text-xs text-olive-500 dark:text-olive-400 tabular-nums">{{ $rating }}</span>
+</span>
