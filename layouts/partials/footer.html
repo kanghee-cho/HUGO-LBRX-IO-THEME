@@ -13,8 +13,8 @@
           <span class="text-gray-300 dark:text-gray-600 select-none mx-1" aria-hidden="true">|</span>
         {{- end -}}
       {{- end -}}
-      {{- /* Pass 1: Social icons only (non-email) */}}
-      {{- range where .Site.Params.social "name" "ne" "email" -}}
+      {{- /* Social icons — all entries in [[params.social]] */}}
+      {{- range .Site.Params.social -}}
         <a href="{{ .url }}"
            class="hover:text-olive-700 dark:hover:text-olive-200 transition-colors"
            aria-label="{{ .name }}"
@@ -39,18 +39,15 @@
         </a>
       {{- end -}}
 
-      {{- /* Separator before email */}}
-      {{- with where .Site.Params.social "name" "eq" "email" -}}
+      {{- /* Email — separate from social, shown as icon + address text */}}
+      {{- with .Site.Params.email -}}
         <span class="text-gray-300 dark:text-gray-600 select-none mx-1" aria-hidden="true">|</span>
-        {{- range . -}}
-          {{- $addr := .url | strings.TrimPrefix "mailto:" -}}
-          <span class="inline-flex items-center gap-1.5 text-gray-500 dark:text-gray-400 select-all" aria-label="{{ $addr }}">
-            <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75"/>
-            </svg>
-            <span class="text-xs">{{ $addr }}</span>
-          </span>
-        {{- end -}}
+        <span class="inline-flex items-center gap-1.5 text-gray-500 dark:text-gray-400 select-all" aria-label="{{ . }}">
+          <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75"/>
+          </svg>
+          <span class="text-xs">{{ . }}</span>
+        </span>
       {{- end -}}
     </div>
   </div>

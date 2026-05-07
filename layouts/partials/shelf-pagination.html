@@ -8,8 +8,8 @@
 {{- if gt $pag.TotalPages 1 -}}
   {{- $c      := $pag.PageNumber -}}
   {{- $t      := $pag.TotalPages -}}
-  {{- $wStart := math.Max 1 (sub $c 2) -}}
-  {{- $wEnd   := math.Min $t (add $c 2) -}}
+  {{- $wStart := math.Max 1 (sub $c 1) -}}
+  {{- $wEnd   := math.Min $t (add $c 1) -}}
   {{- $pageSize := (index $pag.Pagers 0).NumberOfElements -}}
   {{- $from   := add (mul (sub $c 1) $pageSize) 1 -}}
   {{- $to     := add $from (sub $pag.NumberOfElements 1) -}}

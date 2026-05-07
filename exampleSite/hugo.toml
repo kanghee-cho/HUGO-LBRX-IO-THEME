@@ -15,26 +15,25 @@ disableKinds = ["taxonomy", "term"]
   nickname = "KH.CHO"
   github = "https://github.com/kanghee-cho"
   author = "LBRX"
+  email = "kh.cho@lbrx.io"
 
-[[params.social]]
-  name = "github"
-  url = "https://github.com/kanghee-cho"
 
 [[params.social]]
   name = "instagram"
   url = "https://instagram.com/kh.cho83"
 
 [[params.social]]
+  name = "telegram"
+  url = "https://t.me/khcho83"
+
+[[params.social]]
+  name = "github"
+  url = "https://github.com/kanghee-cho"
+
+[[params.social]]
   name = "linkedin"
   url = "https://linkedin.com/in/joedamon"
 
-[[params.social]]
-  name = "telegram"
-  url = "https://t.me/your_telegram_handle"
-
-[[params.social]]
-  name = "email"
-  url = "mailto:kh.cho@lbrx.io"
 
 [languages]
   [languages.ko]
