@@ -20,7 +20,7 @@ shelf_desc: "읽고, 리뷰하고, 추천하는 책들."
 shelf_today: "오늘의 책장"
 shelf_today_desc: "오늘을 위해 골라온 책들"
 shelf_show_all: "전체 책장 보기"
-shelf_collapse: "접기"
+shelf_collapse: "전체 책장 접기"
 shelf_all: "전체 책장"
 
 # Book metadata — bibliographic
