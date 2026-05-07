@@ -1,0 +1,84 @@
+{{- /*
+  shelf-pagination.html
+  Params: dict "pag" $paginator "total" $totalBooks "lang" $lang
+*/ -}}
+{{- $pag   := .pag -}}
+{{- $total := .total -}}
+{{- $lang  := .lang -}}
+{{- if gt $pag.TotalPages 1 -}}
+  {{- $c      := $pag.PageNumber -}}
+  {{- $t      := $pag.TotalPages -}}
+  {{- $wStart := math.Max 1 (sub $c 2) -}}
+  {{- $wEnd   := math.Min $t (add $c 2) -}}
+  {{- $pageSize := (index $pag.Pagers 0).NumberOfElements -}}
+  {{- $from   := add (mul (sub $c 1) $pageSize) 1 -}}
+  {{- $to     := add $from (sub $pag.NumberOfElements 1) -}}
+
+  <nav class="mt-12 flex flex-col items-center gap-3" aria-label="Pagination">
+    <div class="flex items-center gap-1 flex-wrap justify-center">
+
+      {{- /* ← Prev */}}
+      {{- if $pag.HasPrev -}}
+        <a href="{{ $pag.Prev.URL }}"
+           class="inline-flex items-center gap-1 px-3 py-2 rounded-lg text-sm font-medium text-olive-700 dark:text-olive-300 border border-olive-200 dark:border-olive-700 hover:bg-olive-100 dark:hover:bg-olive-900 transition-colors">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
+          </svg>
+          {{- if eq $lang "ko" }}이전{{ else }}Prev{{ end -}}
+        </a>
+      {{- end -}}
+
+      {{- /* Page 1 if outside window */}}
+      {{- if gt $wStart 1 -}}
+        <a href="{{ (index $pag.Pagers 0).URL }}"
+           class="w-9 h-9 inline-flex items-center justify-center rounded-lg text-sm font-medium text-olive-700 dark:text-olive-300 border border-olive-200 dark:border-olive-700 hover:bg-olive-100 dark:hover:bg-olive-900 transition-colors">1</a>
+        {{- if gt $wStart 2 -}}
+          <span class="w-9 h-9 inline-flex items-center justify-center text-olive-400 dark:text-olive-600 text-sm select-none">…</span>
+        {{- end -}}
+      {{- end -}}
+
+      {{- /* Window around current page */}}
+      {{- range $pag.Pagers -}}
+        {{- $n := .PageNumber -}}
+        {{- if and (ge $n $wStart) (le $n $wEnd) -}}
+          <a href="{{ .URL }}"
+             class="w-9 h-9 inline-flex items-center justify-center rounded-lg text-sm font-medium transition-colors
+               {{- if eq $n $c }} bg-olive-600 dark:bg-olive-500 text-white
+               {{- else }} text-olive-700 dark:text-olive-300 border border-olive-200 dark:border-olive-700 hover:bg-olive-100 dark:hover:bg-olive-900
+               {{- end }}"
+             {{- if eq $n $c }} aria-current="page"{{ end }}>{{ $n }}</a>
+        {{- end -}}
+      {{- end -}}
+
+      {{- /* Last page if outside window */}}
+      {{- if lt $wEnd $t -}}
+        {{- if lt $wEnd (sub $t 1) -}}
+          <span class="w-9 h-9 inline-flex items-center justify-center text-olive-400 dark:text-olive-600 text-sm select-none">…</span>
+        {{- end -}}
+        <a href="{{ (index $pag.Pagers (sub $t 1)).URL }}"
+           class="w-9 h-9 inline-flex items-center justify-center rounded-lg text-sm font-medium text-olive-700 dark:text-olive-300 border border-olive-200 dark:border-olive-700 hover:bg-olive-100 dark:hover:bg-olive-900 transition-colors">{{ $t }}</a>
+      {{- end -}}
+
+      {{- /* Next → */}}
+      {{- if $pag.HasNext -}}
+        <a href="{{ $pag.Next.URL }}"
+           class="inline-flex items-center gap-1 px-3 py-2 rounded-lg text-sm font-medium text-olive-700 dark:text-olive-300 border border-olive-200 dark:border-olive-700 hover:bg-olive-100 dark:hover:bg-olive-900 transition-colors">
+          {{- if eq $lang "ko" }}다음{{ else }}Next{{ end -}}
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+          </svg>
+        </a>
+      {{- end -}}
+
+    </div>
+
+    {{- /* 권수 정보 */}}
+    <p class="text-xs text-olive-400 dark:text-olive-500 tabular-nums">
+      {{- if eq $lang "ko" -}}
+        총 {{ $total }}권 중 {{ $from }}–{{ $to }}권
+      {{- else -}}
+        Showing {{ $from }}–{{ $to }} of {{ $total }} books
+      {{- end -}}
+    </p>
+  </nav>
+{{- end -}}

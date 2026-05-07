@@ -12,7 +12,7 @@ cover: ""
 genre: "심리소설"
 owned: true
 condition: "양호"
-status: "read"
+status: "abandoned"
 rating: 5.0
 read_date: "2021-12-25"
 mood_tags: ["무거운", "철학적", "심리적", "압도적"]

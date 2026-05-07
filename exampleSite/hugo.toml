@@ -4,6 +4,9 @@ defaultContentLanguage = "ko"
 title = "LBRX.IO"
 theme = "hugo-lbrx-io-theme"
 
+[pagination]
+  pagerSize = 12
+
 # Disable RSS for about section (set per-page via outputs front matter)
 disableKinds = ["taxonomy", "term"]
 

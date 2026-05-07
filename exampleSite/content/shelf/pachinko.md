@@ -8,7 +8,7 @@ isbn: "978-1-4555-4575-6"
 pages: 485
 translator: "이미정"
 call_number: "KF-LIT-001"
-cover: ""
+cover: "https://picsum.photos/seed/pachinko/400/600"
 genre: "역사소설"
 owned: true
 condition: "양호"

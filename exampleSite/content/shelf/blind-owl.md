@@ -12,7 +12,7 @@ cover: ""
 genre: "실험소설"
 owned: true
 condition: "양호"
-status: "read"
+status: "wishlist"
 rating: 3.5
 read_date: "2023-04-05"
 mood_tags: ["기이한", "몽환적", "불안한", "난해한"]

@@ -12,7 +12,7 @@ cover: ""
 genre: "성장소설"
 owned: true
 condition: "보통"
-status: "read"
+status: "reading"
 rating: 4.0
 read_date: "2022-03-15"
 mood_tags: ["우울한", "청춘", "그리운", "상실"]

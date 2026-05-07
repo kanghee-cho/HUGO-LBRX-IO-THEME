@@ -1,6 +1,9 @@
 {{ define "main" }}
+{{- $paginator := .Paginator -}}
+{{- $total     := len .Pages -}}
+{{- $lang      := .Site.Language.Lang -}}
 <section>
-  {{- /* ── 헤더 ──────────────────────────────────────── */}}
+  {{- /* ── 헤더 */}}
   <header class="mb-10">
     <h1 class="font-sans text-2xl sm:text-4xl font-bold text-olive-900 dark:text-olive-100">
       {{ i18n "shelf_title" | default "Shelf" }}
@@ -10,129 +13,108 @@
     </p>
   </header>
 
-  {{- /* ── 오늘의 책장 (피처드 카드 박스) ─────────────── */}}
-  <div class="rounded-2xl bg-olive-100 dark:bg-olive-900 border border-olive-200 dark:border-olive-800 p-5 sm:p-7 mb-10">
-    {{- /* 섹션 헤더 */}}
-    <div class="flex items-start justify-between mb-5">
-      <div class="flex items-center gap-3">
-        <div class="w-9 h-9 rounded-xl bg-olive-200 dark:bg-olive-800 flex items-center justify-center flex-none">
-          <svg class="w-4 h-4 text-olive-600 dark:text-olive-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
-          </svg>
+  {{- /* ── 오늘의 책장 (모든 페이지 상단 고정) */}}
+  {{- $sorted     := sort .Pages "Title" -}}
+  {{- $n          := len $sorted -}}
+  {{- $seed       := mod (add (mul now.Year 365) now.YearDay) $n -}}
+  {{- $todayBooks := first 6 (append (after $seed $sorted) (first $seed $sorted)) -}}
+  {{- if $todayBooks -}}
+    <div class="rounded-2xl bg-olive-100 dark:bg-olive-900 border border-olive-200 dark:border-olive-800 p-5 sm:p-7 mb-10">
+      <div class="flex items-start justify-between mb-5">
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 rounded-xl bg-olive-200 dark:bg-olive-800 flex items-center justify-center flex-none">
+            <svg class="w-4 h-4 text-olive-600 dark:text-olive-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+            </svg>
+          </div>
+          <div>
+            <h2 class="font-sans text-base sm:text-lg font-bold text-olive-900 dark:text-olive-100 leading-tight">
+              {{ i18n "shelf_today" | default "Today's Shelf" }}
+            </h2>
+            <p class="text-xs text-olive-500 dark:text-olive-400 mt-0.5">
+              {{ i18n "shelf_today_desc" | default "A selection chosen for today" }}
+            </p>
+          </div>
         </div>
-        <div>
-          <h2 class="font-sans text-base sm:text-lg font-bold text-olive-900 dark:text-olive-100 leading-tight">
-            {{ i18n "shelf_today" | default "Today's Shelf" }}
-          </h2>
-          <p class="text-xs text-olive-500 dark:text-olive-400 mt-0.5">
-            {{ i18n "shelf_today_desc" | default "A selection chosen for today" }}
-          </p>
-        </div>
+        <span class="text-xs text-olive-400 dark:text-olive-500 font-medium tabular-nums flex-none pt-0.5">
+          {{- if eq $lang "ko" }}{{ now.Format "2006. 1. 2" }}{{ else }}{{ now.Format "Jan 2, 2006" }}{{ end -}}
+        </span>
       </div>
-      {{- /* 오늘 날짜 */}}
-      <span class="text-xs text-olive-400 dark:text-olive-500 font-medium tabular-nums flex-none pt-0.5">
-        {{- if eq .Site.Language.Lang "ko" -}}
-          {{ now.Format "2006. 1. 2" }}
-        {{- else -}}
-          {{ now.Format "Jan 2, 2006" }}
+      <ul class="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-3 sm:gap-4">
+        {{- range $todayBooks -}}
+          {{- $uid := .File.UniqueID -}}
+          {{- $title := .Title -}}
+          <li>
+            <a href="{{ .RelPermalink }}" class="group block">
+              {{- with .Params.cover -}}
+                <div class="aspect-[2/3] overflow-hidden relative book-3d">
+                  <img src="{{ . }}" alt="{{ $title }}" class="w-full h-full object-cover" loading="lazy">
+                  <div class="book-spine"></div>
+                </div>
+              {{- else -}}
+                <div class="aspect-[2/3] rounded-md bg-white dark:bg-black flex flex-col items-center justify-center shadow-sm gap-1.5">
+                  <svg class="w-6 h-6 text-olive-300 dark:text-olive-400" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+                  </svg>
+                  <span class="text-[9px] text-olive-400 dark:text-olive-500 font-medium">{{ i18n "no_cover" | default "No image" }}</span>
+                </div>
+              {{- end -}}
+              <div class="mt-1.5 space-y-0.5 pl-1">
+                <h3 class="text-xs font-semibold text-olive-900 dark:text-olive-100 group-hover:text-olive-600 dark:group-hover:text-olive-300 transition-colors line-clamp-2 leading-snug">{{ .Title }}</h3>
+                {{- with .Params.author -}}<p class="text-[10px] text-olive-500 dark:text-olive-400">{{ . }}</p>{{- end -}}
+                {{- with .Params.rating -}}<div class="pt-0.5">{{- partial "star-rating.html" (dict "rating" . "size" "sm" "uid" $uid) -}}</div>{{- end -}}
+                {{- with .Params.status -}}<div>{{- partial "status-badge.html" (dict "status" .) -}}</div>{{- end -}}
+              </div>
+            </a>
+          </li>
         {{- end -}}
+      </ul>
+    </div>
+    {{- end -}}
+
+  {{- /* ── 전체 책장 (페이지네이션) */}}
+  <div>
+    <div class="flex items-center gap-3 mb-5">
+      <h2 class="text-xs font-semibold uppercase tracking-widest text-olive-500 dark:text-olive-400">
+        {{ i18n "shelf_all" | default "Full Shelf" }}
+      </h2>
+      <div class="flex-1 h-px bg-olive-200 dark:bg-olive-800"></div>
+      <span class="text-xs text-olive-400 dark:text-olive-500 tabular-nums">
+        {{ $total }}{{ if eq $lang "ko" }}권{{ else }} books{{ end }}
       </span>
     </div>
 
-    {{- /* 오늘의 책장 그리드 (JS가 6권 선택해서 표시) */}}
-    <ul
-      id="shelf-today-grid"
-      class="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-3 sm:gap-4"
-      aria-label="{{ i18n "shelf_today" | default "Today's Shelf" }}"
-    >
-    {{- range .Pages -}}
-      {{- $uid := .File.UniqueID -}}
-      <li
-        data-shelf-card
-        data-date="{{ .Date.Format "2006-01-02" }}"
-        data-status="{{ .Params.status | default "" }}"
-        class="hidden"
-      >
-        <a href="{{ .RelPermalink }}" class="group block">
-          {{- /* 커버 */}}
-          {{- with .Params.cover -}}
-            <div class="aspect-[2/3] overflow-hidden relative book-3d">
-              <img
-                src="{{ . }}"
-                alt="{{ $.Title }}"
-                class="w-full h-full object-cover"
-                loading="lazy"
-              >
-              <div class="book-spine"></div>
-            </div>
-          {{- else -}}
-            <div class="aspect-[2/3] rounded-md bg-white dark:bg-black flex flex-col items-center justify-center shadow-sm gap-1.5">
-              <svg class="w-6 h-6 text-olive-300 dark:text-olive-400" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
-              </svg>
-              <span class="text-[9px] text-olive-400 dark:text-olive-500 font-medium">{{ i18n "no_cover" | default "No image" }}</span>
-            </div>
-          {{- end -}}
-          {{- /* 카드 정보 */}}
-          <div class="mt-1.5 space-y-0.5 pl-1">
-            <h2 class="text-xs font-semibold text-olive-900 dark:text-olive-100 group-hover:text-olive-600 dark:group-hover:text-olive-300 transition-colors line-clamp-2 leading-snug">
-              {{ .Title }}
-            </h2>
-            {{- with .Params.author -}}
-              <p class="text-[10px] text-olive-500 dark:text-olive-400">{{ . }}</p>
-            {{- end -}}
-            {{- with .Params.rating -}}
-              <div class="pt-0.5">
-                {{- partial "star-rating.html" (dict "rating" . "size" "sm" "uid" $uid) -}}
+    <ul class="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-3 sm:gap-4">
+      {{- range $paginator.Pages -}}
+        {{- $uid := .File.UniqueID -}}
+        <li>
+            <a href="{{ .RelPermalink }}" class="group block">
+              {{- $title := .Title -}}
+              {{- with .Params.cover -}}
+                <div class="aspect-[2/3] overflow-hidden relative book-3d">
+                  <img src="{{ . }}" alt="{{ $title }}" class="w-full h-full object-cover" loading="lazy">
+                  <div class="book-spine"></div>
+                </div>
+              {{- else -}}
+                <div class="aspect-[2/3] rounded-md bg-white dark:bg-black flex flex-col items-center justify-center shadow-sm gap-1.5">
+                  <svg class="w-6 h-6 text-olive-300 dark:text-olive-400" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+                  </svg>
+                  <span class="text-[9px] text-olive-400 dark:text-olive-500 font-medium">{{ i18n "no_cover" | default "No image" }}</span>
+                </div>
+              {{- end -}}
+              <div class="mt-1.5 space-y-0.5 pl-1">
+                <h3 class="text-xs font-semibold text-olive-900 dark:text-olive-100 group-hover:text-olive-600 dark:group-hover:text-olive-300 transition-colors line-clamp-2 leading-snug">{{ .Title }}</h3>
+                {{- with .Params.author -}}<p class="text-[10px] text-olive-500 dark:text-olive-400">{{ . }}</p>{{- end -}}
+                {{- with .Params.rating -}}<div class="pt-0.5">{{- partial "star-rating.html" (dict "rating" . "size" "sm" "uid" $uid) -}}</div>{{- end -}}
+                {{- with .Params.status -}}<div>{{- partial "status-badge.html" (dict "status" .) -}}</div>{{- end -}}
               </div>
-            {{- end -}}
-            {{- with .Params.status -}}
-              <div>
-                {{- partial "status-badge.html" (dict "status" .) -}}
-              </div>
-            {{- end -}}
-          </div>
-        </a>
-      </li>
-    {{- end -}}
-  </ul>
-  </div>{{- /* ── 오늘의 책장 박스 닫기 */}}
-  {{- if gt (len .Pages) 6 -}}
-    <div id="shelf-show-all-wrap" class="mt-10 flex flex-col items-center gap-2">
-      <div class="w-full h-px bg-olive-200 dark:bg-olive-800 mb-2"></div>
-      <button
-        id="shelf-show-all"
-        class="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-medium text-olive-700 dark:text-olive-300 border border-olive-300 dark:border-olive-700 hover:bg-olive-50 dark:hover:bg-olive-900 transition-colors"
-        aria-expanded="false"
-        data-label-open="{{ i18n "shelf_show_all" | default "View full shelf" }}"
-        data-label-close="{{ i18n "shelf_collapse" | default "Collapse" }}"
-        data-count="{{ len .Pages }}"
-      >
-        <svg id="shelf-show-all-icon" class="w-4 h-4 transition-transform duration-200" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
-        </svg>
-        <span id="shelf-show-all-label">{{ i18n "shelf_show_all" | default "View full shelf" }}</span>
-        <span id="shelf-show-all-count" class="text-olive-400 dark:text-olive-500 text-xs">({{ len .Pages }})</span>
-      </button>
-    </div>
+            </a>
+          </li>
+        {{- end -}}
+      </ul>
 
-    {{- /* ── 전체 책장 섹션 (전체보기 클릭 후 표시) ─── */}}
-    <div id="shelf-rest-section" class="hidden mt-12">
-      <div class="flex items-center gap-3 mb-5">
-        <h2 class="text-xs font-semibold uppercase tracking-widest text-olive-500 dark:text-olive-400">
-          {{ i18n "shelf_all" | default "Full Shelf" }}
-        </h2>
-        <div class="flex-1 h-px bg-olive-200 dark:bg-olive-800"></div>
-        <span id="shelf-rest-count" class="text-xs text-olive-400 dark:text-olive-500"></span>
-      </div>
-      <ul
-        id="shelf-rest-grid"
-        class="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-3 sm:gap-4"
-        aria-label="{{ i18n "shelf_all" | default "Full Shelf" }}"
-      ></ul>
-    </div>
-  {{- end -}}
+      {{- partial "shelf-pagination.html" (dict "pag" $paginator "total" $total "lang" $lang) -}}
+  </div>
 </section>
-
-<script src="{{ (resources.Get "js/shelf-daily.js" | js.Build (dict "minify" hugo.IsProduction)).RelPermalink }}" defer></script>
 {{ end }}
