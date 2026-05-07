@@ -59,8 +59,13 @@ recommended_for: "Recommended for"
 
 # Editions section
 editions_title: "Editions"
-editions_desc: "Curated collections, themed and numbered."
+editions_desc: "Curated collections, themed and hand-picked."
 edition_no: "Edition"
+edition_current: "Current Edition"
+edition_view: "View Edition"
+edition_archive: "Past Editions"
+edition_no_books: "No books selected yet."
+edition_empty: "No editions yet."
 
 # Fiction section
 fiction_title: "Fiction"

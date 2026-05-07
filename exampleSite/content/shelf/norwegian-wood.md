@@ -8,7 +8,7 @@ isbn: "978-89-7012-246-8"
 pages: 356
 translator: "유유정"
 call_number: "JP-LIT-001"
-cover: ""
+cover: "https://picsum.photos/seed/haruki/400/600"
 genre: "성장소설"
 owned: true
 condition: "보통"

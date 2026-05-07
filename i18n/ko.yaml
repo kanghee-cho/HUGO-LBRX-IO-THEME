@@ -59,8 +59,13 @@ recommended_for: "추천 대상"
 
 # Editions section
 editions_title: "에디션"
-editions_desc: "테마별로 선별한 큐레이션 컬렉션."
+editions_desc: "직접 고른 책들로 구성한 테마별 큐레이션."
 edition_no: "에디션"
+edition_current: "현재 에디션"
+edition_view: "자세히 보기"
+edition_archive: "지난 에디션"
+edition_no_books: "아직 선정된 책이 없습니다."
+edition_empty: "아직 에디션이 없습니다."
 
 # Fiction section
 fiction_title: "픽션"

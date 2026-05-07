@@ -8,7 +8,7 @@ isbn: "978-89-329-0556-2"
 pages: 742
 translator: "홍대화"
 call_number: "RU-LIT-001"
-cover: ""
+cover: "https://picsum.photos/seed/dostoyevsky/400/600"
 genre: "심리소설"
 owned: true
 condition: "양호"

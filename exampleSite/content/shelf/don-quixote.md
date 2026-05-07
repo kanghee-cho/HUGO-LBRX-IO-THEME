@@ -15,6 +15,6 @@ genre: "소설"
 mood_tags: []
 recommended_for: ""
 tags: []
-cover: ""
+cover: "https://picsum.photos/seed/cervantes/400/600"
 date: 2026-04-17T12:00:00+09:00
 ---

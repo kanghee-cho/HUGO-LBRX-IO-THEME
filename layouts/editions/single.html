@@ -1,27 +1,79 @@
 {{ define "main" }}
+{{- $palette := partial "edition-palette.html" (.Params.accent_color | default "emerald") -}}
+{{- $lang    := .Site.Language.Lang -}}
 <article
   data-pagefind-body
   data-pagefind-meta="title:{{ .Title }},section:{{ .Section }},language:{{ .Site.Language.Lang }}"
 >
-  <header class="mb-10" data-pagefind-ignore>
-    <p class="text-sm text-olive-500 dark:text-olive-400 uppercase tracking-wider mb-2">
-      {{- with .Params.edition_number -}}
-        {{ i18n "edition_no" | default "Edition" }} #{{ . }} ·
-      {{- end -}}
-      <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "January 2006" }}</time>
+
+  {{- /* ── Accent 헤더 배너 */}}
+  <header class="rounded-2xl {{ $palette.headerBg }} border {{ $palette.border }} p-6 sm:p-8 mb-8" data-pagefind-ignore>
+    <p class="text-[11px] {{ $palette.meta }} uppercase tracking-wider mb-2">
+      {{- with .Params.edition_number -}}{{ i18n "edition_no" | default "에디션" }} #{{ . }} · {{- end -}}
+      <time datetime="{{ .Date.Format "2006-01-02" }}">
+        {{- if eq $lang "ko" -}}{{ .Date.Format "2006. 1." }}{{- else -}}{{ .Date.Format "January 2006" }}{{- end -}}
+      </time>
     </p>
-    <h1 class="font-sans text-2xl sm:text-4xl font-bold text-olive-900 dark:text-olive-100 leading-tight">{{ .Title }}</h1>
+    <h1 class="font-sans text-2xl sm:text-3xl font-bold {{ $palette.title }} leading-tight">{{ .Title }}</h1>
     {{- with .Description -}}
-      <p class="mt-4 text-lg text-olive-600 dark:text-olive-400">{{ . }}</p>
+      <p class="mt-3 text-sm {{ $palette.meta }} max-w-2xl">{{ . }}</p>
     {{- end -}}
-    {{- with .Params.cover -}}
-      <div class="mt-6 aspect-video overflow-hidden rounded-xl sm:rounded-xl shadow-md -mx-4 sm:mx-0">
-        <img src="{{ . }}" alt="{{ $.Title }} cover" class="w-full h-full object-cover" loading="lazy">
-      </div>
+    {{- with .Params.books -}}
+      <p class="mt-3 text-xs {{ $palette.reason }} font-semibold">
+        {{ len . }}{{ if eq $lang "ko" }}권 큐레이션{{ else }} books curated{{ end }}
+      </p>
     {{- end -}}
   </header>
-  <div class="prose prose dark:prose-invert max-w-none">
-    {{ .Content }}
-  </div>
+
+  {{- /* ── 책 그리드 */}}
+  {{- with .Params.books -}}
+    <ul class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5 sm:gap-6 mb-12" data-pagefind-ignore>
+      {{- range . -}}
+        {{- $slug   := .slug -}}
+        {{- $reason := .reason -}}
+        {{- $book   := site.GetPage (printf "shelf/%s" $slug) -}}
+        {{- if $book -}}
+          {{- $uid := $book.File.UniqueID -}}
+          <li class="flex flex-col">
+            <a href="{{ $book.RelPermalink }}" class="group block">
+              {{- with $book.Params.cover -}}
+                <div class="aspect-[2/3] overflow-hidden relative book-3d">
+                  <img src="{{ . }}" alt="{{ $book.Title }}" class="w-full h-full object-cover" loading="lazy">
+                  <div class="book-spine"></div>
+                </div>
+              {{- else -}}
+                <div class="aspect-[2/3] rounded-md bg-white/60 dark:bg-black/30 flex flex-col items-center justify-center shadow-sm gap-1.5">
+                  <svg class="w-6 h-6 {{ $palette.meta }}" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                  </svg>
+                  <span class="text-[9px] {{ $palette.meta }}">{{ i18n "no_cover" | default "No image" }}</span>
+                </div>
+              {{- end -}}
+              <div class="mt-2 pl-0.5">
+                <h3 class="text-sm font-semibold {{ $palette.title }} group-hover:opacity-70 transition-opacity line-clamp-2 leading-snug">{{ $book.Title }}</h3>
+                {{- with $book.Params.author -}}<p class="text-xs {{ $palette.meta }} mt-0.5">{{ . }}</p>{{- end -}}
+                {{- with $book.Params.rating -}}
+                  <div class="pt-1">{{- partial "star-rating.html" (dict "rating" . "size" "sm" "uid" $uid) -}}</div>
+                {{- end -}}
+              </div>
+            </a>
+            {{- with $reason -}}
+              <blockquote class="mt-3 pl-3 border-l-2 {{ $palette.strip }}">
+                <p class="text-xs {{ $palette.reason }} leading-relaxed italic">{{ . }}</p>
+              </blockquote>
+            {{- end -}}
+          </li>
+        {{- end -}}
+      {{- end -}}
+    </ul>
+  {{- end -}}
+
+  {{- /* ── Prose 본문 (편집자 노트) */}}
+  {{- with .Content -}}
+    <div class="prose dark:prose-invert max-w-none">
+      {{ . }}
+    </div>
+  {{- end -}}
+
 </article>
 {{ end }}
