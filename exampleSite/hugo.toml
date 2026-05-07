@@ -21,16 +21,20 @@ disableKinds = ["taxonomy", "term"]
   url = "https://github.com/kanghee-cho"
 
 [[params.social]]
-  name = "email"
-  url = "mailto:kh.cho@lbrx.io"
-
-[[params.social]]
   name = "instagram"
   url = "https://instagram.com/kh.cho83"
 
 [[params.social]]
   name = "linkedin"
   url = "https://linkedin.com/in/joedamon"
+
+[[params.social]]
+  name = "telegram"
+  url = "https://t.me/your_telegram_handle"
+
+[[params.social]]
+  name = "email"
+  url = "mailto:kh.cho@lbrx.io"
 
 [languages]
   [languages.ko]
