@@ -12,8 +12,25 @@ disableKinds = ["taxonomy", "term"]
 
 [params]
   description = "책, 에디션, 그리고 픽션."
-  github = "https://github.com/lbrx"
+  nickname = "KH.CHO"
+  github = "https://github.com/kanghee-cho"
   author = "LBRX"
+
+[[params.social]]
+  name = "github"
+  url = "https://github.com/kanghee-cho"
+
+[[params.social]]
+  name = "email"
+  url = "mailto:kh.cho@lbrx.io"
+
+[[params.social]]
+  name = "instagram"
+  url = "https://instagram.com/kh.cho83"
+
+[[params.social]]
+  name = "linkedin"
+  url = "https://linkedin.com/in/joedamon"
 
 [languages]
   [languages.ko]

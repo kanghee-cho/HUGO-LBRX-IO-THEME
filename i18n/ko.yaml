@@ -69,6 +69,7 @@ words: "단어"
 
 no_cover: "이미지 없음"
 not_found_desc: "찾으시는 페이지가 없거나 이동되었습니다."
+rss_feed: "RSS 피드"
 
 # Search
 search_unavailable: "검색은 개발 모드에서 사용할 수 없습니다. 먼저 `npm run build`를 실행하세요."

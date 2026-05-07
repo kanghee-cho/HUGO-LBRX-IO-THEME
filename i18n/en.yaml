@@ -69,6 +69,7 @@ words: "words"
 
 no_cover: "No image"
 not_found_desc: "The page you're looking for doesn't exist or has been moved."
+rss_feed: "RSS Feed"
 
 # Search
 search_unavailable: "Search is not available in development mode. Run `npm run build` first."
