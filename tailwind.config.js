@@ -5,6 +5,11 @@ module.exports = {
     './layouts/**/*.html',
     './assets/**/*.js',
   ],
+  safelist: [
+    // Grid column classes used dynamically — must survive CSS purge
+    'grid-cols-2', 'grid-cols-3', 'grid-cols-4', 'grid-cols-5', 'grid-cols-6',
+    'sm:grid-cols-4', 'lg:grid-cols-6',
+  ],
   theme: {
     extend: {
       fontFamily: {
