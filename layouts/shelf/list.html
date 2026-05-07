@@ -25,6 +25,7 @@
     aria-label="{{ i18n "shelf_title" | default "Shelf" }}"
   >
     {{- range .Pages -}}
+      {{- $uid := .File.UniqueID -}}
       <li
         data-shelf-card
         data-date="{{ .Date.Format "2006-01-02" }}"
@@ -59,7 +60,7 @@
             {{- /* 별점 + 상태 배지 (작은 사이즈) */}}
             <div class="flex items-center gap-1.5 flex-wrap pt-0.5">
               {{- with .Params.rating -}}
-                {{- partial "star-rating.html" (dict "rating" . "size" "sm") -}}
+                {{- partial "star-rating.html" (dict "rating" . "size" "sm" "uid" $uid) -}}
               {{- end -}}
               {{- with .Params.status -}}
                 {{- partial "status-badge.html" (dict "status" .) -}}

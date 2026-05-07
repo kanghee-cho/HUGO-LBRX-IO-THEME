@@ -19,6 +19,7 @@
       </div>
       <ul class="grid grid-cols-2 sm:grid-cols-4 gap-4">
         {{- range . -}}
+          {{- $uid := .File.UniqueID -}}
           <li>
             <a href="{{ .RelPermalink }}" class="group block">
               {{- with .Params.cover -}}
@@ -26,11 +27,25 @@
                   <img src="{{ . }}" alt="{{ $.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
                 </div>
               {{- else -}}
-                <div class="aspect-[2/3] rounded-md bg-olive-100 dark:bg-olive-800 flex items-center justify-center shadow-sm">
-                  <span class="text-olive-400 text-xs text-center px-2">{{ .Title }}</span>
+                <div class="aspect-[2/3] rounded-md bg-gradient-to-b from-olive-100 to-olive-200 dark:from-olive-800 dark:to-olive-900 flex flex-col items-center justify-center shadow-sm px-2 gap-2">
+                  <span class="text-olive-500 dark:text-olive-400 text-[10px] text-center leading-tight line-clamp-3 font-medium">{{ .Title }}</span>
+                  <span class="text-olive-400 dark:text-olive-500 text-[9px]">{{ .Params.author }}</span>
                 </div>
               {{- end -}}
-              <p class="mt-2 text-xs font-medium text-olive-900 dark:text-olive-100 line-clamp-2">{{ .Title }}</p>
+              <div class="mt-2 space-y-0.5">
+                <p class="text-xs font-medium text-olive-900 dark:text-olive-100 line-clamp-2 leading-snug">{{ .Title }}</p>
+                {{- with .Params.author -}}
+                  <p class="text-[10px] text-olive-500 dark:text-olive-400">{{ . }}</p>
+                {{- end -}}
+                <div class="flex items-center gap-1 flex-wrap pt-0.5">
+                  {{- with .Params.rating -}}
+                    {{- partial "star-rating.html" (dict "rating" . "size" "sm" "uid" $uid) -}}
+                  {{- end -}}
+                  {{- with .Params.status -}}
+                    {{- partial "status-badge.html" (dict "status" .) -}}
+                  {{- end -}}
+                </div>
+              </div>
             </a>
           </li>
         {{- end -}}

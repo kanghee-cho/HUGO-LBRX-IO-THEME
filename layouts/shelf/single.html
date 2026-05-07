@@ -25,7 +25,7 @@
           {{- partial "status-badge.html" (dict "status" .) -}}
         {{- end -}}
         {{- with .Params.rating -}}
-          {{- partial "star-rating.html" (dict "rating" . "size" "md") -}}
+          {{- partial "star-rating.html" (dict "rating" . "size" "md" "uid" $.File.UniqueID) -}}
         {{- end -}}
       </div>
 
