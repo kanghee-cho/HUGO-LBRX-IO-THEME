@@ -10,20 +10,41 @@
     </p>
   </header>
 
-  {{- /* ── 오늘의 책장 레이블 ─────────────────────────── */}}
-  <div class="flex items-center gap-3 mb-5">
-    <h2 class="text-xs font-semibold uppercase tracking-widest text-olive-500 dark:text-olive-400">
-      {{ i18n "shelf_today" | default "Today's Shelf" }}
-    </h2>
-    <div class="flex-1 h-px bg-olive-200 dark:bg-olive-800"></div>
-  </div>
+  {{- /* ── 오늘의 책장 (피처드 카드 박스) ─────────────── */}}
+  <div class="rounded-2xl bg-olive-50 dark:bg-olive-900/30 border border-olive-200 dark:border-olive-700 p-5 sm:p-7 mb-10">
+    {{- /* 섹션 헤더 */}}
+    <div class="flex items-start justify-between mb-5">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-xl bg-olive-200 dark:bg-olive-800 flex items-center justify-center flex-none">
+          <svg class="w-4 h-4 text-olive-600 dark:text-olive-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+          </svg>
+        </div>
+        <div>
+          <h2 class="font-sans text-base sm:text-lg font-bold text-olive-900 dark:text-olive-100 leading-tight">
+            {{ i18n "shelf_today" | default "Today's Shelf" }}
+          </h2>
+          <p class="text-xs text-olive-500 dark:text-olive-400 mt-0.5">
+            {{ i18n "shelf_today_desc" | default "A selection chosen for today" }}
+          </p>
+        </div>
+      </div>
+      {{- /* 오늘 날짜 */}}
+      <span class="text-xs text-olive-400 dark:text-olive-500 font-medium tabular-nums flex-none pt-0.5">
+        {{- if eq .Site.Language.Lang "ko" -}}
+          {{ now.Format "2006. 1. 2" }}
+        {{- else -}}
+          {{ now.Format "Jan 2, 2006" }}
+        {{- end -}}
+      </span>
+    </div>
 
-  {{- /* ── 오늘의 책장 그리드 (JS가 6권 선택해서 표시) ── */}}
-  <ul
-    id="shelf-today-grid"
-    class="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-3 sm:gap-4"
-    aria-label="{{ i18n "shelf_today" | default "Today's Shelf" }}"
-  >
+    {{- /* 오늘의 책장 그리드 (JS가 6권 선택해서 표시) */}}
+    <ul
+      id="shelf-today-grid"
+      class="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-3 sm:gap-4"
+      aria-label="{{ i18n "shelf_today" | default "Today's Shelf" }}"
+    >
     {{- range .Pages -}}
       {{- $uid := .File.UniqueID -}}
       <li
@@ -70,8 +91,7 @@
       </li>
     {{- end -}}
   </ul>
-
-  {{- /* ── 전체 보기 버튼 (책이 6권 이상일 때만) ────── */}}
+  </div>{{- /* ── 오늘의 책장 박스 닫기 */}}
   {{- if gt (len .Pages) 6 -}}
     <div id="shelf-show-all-wrap" class="mt-10 flex flex-col items-center gap-2">
       <div class="w-full h-px bg-olive-200 dark:bg-olive-800 mb-2"></div>
