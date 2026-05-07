@@ -22,18 +22,26 @@
   box-shadow: 18px 28px 48px rgba(0,0,0,0.30), 4px 8px 16px rgba(0,0,0,0.14);
 }
 
-/* Spine: dark gradient on left edge simulating book binding */
+/* Spine: clear solid strip simulating book binding, fades only at right edge */
 .book-spine {
   position: absolute;
   inset: 0 auto 0 0;
-  width: 13%;
-  max-width: 18px;
+  width: max(8px, 6%);
   background: linear-gradient(
     to right,
-    rgba(0,0,0,0.42) 0%,
-    rgba(0,0,0,0.10) 65%,
-    transparent 100%
+    rgba(0, 0, 0, 0.52) 0%,
+    rgba(0, 0, 0, 0.52) 72%,
+    rgba(0, 0, 0, 0.08) 100%
   );
   pointer-events: none;
   z-index: 1;
+}
+
+.dark .book-spine {
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0.42) 0%,
+    rgba(255, 255, 255, 0.42) 72%,
+    rgba(255, 255, 255, 0.04) 100%
+  );
 }
