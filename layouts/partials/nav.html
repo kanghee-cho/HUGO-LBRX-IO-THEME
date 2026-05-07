@@ -16,18 +16,26 @@
   id="mobile-nav"
   data-nav-menu
   hidden
-  class="md:hidden absolute top-16 left-0 right-0 z-30 border-b border-olive-200 dark:border-olive-800 bg-olive-50 dark:bg-olive-950 shadow-lg"
+  class="md:hidden absolute top-16 left-0 right-0 z-30 bg-white dark:bg-olive-950 border-b-2 border-olive-200 dark:border-olive-800 shadow-xl"
   aria-label="Mobile navigation"
 >
-  <nav class="mx-auto max-w-5xl px-4 py-4 flex flex-col gap-1 text-sm font-medium">
+  <nav class="flex flex-col py-2" aria-label="Mobile menu">
     {{- $currentPage := . -}}
     {{- range .Site.Menus.main -}}
       <a
         href="{{ .URL | relLangURL }}"
-        class="block px-3 py-3 rounded-lg text-olive-700 dark:text-olive-300 hover:bg-olive-100 dark:hover:bg-olive-900 hover:text-olive-900 dark:hover:text-olive-100 transition-colors{{ if $currentPage.IsMenuCurrent "main" . }} bg-olive-100 dark:bg-olive-900 text-olive-900 dark:text-olive-100 font-semibold{{ end }}"
+        class="flex items-center gap-3 px-6 py-4 text-base font-medium border-l-4 transition-colors
+          {{- if $currentPage.IsMenuCurrent "main" . }}
+            border-olive-500 text-olive-800 dark:text-olive-100 bg-olive-50 dark:bg-olive-900
+          {{- else }}
+            border-transparent text-olive-700 dark:text-olive-300 hover:border-olive-300 hover:bg-olive-50 dark:hover:bg-olive-900/50 hover:text-olive-900 dark:hover:text-olive-100
+          {{- end }}"
         {{- if $currentPage.IsMenuCurrent "main" . }} aria-current="page"{{ end }}
       >
         {{ .Name }}
+        {{- if $currentPage.IsMenuCurrent "main" . }}
+          <span class="ml-auto w-1.5 h-1.5 rounded-full bg-olive-500" aria-hidden="true"></span>
+        {{- end }}
       </a>
     {{- end -}}
   </nav>
