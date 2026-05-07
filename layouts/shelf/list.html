@@ -13,7 +13,8 @@
     </p>
   </header>
 
-  {{- /* ── 오늘의 책장 (모든 페이지 상단 고정) */}}
+  {{- /* ── 오늘의 책장 (1페이지에만 표시) */}}
+  {{- if eq $paginator.PageNumber 1 -}}
   {{- $sorted     := sort .Pages "Title" -}}
   {{- $n          := len $sorted -}}
   {{- $seed       := mod (add (mul now.Year 365) now.YearDay) $n -}}
@@ -71,6 +72,7 @@
       </ul>
     </div>
     {{- end -}}
+  {{- end -}}
 
   {{- /* ── 전체 책장 (페이지네이션) */}}
   <div>
