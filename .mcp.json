@@ -1,14 +1,13 @@
 {
   "mcpServers": {
-    "azure-devops-mcp": {
-      "type": "stdio",
-      "command": "uv",
-      "args": [
-        "run",
-        "python",
-        "main.py"
-      ],
-      "cwd": "./azure-devops-mcp"
+    "azure-devops": {
+      "command": "/Users/kh.cho/MCP SERVERS/mcp-azure-devops",
+      "args": [],
+      "env": {
+        "AZDO_ORG_URL": "https://dev.azure.com/lbrx/HUGO-LBRX-IO-THEME",
+        "AZDO_TEAM": "LBRX-IO-THEME Team",
+        "AZDO_PAT": "${AZDO_PAT_LBRX}"
+      }
     }
   }
 }
