@@ -14,7 +14,7 @@ It is built around four content sections with a Tailwind CSS build pipeline, Hug
 | Requirement | Version |
 |---|---|
 | Hugo Extended | v0.115.0+ |
-| Node.js | v18+ |
+| Node.js | v20+ |
 | npm | v9+ |
 | Git | any |
 
@@ -128,7 +128,7 @@ hugo server -D
 
 # Development with CSS hot-reload (two terminals)
 # Terminal 1
-cd themes/lbrx-io && npx tailwindcss -i ./assets/css/main.css -o ./assets/css/main.min.css --watch
+cd themes/lbrx-io && npm run css:watch
 # Terminal 2
 hugo server -D
 
@@ -144,8 +144,8 @@ hugo --minify
 | Component | Choice | Rationale |
 |---|---|---|
 | SSG | Hugo (Extended) | Fast builds, excellent i18n, powerful templating, Hugo Pipes |
-| CSS Framework | Tailwind CSS v3 | Utility-first, `class`-based dark mode, purges unused CSS |
-| CSS Processing | PostCSS + Autoprefixer | Standard Tailwind pipeline integrated via npm |
+| CSS Framework | Tailwind CSS v4 | CSS-first configuration, class-based dark mode, explicit source detection |
+| CSS Processing | `@tailwindcss/cli` | Standalone compilation with built-in imports and vendor prefixing; PostCSS is used only by regression checks |
 | Search | Pagefind | Static-site native, zero server required, tiny JS bundle |
 | JS | Vanilla JS | No framework overhead; only two scripts (theme toggle, search) |
 | Language | Korean (primary) + English | Hugo built-in i18n, bilingual posts via file suffix |
@@ -158,9 +158,8 @@ hugo --minify
 ```
 HUGO-LBRX-IO-THEME/
 ├── theme.toml                         # Hugo theme metadata
-├── package.json                       # Node deps: Tailwind, PostCSS, Autoprefixer, Pagefind
-├── tailwind.config.js                 # Tailwind config — dark mode: 'class', content paths
-├── postcss.config.js                  # PostCSS config — tailwindcss + autoprefixer plugins
+├── package.json                       # Node deps: Tailwind v4 CLI, Typography, Pagefind, PostCSS test parser
+├── tests/css.test.cjs                 # Compiled CSS regression checks
 ├── .gitignore
 ├── README.md                          # Korean-language project readme
 │
@@ -203,7 +202,7 @@ HUGO-LBRX-IO-THEME/
 │
 ├── assets/
 │   ├── css/
-│   │   └── main.css                  # @tailwind base/components/utilities entry point
+│   │   └── main.css                  # Tailwind import, sources, theme, dark variant, Typography, custom styles
 │   └── js/
 │       ├── theme-toggle.js           # Dark/light mode: reads localStorage → system pref
 │       └── search.js                 # Pagefind modal: Cmd+K, lazy-load, debounce, render
@@ -460,7 +459,8 @@ Files go in `exampleSite/static/`. `favicon.svg` and `site.webmanifest` are incl
 ### Development
 ```bash
 npm run dev
-# Runs: hugo server --source exampleSite --themesDir=../.. + Tailwind CSS watch (concurrently)
+# Builds CSS first, then runs Hugo and npm run css:watch concurrently.
+# Stops the other process if either development process fails.
 # Must be run from theme root (HUGO-LBRX-IO-THEME/)
 # NOTE: Pagefind search index is NOT generated in dev mode.
 ```
@@ -468,10 +468,69 @@ npm run dev
 ### Production
 ```bash
 npm run build
-# Runs: hugo --minify && pagefind --site public
-# Outputs to: public/
-# Pagefind index written to: public/pagefind/
+# Builds CSS first via the npm prebuild lifecycle hook.
+# Runs: hugo --source exampleSite --themesDir=.. --theme=. --minify
+# Then: pagefind --site exampleSite/public
+# Outputs to: exampleSite/public/
+# Pagefind index written to: exampleSite/public/pagefind/
 ```
+
+These commands build the bundled example site. For a consuming Hugo site, build
+the theme CSS with `npm run css:build`, then run Hugo from that site's root.
+The example-site commands resolve this repository as the theme with
+`--themesDir=.. --theme=.`, independently of the checkout directory's name or case.
+`npm run css` owns the shared Tailwind CLI input/output arguments;
+`css:build` and `css:watch` supply only the compilation mode. npm uses the
+installed local CLI rather than downloading a missing executable through `npx`.
+
+### CSS Regression Baseline
+
+Run `npm run test:css` from the theme root. It compiles fresh CSS and uses the
+Node.js built-in test runner and the existing PostCSS dependency to check
+responsive grids, every safelisted utility, class-based dark mode, olive colors,
+font stacks, Typography, all twelve edition palettes, JavaScript-generated search
+classes, and custom fiction/book-cover rules. Additional checks preserve arbitrary
+shelf grid tracks, renamed utility geometry, accessible outlines, button cursors,
+and Typography cascade ordering. The checks assert v4 declarations and CSS
+variables rather than requiring byte-identical v3 output.
+
+### Tailwind CSS v4 Configuration
+
+Tailwind and `@tailwindcss/cli` use matching v4 releases. Node.js 20+ is required.
+Supported browser minimums are Safari 16.4, Chrome 111, and Firefox 128; v3-era
+browser compatibility is no longer supported.
+
+| Area | Implementation |
+|---|---|
+| CLI | `@tailwindcss/cli` supplies the local `tailwindcss` binary used by the shared `css` command. |
+| CSS entry point | `assets/css/main.css` imports Tailwind with `source(none)` and registers `@tailwindcss/typography` with `@plugin`. |
+| Theme | `@theme` defines both font families and the unchanged olive-50 through olive-950 palette. There is no JavaScript Tailwind configuration. |
+| Source detection | `@source "../../layouts"` and `@source "../js"` resolve relative to the CSS entry point, not the shell's working directory. Keep complete utility strings in templates and JavaScript. |
+| Safelist | `@source inline()` retains every former JavaScript safelist entry, including responsive grid classes associated with Bug #195. |
+| Dark mode | `@custom-variant dark (&:where(.dark, .dark *))` preserves the existing JavaScript-controlled `.dark` strategy. |
+| Typography | `@utility prose` extends the plugin's base utility with the custom `70ch` width, font family, and light/dark olive palette. Utility generation keeps `dark:prose-invert` and `max-w-none` later in the cascade. |
+| PostCSS | The unused v3 `postcss.config.js` and Autoprefixer dependency are removed. PostCSS remains a development dependency for parsing compiled CSS in tests, not for the build pipeline. |
+| Custom CSS | Fiction ornament colors use theme CSS variables. Existing unlayered book-cover effects and fiction rules remain outside Tailwind's layers. |
+
+Utility migrations preserve intended v3 sizing: `shadow-sm` becomes `shadow-xs`,
+`rounded-sm` becomes `rounded-xs`, bare `rounded` becomes `rounded-sm`, and
+`backdrop-blur-sm` becomes `backdrop-blur-xs`. Deprecated `flex-shrink-0` becomes
+`shrink-0`. `outline-hidden` retains the previous invisible-outline accessibility
+behavior. Shelf grid arbitrary values use underscores for track separators, such
+as `grid-cols-[6rem_1fr]`, instead of commas.
+
+Buttons retain a pointer cursor through a small base-layer rule. Hover variants
+use v4's hover-capable-device behavior; the separate mobile navigation does not
+depend on hover. Search and mobile menu scripts remove the `hidden` attribute
+when opening, so the v4 hidden-attribute precedence remains compatible.
+
+The framework's standard palette, spacing/divider selectors, and Preflight
+otherwise follow v4 defaults. Browser-based visual acceptance should cover home,
+shelf, editions, fiction, about, and search in light/dark mode at mobile and desktop
+widths, including Safari and Firefox. Existing pipeline YAML requires explicit
+approval before modification; this migration does not deploy the site.
+
+Reference: [Tailwind CSS upgrade guide](https://tailwindcss.com/docs/upgrade-guide).
 
 ---
 
@@ -481,7 +540,7 @@ Pagefind is a static search library that indexes the built Hugo output.
 
 ### Indexing
 
-- `pagefind --site public` runs after `hugo --minify` and writes the search index to `public/pagefind/`.
+- In the theme repository, `pagefind --site exampleSite/public` runs after the example-site Hugo build and writes the search index to `exampleSite/public/pagefind/`.
 - Content templates use `data-pagefind-body` on the `<article>` element to mark indexable content.
 - Header and footer partials use `data-pagefind-ignore` to exclude chrome from the index.
 - Single layouts include `data-pagefind-meta` tags for `title`, `section`, and `language`.
@@ -496,7 +555,7 @@ Pagefind is a static search library that indexes the built Hugo output.
   3. Calls `pagefind.search(query)` and renders result cards (title, URL, excerpt) into `#search-results`.
 - **Styling:** Fully Tailwind-styled with `dark:` variants. No Pagefind default CSS (`pagefind-ui.css`) is used.
 
-> ⚠️ Pagefind does not work with `hugo server`. Run `npm run build` and serve the `public/` directory to test search locally.
+> ⚠️ Pagefind does not work with `hugo server`. Run `npm run build` and serve the `exampleSite/public/` directory to test search locally.
 
 ---
 
@@ -538,7 +597,7 @@ Translation strings (nav labels, section headings, search placeholder, "no resul
 | Search UI | Custom (Pagefind JS API) | Tailwind-compatible; avoids CSS conflicts with pagefind-ui.css |
 | Search trigger | Cmd+K modal | Modern UX; doesn't interrupt reading flow |
 | JS framework | None (Vanilla JS) | Two tiny scripts don't justify a framework |
-| CSS framework | Tailwind v3 | Utility-first fits Hugo's template-centric workflow |
+| CSS framework | Tailwind v4 | CSS-first theme and explicit source detection fit Hugo's template-centric workflow |
 | i18n approach | Hugo built-in | Zero extra dependencies; file-suffix bilingual posts |
 | Archetypes | Per section | Ensures correct front matter for each content type |
 | RSS strategy | Global + Fiction + Editions | Fiction readers & book curation subscribers have separate feeds |

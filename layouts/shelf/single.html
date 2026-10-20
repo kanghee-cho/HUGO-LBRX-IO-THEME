@@ -8,7 +8,7 @@
     Mobile/Tablet (flex-col): 커버(1) → 리뷰(2) → 도서정보(3)
     Desktop lg+ (grid 2열):   [커버 + 도서정보] | [리뷰 (2행 span)]
   */ -}}
-  <div class="flex flex-col lg:grid lg:grid-cols-[14rem,1fr] lg:gap-14">
+  <div class="flex flex-col lg:grid lg:grid-cols-[14rem_1fr] lg:gap-14">
 
     {{- /* ── BLOCK 1: 커버 이미지 + 상태/별점 ───────────── */}}
     {{- /* Mobile: 첫번째 | Desktop: 왼쪽 상단 */}}
@@ -86,48 +86,48 @@
       <dl class="divide-y divide-olive-100 dark:divide-olive-800 text-sm">
 
         {{- /* 서지 정보 */}}
-        <div class="py-1.5 grid grid-cols-[6rem,1fr] gap-2">
+        <div class="py-1.5 grid grid-cols-[6rem_1fr] gap-2">
           <dt class="text-olive-400 dark:text-olive-500 text-xs pt-0.5">{{ i18n "author" | default "Author" }}</dt>
           <dd class="font-medium text-olive-900 dark:text-olive-100" data-pagefind-meta="author">{{ .Params.author | default "—" }}</dd>
         </div>
         {{- with .Params.publisher -}}
-          <div class="py-1.5 grid grid-cols-[6rem,1fr] gap-2">
+          <div class="py-1.5 grid grid-cols-[6rem_1fr] gap-2">
             <dt class="text-olive-400 dark:text-olive-500 text-xs pt-0.5">{{ i18n "publisher" | default "Publisher" }}</dt>
             <dd class="text-olive-800 dark:text-olive-200">{{ . }}</dd>
           </div>
         {{- end -}}
         {{- with .Params.publish_year -}}
-          <div class="py-1.5 grid grid-cols-[6rem,1fr] gap-2">
+          <div class="py-1.5 grid grid-cols-[6rem_1fr] gap-2">
             <dt class="text-olive-400 dark:text-olive-500 text-xs pt-0.5">{{ i18n "published" | default "Year" }}</dt>
             <dd class="text-olive-800 dark:text-olive-200">{{ . }}</dd>
           </div>
         {{- end -}}
         {{- with .Params.pages -}}
-          <div class="py-1.5 grid grid-cols-[6rem,1fr] gap-2">
+          <div class="py-1.5 grid grid-cols-[6rem_1fr] gap-2">
             <dt class="text-olive-400 dark:text-olive-500 text-xs pt-0.5">{{ i18n "pages" | default "Pages" }}</dt>
             <dd class="text-olive-800 dark:text-olive-200">{{ . }}p</dd>
           </div>
         {{- end -}}
         {{- with .Params.translator -}}
-          <div class="py-1.5 grid grid-cols-[6rem,1fr] gap-2">
+          <div class="py-1.5 grid grid-cols-[6rem_1fr] gap-2">
             <dt class="text-olive-400 dark:text-olive-500 text-xs pt-0.5">{{ i18n "translator" | default "Translator" }}</dt>
             <dd class="text-olive-800 dark:text-olive-200">{{ . }}</dd>
           </div>
         {{- end -}}
         {{- with .Params.original_title -}}
-          <div class="py-1.5 grid grid-cols-[6rem,1fr] gap-2">
+          <div class="py-1.5 grid grid-cols-[6rem_1fr] gap-2">
             <dt class="text-olive-400 dark:text-olive-500 text-xs pt-0.5">{{ i18n "original_title" | default "Original" }}</dt>
             <dd class="text-olive-800 dark:text-olive-200 italic">{{ . }}</dd>
           </div>
         {{- end -}}
         {{- with .Params.isbn -}}
-          <div class="py-1.5 grid grid-cols-[6rem,1fr] gap-2">
+          <div class="py-1.5 grid grid-cols-[6rem_1fr] gap-2">
             <dt class="text-olive-400 dark:text-olive-500 text-xs pt-0.5">{{ i18n "isbn" | default "ISBN" }}</dt>
             <dd class="text-olive-600 dark:text-olive-400 font-mono text-xs">{{ . }}</dd>
           </div>
         {{- end -}}
         {{- with .Params.genre -}}
-          <div class="py-1.5 grid grid-cols-[6rem,1fr] gap-2">
+          <div class="py-1.5 grid grid-cols-[6rem_1fr] gap-2">
             <dt class="text-olive-400 dark:text-olive-500 text-xs pt-0.5">{{ i18n "genre" | default "Genre" }}</dt>
             <dd class="text-olive-800 dark:text-olive-200">{{ . }}</dd>
           </div>
@@ -135,12 +135,12 @@
 
         {{- /* 서고 정보 */}}
         {{- with .Params.call_number -}}
-          <div class="py-1.5 grid grid-cols-[6rem,1fr] gap-2">
+          <div class="py-1.5 grid grid-cols-[6rem_1fr] gap-2">
             <dt class="text-olive-400 dark:text-olive-500 text-xs pt-0.5">{{ i18n "call_number" | default "Call No." }}</dt>
             <dd class="text-olive-600 dark:text-olive-400 font-mono text-xs">{{ . }}</dd>
           </div>
         {{- end -}}
-        <div class="py-1.5 grid grid-cols-[6rem,1fr] gap-2">
+        <div class="py-1.5 grid grid-cols-[6rem_1fr] gap-2">
           <dt class="text-olive-400 dark:text-olive-500 text-xs pt-0.5">{{ i18n "owned" | default "Owned" }}</dt>
           <dd class="text-olive-800 dark:text-olive-200">
             {{- if .Params.owned -}}
@@ -151,7 +151,7 @@
           </dd>
         </div>
         {{- with .Params.condition -}}
-          <div class="py-1.5 grid grid-cols-[6rem,1fr] gap-2">
+          <div class="py-1.5 grid grid-cols-[6rem_1fr] gap-2">
             <dt class="text-olive-400 dark:text-olive-500 text-xs pt-0.5">{{ i18n "condition" | default "Condition" }}</dt>
             <dd class="text-olive-800 dark:text-olive-200">
               {{- if eq . "새것" -}}{{ i18n "condition_new" | default "New" }}
@@ -166,7 +166,7 @@
 
         {{- /* 독서 기록 */}}
         {{- with .Params.read_date -}}
-          <div class="py-1.5 grid grid-cols-[6rem,1fr] gap-2">
+          <div class="py-1.5 grid grid-cols-[6rem_1fr] gap-2">
             <dt class="text-olive-400 dark:text-olive-500 text-xs pt-0.5">{{ i18n "read_date" | default "Finished on" }}</dt>
             <dd class="text-olive-800 dark:text-olive-200">
               {{- $d := . | time -}}

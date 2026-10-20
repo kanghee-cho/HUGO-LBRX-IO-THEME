@@ -3,17 +3,25 @@
   "version": "0.1.0",
   "description": "A literary Hugo theme for lbrx.io — books, editions, and fiction.",
   "private": true,
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
-    "dev": "concurrently \"hugo server --source exampleSite --themesDir=../.. --disableFastRender\" \"npx tailwindcss -i ./assets/css/main.css -o ./assets/css/main.min.css --watch\"",
-    "build": "hugo --minify && npx pagefind --site public",
-    "css:build": "npx tailwindcss -i ./assets/css/main.css -o ./assets/css/main.min.css --minify"
+    "predev": "npm run css:build",
+    "dev": "concurrently --kill-others-on-fail \"hugo server --source exampleSite --themesDir=.. --theme=. --disableFastRender\" \"npm run css:watch\"",
+    "prebuild": "npm run css:build",
+    "build": "hugo --source exampleSite --themesDir=.. --theme=. --minify && pagefind --site exampleSite/public",
+    "css": "tailwindcss -i ./assets/css/main.css -o ./assets/css/main.min.css",
+    "css:build": "npm run css -- --minify",
+    "css:watch": "npm run css -- --watch",
+    "test:css": "npm run css:build && node --test tests/css.test.cjs"
   },
   "devDependencies": {
-    "@tailwindcss/typography": "^0.5.15",
-    "autoprefixer": "^10.4.20",
+    "@tailwindcss/cli": "^4.3.3",
+    "@tailwindcss/typography": "^0.5.20",
     "concurrently": "^9.1.2",
     "pagefind": "^1.3.0",
     "postcss": "^8.5.3",
-    "tailwindcss": "^3.4.17"
+    "tailwindcss": "^4.3.3"
   }
 }

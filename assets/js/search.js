@@ -54,7 +54,7 @@
         if (results) {
           results.innerHTML =
             '<p class="text-sm text-olive-500 dark:text-olive-400 text-center py-6">' +
-            'Search index not found. Run <code class="font-mono bg-olive-100 dark:bg-olive-800 px-1 rounded">npm run build</code> first.' +
+            'Search index not found. Run <code class="font-mono bg-olive-100 dark:bg-olive-800 px-1 rounded-sm">npm run build</code> first.' +
             '</p>';
         }
       });
