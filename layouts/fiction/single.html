@@ -27,7 +27,7 @@
           <div class="relative">
             <select
               onchange="location.href=this.value"
-              class="text-xs text-olive-700 dark:text-olive-300 bg-white dark:bg-olive-900 border border-olive-200 dark:border-olive-700 rounded-lg px-2.5 py-1.5 pr-7 appearance-none cursor-pointer focus:outline-none focus:ring-1 focus:ring-olive-400">
+              class="text-xs text-olive-700 dark:text-olive-300 bg-white dark:bg-olive-900 border border-olive-200 dark:border-olive-700 rounded-lg px-2.5 py-1.5 pr-7 appearance-none cursor-pointer focus:outline-hidden focus:ring-1 focus:ring-olive-400">
               {{- range $episodes -}}
                 <option value="{{ .RelPermalink }}"{{ if eq .Params.episode $current }} selected{{ end }}>
                   {{- if eq $lang "ko" -}}{{ .Params.episode | default "?" }}화{{- else -}}{{ i18n "episode_label" | default "Ep." }} {{ .Params.episode | default "?" }}{{- end }} — {{ .Title }}

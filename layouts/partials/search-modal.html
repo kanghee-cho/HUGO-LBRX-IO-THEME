@@ -16,7 +16,7 @@
   {{- /* Backdrop — hidden on mobile (panel is full-screen already), visible sm+ */}}
   <div
     id="search-backdrop"
-    class="absolute inset-0 bg-black/50 backdrop-blur-sm hidden sm:block"
+    class="absolute inset-0 bg-black/50 backdrop-blur-xs hidden sm:block"
     aria-hidden="true"
   ></div>
 
@@ -37,13 +37,13 @@
           autocomplete="off"
           spellcheck="false"
           placeholder="{{ i18n "search_placeholder" | default "Search…" }}"
-          class="flex-1 bg-transparent text-olive-900 dark:text-olive-100 placeholder-olive-400 outline-none text-base py-3"
+          class="flex-1 bg-transparent text-olive-900 dark:text-olive-100 placeholder-olive-400 outline-hidden text-base py-3"
           aria-label="{{ i18n "search" | default "Search" }}"
         >
         {{- /* Close button — 44px tap target on mobile */}}
         <button
           data-search-close
-          class="flex-none flex items-center justify-center w-11 h-11 sm:w-auto sm:h-auto text-xs text-olive-400 hover:text-olive-700 dark:hover:text-olive-300 sm:border sm:border-olive-200 sm:dark:border-olive-700 sm:rounded sm:px-1.5 sm:py-0.5 transition-colors"
+          class="flex-none flex items-center justify-center w-11 h-11 sm:w-auto sm:h-auto text-xs text-olive-400 hover:text-olive-700 dark:hover:text-olive-300 sm:border sm:border-olive-200 sm:dark:border-olive-700 sm:rounded-sm sm:px-1.5 sm:py-0.5 transition-colors"
           aria-label="Close search"
         >
           <span class="hidden sm:inline">Esc</span>

@@ -23,7 +23,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap">
 
-{{- /* CSS — pre-built Tailwind output (run: npx tailwindcss --watch in separate terminal) */}}
+{{- /* CSS — pre-built Tailwind output (run: npm run css:watch in separate terminal) */}}
 {{- $css := resources.Get "css/main.min.css" -}}
 {{- if $css -}}
   {{- if hugo.IsProduction -}}
@@ -66,4 +66,3 @@
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
-
