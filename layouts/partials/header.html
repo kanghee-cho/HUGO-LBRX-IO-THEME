@@ -1,7 +1,7 @@
-<header class="sticky top-0 z-40 w-full border-b border-olive-200 dark:border-olive-800 bg-olive-50/90 dark:bg-olive-950/90 backdrop-blur-xs relative">
+<header class="sticky top-0 z-40 w-full border-b border-brand-border dark:border-brand-border bg-brand-background/90 dark:bg-brand-background/90 backdrop-blur-xs relative">
   <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
     <a href="{{ "/" | relLangURL }}" class="font-sans tracking-tight hover:opacity-80 transition-opacity flex-none flex items-center gap-1.5">
-      <span class="text-xl font-semibold text-olive-600 dark:text-olive-400">{{ .Site.Params.nickname | default .Site.Title }}</span>
+      <span class="text-xl font-semibold text-brand-accent dark:text-brand-muted">{{ .Site.Params.nickname | default .Site.Title }}</span>
       <span class="text-sm font-light text-gray-300 dark:text-gray-600 select-none self-center">|</span>
       <span class="text-sm font-medium text-gray-500 dark:text-gray-400 self-center">LBRX.IO</span>
     </a>
@@ -10,7 +10,7 @@
       {{- /* Hamburger — visible on mobile, hidden on md+ */}}
       <button
         data-nav-toggle
-        class="md:hidden p-2 rounded-md text-olive-500 hover:text-olive-900 dark:hover:text-olive-100 hover:bg-olive-100 dark:hover:bg-olive-800 transition-colors"
+        class="md:hidden p-2 rounded-md text-brand-muted hover:text-brand-accent dark:hover:text-brand-accent hover:bg-brand-surface dark:hover:bg-brand-surface transition-colors"
         aria-label="{{ i18n "open_menu" | default "Open menu" }}"
         aria-expanded="false"
         aria-controls="mobile-nav"
@@ -26,18 +26,18 @@
       <button
         id="search-open"
         data-search-open
-        class="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm text-olive-500 hover:text-olive-900 dark:hover:text-olive-100 border border-olive-200 dark:border-olive-700 hover:border-olive-400 dark:hover:border-olive-500 transition-colors"
+        class="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm text-brand-muted hover:text-brand-accent dark:hover:text-brand-accent border border-brand-border dark:border-brand-border hover:border-brand-accent dark:hover:border-brand-accent transition-colors"
         aria-label="{{ i18n "search" | default "Search" }}"
       >
         <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
           <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z"/>
         </svg>
-        <kbd class="hidden sm:inline text-xs text-olive-400">⌘K</kbd>
+        <kbd class="hidden sm:inline text-xs text-brand-muted">⌘K</kbd>
       </button>
       {{- /* Dark mode toggle */}}
       <button
         id="theme-toggle"
-        class="p-2 rounded-md text-olive-500 hover:text-olive-900 dark:hover:text-olive-100 hover:bg-olive-100 dark:hover:bg-olive-800 transition-colors"
+        class="p-2 rounded-md text-brand-muted hover:text-brand-accent dark:hover:text-brand-accent hover:bg-brand-surface dark:hover:bg-brand-surface transition-colors"
         aria-label="{{ i18n "toggle_dark_mode" | default "Toggle dark mode" }}"
       >
         {{- /* Sun icon — shown in dark mode */}}

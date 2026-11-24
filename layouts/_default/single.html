@@ -4,19 +4,19 @@
   data-pagefind-meta="title:{{ .Title }},section:{{ .Section }},language:{{ .Site.Language.Lang }}"
 >
   <header class="mb-10" data-pagefind-ignore>
-    <time class="text-sm text-olive-500 dark:text-olive-400" datetime="{{ .Date.Format "2006-01-02" }}">
+    <time class="text-sm text-brand-muted dark:text-brand-muted" datetime="{{ .Date.Format "2006-01-02" }}">
       {{ .Date.Format "2 January 2006" }}
     </time>
-    <h1 class="mt-2 font-sans text-2xl sm:text-4xl font-bold text-olive-900 dark:text-olive-100 leading-tight">
+    <h1 class="mt-2 font-sans text-2xl sm:text-4xl font-bold text-brand-text dark:text-brand-text leading-tight">
       {{ .Title }}
     </h1>
     {{- with .Description -}}
-      <p class="mt-4 text-lg text-olive-600 dark:text-olive-400">{{ . }}</p>
+      <p class="mt-4 text-lg text-brand-accent dark:text-brand-muted">{{ . }}</p>
     {{- end -}}
     {{- with .Params.tags -}}
       <div class="mt-4 flex flex-wrap gap-2">
         {{- range . -}}
-          <span class="px-2 py-0.5 text-xs rounded-full bg-olive-100 dark:bg-olive-800 text-olive-700 dark:text-olive-300">{{ . }}</span>
+          <span class="px-2 py-0.5 text-xs rounded-full bg-brand-surface dark:bg-brand-surface text-brand-accent dark:text-brand-accent">{{ . }}</span>
         {{- end -}}
       </div>
     {{- end -}}

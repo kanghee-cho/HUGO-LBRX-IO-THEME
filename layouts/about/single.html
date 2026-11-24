@@ -9,7 +9,7 @@
   {{- if .Content }}
   <section>
     <header class="mb-8">
-      <h1 class="font-sans text-2xl sm:text-4xl font-bold text-olive-900 dark:text-olive-100">{{ .Title }}</h1>
+      <h1 class="font-sans text-2xl sm:text-4xl font-bold text-brand-text dark:text-brand-text">{{ .Title }}</h1>
     </header>
     <div class="prose dark:prose-invert max-w-none">
       {{ .Content }}
@@ -22,13 +22,13 @@
        ══════════════════════════════════════════ */}}
   {{- if $space }}
   <section class="pt-6">
-    <h2 class="font-sans text-xl font-bold text-olive-900 dark:text-olive-100 mb-6 pb-2 border-b border-olive-200 dark:border-olive-800">
+    <h2 class="font-sans text-xl font-bold text-brand-text dark:text-brand-text mb-6 pb-2 border-b border-brand-border dark:border-brand-border">
       {{ i18n "about_space" }}
     </h2>
 
     {{- if not $space.ready }}
     {{/* ── Coming soon ── */}}
-    <div class="flex items-center gap-3 px-5 py-4 rounded-lg bg-olive-50 dark:bg-olive-950/40 border border-olive-200 dark:border-olive-800 text-olive-700 dark:text-olive-300">
+    <div class="flex items-center gap-3 px-5 py-4 rounded-lg bg-brand-background dark:bg-brand-background/40 border border-brand-border dark:border-brand-border text-brand-accent dark:text-brand-accent">
       <span class="text-lg">🏗</span>
       <p class="text-sm">{{ i18n "about_space_coming_soon" }}</p>
     </div>
@@ -41,25 +41,25 @@
       <div class="space-y-5">
         {{- if $space.name }}
         <div>
-          <p class="text-xs font-semibold uppercase tracking-widest text-olive-500 dark:text-olive-400 mb-1">{{ $space.name }}</p>
+          <p class="text-xs font-semibold uppercase tracking-widest text-brand-muted dark:text-brand-muted mb-1">{{ $space.name }}</p>
         </div>
         {{- end }}
 
         {{- if $space.address }}
         <div>
-          <p class="text-xs font-semibold uppercase tracking-widest text-stone-400 dark:text-stone-500 mb-1">{{ i18n "about_space_address" }}</p>
-          <p class="text-stone-700 dark:text-stone-300 text-sm leading-relaxed">{{ $space.address }}</p>
+          <p class="text-xs font-semibold uppercase tracking-widest text-brand-muted dark:text-brand-muted mb-1">{{ i18n "about_space_address" }}</p>
+          <p class="text-brand-muted dark:text-brand-muted text-sm leading-relaxed">{{ $space.address }}</p>
         </div>
         {{- end }}
 
         {{- if $space.hours }}
         <div>
-          <p class="text-xs font-semibold uppercase tracking-widest text-stone-400 dark:text-stone-500 mb-2">{{ i18n "about_space_hours" }}</p>
-          <table class="text-sm text-stone-700 dark:text-stone-300 border-collapse w-full max-w-xs">
+          <p class="text-xs font-semibold uppercase tracking-widest text-brand-muted dark:text-brand-muted mb-2">{{ i18n "about_space_hours" }}</p>
+          <table class="text-sm text-brand-muted dark:text-brand-muted border-collapse w-full max-w-xs">
             {{- range $space.hours }}
-            <tr class="border-b border-stone-100 dark:border-stone-800 last:border-0">
-              <td class="py-1.5 pr-4 font-medium text-stone-900 dark:text-stone-100 w-24">{{ .day }}</td>
-              <td class="py-1.5 text-stone-600 dark:text-stone-400">{{ .time }}</td>
+            <tr class="border-b border-brand-border dark:border-brand-border last:border-0">
+              <td class="py-1.5 pr-4 font-medium text-brand-text dark:text-brand-text w-24">{{ .day }}</td>
+              <td class="py-1.5 text-brand-muted dark:text-brand-muted">{{ .time }}</td>
             </tr>
             {{- end }}
           </table>
@@ -70,8 +70,8 @@
       {{/* Map */}}
       {{- if $space.map_embed }}
       <div>
-        <p class="text-xs font-semibold uppercase tracking-widest text-stone-400 dark:text-stone-500 mb-2">{{ i18n "about_space_map" }}</p>
-        <div class="rounded-lg overflow-hidden border border-stone-200 dark:border-stone-700 h-48">
+        <p class="text-xs font-semibold uppercase tracking-widest text-brand-muted dark:text-brand-muted mb-2">{{ i18n "about_space_map" }}</p>
+        <div class="rounded-lg overflow-hidden border border-brand-border dark:border-brand-border h-48">
           <iframe
             src="{{ $space.map_embed }}"
             class="w-full h-full"
@@ -94,31 +94,31 @@
        ══════════════════════════════════════════ */}}
   {{- if $members }}
   <section class="pt-6">
-    <h2 class="font-sans text-xl font-bold text-olive-900 dark:text-olive-100 mb-6 pb-2 border-b border-olive-200 dark:border-olive-800">
+    <h2 class="font-sans text-xl font-bold text-brand-text dark:text-brand-text mb-6 pb-2 border-b border-brand-border dark:border-brand-border">
       {{ i18n "about_members" }}
     </h2>
     <div class="flex flex-col gap-4">
       {{- range $members }}
-      <div class="flex items-start gap-5 p-5 rounded-xl border border-stone-200 dark:border-stone-700 bg-white dark:bg-stone-900 w-full">
+      <div class="flex items-start gap-5 p-5 rounded-xl border border-brand-border dark:border-brand-border bg-brand-surface dark:bg-brand-surface w-full">
 
         {{/* Photo */}}
         {{- $photo := resources.Get .photo }}
-        <div class="w-12 h-12 rounded-full overflow-hidden bg-stone-100 dark:bg-stone-800 shrink-0 mt-0.5">
+        <div class="w-12 h-12 rounded-full overflow-hidden bg-brand-surface dark:bg-brand-surface shrink-0 mt-0.5">
           {{- if $photo }}
           <img src="{{ $photo.RelPermalink }}" alt="{{ .name }}" class="w-full h-full object-cover">
           {{- else }}
-          <div class="w-full h-full flex items-center justify-center text-stone-400 dark:text-stone-600 text-lg select-none">👤</div>
+          <div class="w-full h-full flex items-center justify-center text-brand-muted dark:text-brand-muted text-lg select-none">👤</div>
           {{- end }}
         </div>
 
         {{/* Info */}}
         <div class="flex-1 min-w-0">
-          <p class="font-semibold text-stone-900 dark:text-stone-100 text-base mb-1">{{ .name }}</p>
+          <p class="font-semibold text-brand-text dark:text-brand-text text-base mb-1">{{ .name }}</p>
           {{- if .bio }}
-          <p class="text-sm text-stone-600 dark:text-stone-400 leading-relaxed">{{ .bio }}</p>
+          <p class="text-sm text-brand-muted dark:text-brand-muted leading-relaxed">{{ .bio }}</p>
           {{- end }}
           {{- if .email }}
-          <p class="text-xs font-mono text-stone-500 dark:text-stone-400 mt-2 select-all">{{ .email }}</p>
+          <p class="text-xs font-mono text-brand-muted dark:text-brand-muted mt-2 select-all">{{ .email }}</p>
           {{- end }}
         </div>
 
@@ -133,7 +133,7 @@
        ══════════════════════════════════════════ */}}
   {{- if $brand }}
   <section class="pt-6">
-    <h2 class="font-sans text-xl font-bold text-olive-900 dark:text-olive-100 mb-6 pb-2 border-b border-olive-200 dark:border-olive-800">
+    <h2 class="font-sans text-xl font-bold text-brand-text dark:text-brand-text mb-6 pb-2 border-b border-brand-border dark:border-brand-border">
       {{ i18n "about_brand" }}
     </h2>
 
@@ -146,8 +146,8 @@
         {{- $img := resources.Get $brand.logo_light }}
         {{- if $img }}
         <div class="flex flex-col items-start gap-2">
-          <p class="text-xs text-stone-400 dark:text-stone-500 uppercase tracking-widest">Light</p>
-          <div class="px-6 py-4 bg-white rounded-lg border border-stone-200">
+          <p class="text-xs text-brand-muted dark:text-brand-muted uppercase tracking-widest">Light</p>
+          <div class="px-6 py-4 bg-[#F3F4EC] rounded-lg border border-[#D8E6DA]">
             <img src="{{ $img.RelPermalink }}" alt="LBRX logo light" class="h-10 w-auto">
           </div>
         </div>
@@ -157,8 +157,8 @@
         {{- $img := resources.Get $brand.logo_dark }}
         {{- if $img }}
         <div class="flex flex-col items-start gap-2">
-          <p class="text-xs text-stone-400 dark:text-stone-500 uppercase tracking-widest">Dark</p>
-          <div class="px-6 py-4 bg-stone-900 rounded-lg border border-stone-700">
+          <p class="text-xs text-brand-muted dark:text-brand-muted uppercase tracking-widest">Dark</p>
+          <div class="px-6 py-4 bg-[#19231F] rounded-lg border border-[#304138]">
             <img src="{{ $img.RelPermalink }}" alt="LBRX logo dark" class="h-10 w-auto">
           </div>
         </div>
@@ -170,15 +170,15 @@
       {{/* Colors */}}
       {{- if $brand.colors }}
       <div>
-        <p class="text-xs font-semibold uppercase tracking-widest text-stone-400 dark:text-stone-500 mb-3">{{ i18n "about_brand_colors" }}</p>
+        <p class="text-xs font-semibold uppercase tracking-widest text-brand-muted dark:text-brand-muted mb-3">{{ i18n "about_brand_colors" }}</p>
         <div class="flex flex-wrap gap-3">
           {{- range $brand.colors }}
-          <div class="flex items-center gap-3 px-3 py-2 rounded-lg border border-stone-200 dark:border-stone-700 bg-white dark:bg-stone-900 min-w-0">
+          <div class="flex items-center gap-3 px-3 py-2 rounded-lg border border-brand-border dark:border-brand-border bg-brand-surface dark:bg-brand-surface min-w-0">
             <span class="w-8 h-8 rounded-md shrink-0 ring-1 ring-black/10 dark:ring-white/10" style="background-color: {{ .hex }};"></span>
             <div class="min-w-0">
-              <p class="text-xs font-semibold text-stone-900 dark:text-stone-100">{{ .name }}</p>
-              <p class="text-xs font-mono text-stone-500 dark:text-stone-400">{{ .hex }}</p>
-              {{- if .desc }}<p class="text-xs text-stone-400 dark:text-stone-500 mt-0.5 truncate max-w-[12rem]">{{ .desc }}</p>{{- end }}
+              <p class="text-xs font-semibold text-brand-text dark:text-brand-text">{{ .name }}</p>
+              <p class="text-xs font-mono text-brand-muted dark:text-brand-muted">{{ .hex }}</p>
+              {{- if .desc }}<p class="text-xs text-brand-muted dark:text-brand-muted mt-0.5 truncate max-w-[12rem]">{{ .desc }}</p>{{- end }}
             </div>
           </div>
           {{- end }}
@@ -189,13 +189,13 @@
       {{/* Typography */}}
       {{- if $brand.fonts }}
       <div>
-        <p class="text-xs font-semibold uppercase tracking-widest text-stone-400 dark:text-stone-500 mb-3">{{ i18n "about_brand_fonts" }}</p>
+        <p class="text-xs font-semibold uppercase tracking-widest text-brand-muted dark:text-brand-muted mb-3">{{ i18n "about_brand_fonts" }}</p>
         <div class="space-y-2">
           {{- range $brand.fonts }}
-          <div class="flex flex-wrap items-baseline gap-x-3 gap-y-0.5 py-2 border-b border-stone-100 dark:border-stone-800 last:border-0">
-            <span class="text-xs text-stone-400 dark:text-stone-500 w-16 shrink-0">{{ .role }}</span>
-            <span class="text-base font-semibold text-stone-900 dark:text-stone-100" style="font-family: {{ .stack }};">{{ .name }}</span>
-            <span class="text-xs font-mono text-stone-400 dark:text-stone-500">{{ .stack }}</span>
+          <div class="flex flex-wrap items-baseline gap-x-3 gap-y-0.5 py-2 border-b border-brand-border dark:border-brand-border last:border-0">
+            <span class="text-xs text-brand-muted dark:text-brand-muted w-16 shrink-0">{{ .role }}</span>
+            <span class="text-base font-semibold text-brand-text dark:text-brand-text" style="font-family: {{ .stack }};">{{ .name }}</span>
+            <span class="text-xs font-mono text-brand-muted dark:text-brand-muted">{{ .stack }}</span>
           </div>
           {{- end }}
         </div>

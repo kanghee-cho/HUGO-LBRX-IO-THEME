@@ -84,9 +84,9 @@
   {{- $prev := .PrevInSection -}}
   {{- $next := .NextInSection -}}
   {{- if or $prev $next -}}
-    <nav class="mt-10 pt-6 border-t border-olive-200 dark:border-olive-800 flex items-center justify-between gap-4" aria-label="Edition navigation" data-pagefind-ignore>
+    <nav class="mt-10 pt-6 border-t border-brand-border dark:border-brand-border flex items-center justify-between gap-4" aria-label="Edition navigation" data-pagefind-ignore>
       {{- if $prev -}}
-        <a href="{{ $prev.RelPermalink }}" class="group flex items-center gap-2 text-sm text-olive-600 dark:text-olive-400 hover:text-olive-900 dark:hover:text-olive-100 transition-colors min-w-0">
+        <a href="{{ $prev.RelPermalink }}" class="group flex items-center gap-2 text-sm text-brand-accent dark:text-brand-muted hover:text-brand-accent dark:hover:text-brand-accent transition-colors min-w-0">
           <svg class="w-4 h-4 flex-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
             <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
           </svg>
@@ -96,7 +96,7 @@
         <span></span>
       {{- end -}}
       {{- if $next -}}
-        <a href="{{ $next.RelPermalink }}" class="group flex items-center gap-2 text-sm text-olive-600 dark:text-olive-400 hover:text-olive-900 dark:hover:text-olive-100 transition-colors min-w-0 text-right">
+        <a href="{{ $next.RelPermalink }}" class="group flex items-center gap-2 text-sm text-brand-accent dark:text-brand-muted hover:text-brand-accent dark:hover:text-brand-accent transition-colors min-w-0 text-right">
           <span class="truncate">{{ $next.Title }}</span>
           <svg class="w-4 h-4 flex-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
             <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>

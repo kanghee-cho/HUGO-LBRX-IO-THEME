@@ -19,11 +19,11 @@
           <div class="book-spine"></div>
         </div>
       {{- else -}}
-        <div class="aspect-[2/3] rounded-xl bg-white dark:bg-black flex flex-col items-center justify-center shadow-md w-40 sm:w-48 lg:w-full mx-auto lg:mx-0 gap-2">
-          <svg class="w-8 h-8 text-olive-300 dark:text-olive-400" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true">
+        <div class="aspect-[2/3] rounded-xl bg-brand-surface dark:bg-black flex flex-col items-center justify-center shadow-md w-40 sm:w-48 lg:w-full mx-auto lg:mx-0 gap-2">
+          <svg class="w-8 h-8 text-brand-muted dark:text-brand-muted" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true">
             <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
           </svg>
-          <span class="text-xs text-olive-400 dark:text-olive-500 font-medium">{{ i18n "no_cover" | default "No image" }}</span>
+          <span class="text-xs text-brand-muted dark:text-brand-muted font-medium">{{ i18n "no_cover" | default "No image" }}</span>
         </div>
       {{- end -}}
 
@@ -42,17 +42,17 @@
     {{- /* Mobile: order-2 (두번째) | Desktop: 오른쪽 2행 span */}}
     <div class="order-2 lg:order-none lg:col-start-2 lg:row-start-1 lg:row-end-3">
       <header class="mb-8">
-        <h1 class="font-sans text-2xl sm:text-4xl font-bold text-olive-900 dark:text-olive-100 leading-tight">{{ .Title }}</h1>
+        <h1 class="font-sans text-2xl sm:text-4xl font-bold text-brand-text dark:text-brand-text leading-tight">{{ .Title }}</h1>
         {{- with .Params.author -}}
-          <p class="mt-1 text-lg text-olive-500 dark:text-olive-400">{{ . }}</p>
+          <p class="mt-1 text-lg text-brand-muted dark:text-brand-muted">{{ . }}</p>
         {{- end -}}
         {{- with .Description -}}
-          <p class="mt-3 text-base text-olive-600 dark:text-olive-400 leading-relaxed">{{ . }}</p>
+          <p class="mt-3 text-base text-brand-accent dark:text-brand-muted leading-relaxed">{{ . }}</p>
         {{- end -}}
         {{- with .Params.tags -}}
           <div class="mt-4 flex flex-wrap gap-2">
             {{- range . -}}
-              <span class="px-2 py-0.5 text-xs rounded-full bg-olive-100 dark:bg-olive-800 text-olive-700 dark:text-olive-300">#{{ . }}</span>
+              <span class="px-2 py-0.5 text-xs rounded-full bg-brand-surface dark:bg-brand-surface text-brand-accent dark:text-brand-accent">#{{ . }}</span>
             {{- end -}}
           </div>
         {{- end -}}
@@ -68,7 +68,7 @@
           {{ . }}
         </div>
       {{- else -}}
-        <p class="text-olive-400 dark:text-olive-500 italic">아직 리뷰가 없습니다.</p>
+        <p class="text-brand-muted dark:text-brand-muted italic">아직 리뷰가 없습니다.</p>
       {{- end -}}
     </div>
 
@@ -78,82 +78,82 @@
 
       {{- /* 모바일에서만 보이는 섹션 구분선 */}}
       <div class="flex items-center gap-3 mb-5 lg:hidden">
-        <span class="text-xs font-semibold uppercase tracking-widest text-olive-400 dark:text-olive-500">도서 정보</span>
-        <div class="flex-1 h-px bg-olive-200 dark:bg-olive-800"></div>
+        <span class="text-xs font-semibold uppercase tracking-widest text-brand-muted dark:text-brand-muted">도서 정보</span>
+        <div class="flex-1 h-px bg-brand-surface dark:bg-brand-surface"></div>
       </div>
 
       {{- /* 메타데이터 테이블 */}}
-      <dl class="divide-y divide-olive-100 dark:divide-olive-800 text-sm">
+      <dl class="divide-y divide-brand-border dark:divide-brand-border text-sm">
 
         {{- /* 서지 정보 */}}
         <div class="py-1.5 grid grid-cols-[6rem_1fr] gap-2">
-          <dt class="text-olive-400 dark:text-olive-500 text-xs pt-0.5">{{ i18n "author" | default "Author" }}</dt>
-          <dd class="font-medium text-olive-900 dark:text-olive-100" data-pagefind-meta="author">{{ .Params.author | default "—" }}</dd>
+          <dt class="text-brand-muted dark:text-brand-muted text-xs pt-0.5">{{ i18n "author" | default "Author" }}</dt>
+          <dd class="font-medium text-brand-text dark:text-brand-text" data-pagefind-meta="author">{{ .Params.author | default "—" }}</dd>
         </div>
         {{- with .Params.publisher -}}
           <div class="py-1.5 grid grid-cols-[6rem_1fr] gap-2">
-            <dt class="text-olive-400 dark:text-olive-500 text-xs pt-0.5">{{ i18n "publisher" | default "Publisher" }}</dt>
-            <dd class="text-olive-800 dark:text-olive-200">{{ . }}</dd>
+            <dt class="text-brand-muted dark:text-brand-muted text-xs pt-0.5">{{ i18n "publisher" | default "Publisher" }}</dt>
+            <dd class="text-brand-text dark:text-brand-text">{{ . }}</dd>
           </div>
         {{- end -}}
         {{- with .Params.publish_year -}}
           <div class="py-1.5 grid grid-cols-[6rem_1fr] gap-2">
-            <dt class="text-olive-400 dark:text-olive-500 text-xs pt-0.5">{{ i18n "published" | default "Year" }}</dt>
-            <dd class="text-olive-800 dark:text-olive-200">{{ . }}</dd>
+            <dt class="text-brand-muted dark:text-brand-muted text-xs pt-0.5">{{ i18n "published" | default "Year" }}</dt>
+            <dd class="text-brand-text dark:text-brand-text">{{ . }}</dd>
           </div>
         {{- end -}}
         {{- with .Params.pages -}}
           <div class="py-1.5 grid grid-cols-[6rem_1fr] gap-2">
-            <dt class="text-olive-400 dark:text-olive-500 text-xs pt-0.5">{{ i18n "pages" | default "Pages" }}</dt>
-            <dd class="text-olive-800 dark:text-olive-200">{{ . }}p</dd>
+            <dt class="text-brand-muted dark:text-brand-muted text-xs pt-0.5">{{ i18n "pages" | default "Pages" }}</dt>
+            <dd class="text-brand-text dark:text-brand-text">{{ . }}p</dd>
           </div>
         {{- end -}}
         {{- with .Params.translator -}}
           <div class="py-1.5 grid grid-cols-[6rem_1fr] gap-2">
-            <dt class="text-olive-400 dark:text-olive-500 text-xs pt-0.5">{{ i18n "translator" | default "Translator" }}</dt>
-            <dd class="text-olive-800 dark:text-olive-200">{{ . }}</dd>
+            <dt class="text-brand-muted dark:text-brand-muted text-xs pt-0.5">{{ i18n "translator" | default "Translator" }}</dt>
+            <dd class="text-brand-text dark:text-brand-text">{{ . }}</dd>
           </div>
         {{- end -}}
         {{- with .Params.original_title -}}
           <div class="py-1.5 grid grid-cols-[6rem_1fr] gap-2">
-            <dt class="text-olive-400 dark:text-olive-500 text-xs pt-0.5">{{ i18n "original_title" | default "Original" }}</dt>
-            <dd class="text-olive-800 dark:text-olive-200 italic">{{ . }}</dd>
+            <dt class="text-brand-muted dark:text-brand-muted text-xs pt-0.5">{{ i18n "original_title" | default "Original" }}</dt>
+            <dd class="text-brand-text dark:text-brand-text italic">{{ . }}</dd>
           </div>
         {{- end -}}
         {{- with .Params.isbn -}}
           <div class="py-1.5 grid grid-cols-[6rem_1fr] gap-2">
-            <dt class="text-olive-400 dark:text-olive-500 text-xs pt-0.5">{{ i18n "isbn" | default "ISBN" }}</dt>
-            <dd class="text-olive-600 dark:text-olive-400 font-mono text-xs">{{ . }}</dd>
+            <dt class="text-brand-muted dark:text-brand-muted text-xs pt-0.5">{{ i18n "isbn" | default "ISBN" }}</dt>
+            <dd class="text-brand-accent dark:text-brand-muted font-mono text-xs">{{ . }}</dd>
           </div>
         {{- end -}}
         {{- with .Params.genre -}}
           <div class="py-1.5 grid grid-cols-[6rem_1fr] gap-2">
-            <dt class="text-olive-400 dark:text-olive-500 text-xs pt-0.5">{{ i18n "genre" | default "Genre" }}</dt>
-            <dd class="text-olive-800 dark:text-olive-200">{{ . }}</dd>
+            <dt class="text-brand-muted dark:text-brand-muted text-xs pt-0.5">{{ i18n "genre" | default "Genre" }}</dt>
+            <dd class="text-brand-text dark:text-brand-text">{{ . }}</dd>
           </div>
         {{- end -}}
 
         {{- /* 서고 정보 */}}
         {{- with .Params.call_number -}}
           <div class="py-1.5 grid grid-cols-[6rem_1fr] gap-2">
-            <dt class="text-olive-400 dark:text-olive-500 text-xs pt-0.5">{{ i18n "call_number" | default "Call No." }}</dt>
-            <dd class="text-olive-600 dark:text-olive-400 font-mono text-xs">{{ . }}</dd>
+            <dt class="text-brand-muted dark:text-brand-muted text-xs pt-0.5">{{ i18n "call_number" | default "Call No." }}</dt>
+            <dd class="text-brand-accent dark:text-brand-muted font-mono text-xs">{{ . }}</dd>
           </div>
         {{- end -}}
         <div class="py-1.5 grid grid-cols-[6rem_1fr] gap-2">
-          <dt class="text-olive-400 dark:text-olive-500 text-xs pt-0.5">{{ i18n "owned" | default "Owned" }}</dt>
-          <dd class="text-olive-800 dark:text-olive-200">
+          <dt class="text-brand-muted dark:text-brand-muted text-xs pt-0.5">{{ i18n "owned" | default "Owned" }}</dt>
+          <dd class="text-brand-text dark:text-brand-text">
             {{- if .Params.owned -}}
-              <span class="text-olive-600 dark:text-olive-400">{{ i18n "owned_yes" | default "In collection" }}</span>
+              <span class="text-brand-accent dark:text-brand-muted">{{ i18n "owned_yes" | default "In collection" }}</span>
             {{- else -}}
-              <span class="text-olive-400 dark:text-olive-500">{{ i18n "owned_no" | default "Not owned" }}</span>
+              <span class="text-brand-muted dark:text-brand-muted">{{ i18n "owned_no" | default "Not owned" }}</span>
             {{- end -}}
           </dd>
         </div>
         {{- with .Params.condition -}}
           <div class="py-1.5 grid grid-cols-[6rem_1fr] gap-2">
-            <dt class="text-olive-400 dark:text-olive-500 text-xs pt-0.5">{{ i18n "condition" | default "Condition" }}</dt>
-            <dd class="text-olive-800 dark:text-olive-200">
+            <dt class="text-brand-muted dark:text-brand-muted text-xs pt-0.5">{{ i18n "condition" | default "Condition" }}</dt>
+            <dd class="text-brand-text dark:text-brand-text">
               {{- if eq . "새것" -}}{{ i18n "condition_new" | default "New" }}
               {{- else if eq . "양호" -}}{{ i18n "condition_good" | default "Good" }}
               {{- else if eq . "보통" -}}{{ i18n "condition_fair" | default "Fair" }}
@@ -167,8 +167,8 @@
         {{- /* 독서 기록 */}}
         {{- with .Params.read_date -}}
           <div class="py-1.5 grid grid-cols-[6rem_1fr] gap-2">
-            <dt class="text-olive-400 dark:text-olive-500 text-xs pt-0.5">{{ i18n "read_date" | default "Finished on" }}</dt>
-            <dd class="text-olive-800 dark:text-olive-200">
+            <dt class="text-brand-muted dark:text-brand-muted text-xs pt-0.5">{{ i18n "read_date" | default "Finished on" }}</dt>
+            <dd class="text-brand-text dark:text-brand-text">
               {{- $d := . | time -}}
               {{ $d.Format "2006. 1. 2." }}
             </dd>
@@ -180,10 +180,10 @@
       {{- /* Mood tags */}}
       {{- with .Params.mood_tags -}}
         <div class="mt-4">
-          <p class="text-xs text-olive-400 dark:text-olive-500 uppercase tracking-wider mb-2">{{ i18n "mood_tags" | default "Mood" }}</p>
+          <p class="text-xs text-brand-muted dark:text-brand-muted uppercase tracking-wider mb-2">{{ i18n "mood_tags" | default "Mood" }}</p>
           <div class="flex flex-wrap gap-1.5">
             {{- range . -}}
-              <span class="px-2 py-0.5 text-xs rounded-full bg-olive-100 dark:bg-olive-800 text-olive-600 dark:text-olive-400">{{ . }}</span>
+              <span class="px-2 py-0.5 text-xs rounded-full bg-brand-surface dark:bg-brand-surface text-brand-accent dark:text-brand-muted">{{ . }}</span>
             {{- end -}}
           </div>
         </div>
@@ -191,7 +191,7 @@
 
       {{- /* 추천 대상 */}}
       {{- with .Params.recommended_for -}}
-        <blockquote class="mt-4 border-l-2 border-olive-300 dark:border-olive-600 pl-3 text-sm text-olive-600 dark:text-olive-400 italic leading-snug">
+        <blockquote class="mt-4 border-l-2 border-brand-border dark:border-brand-border pl-3 text-sm text-brand-accent dark:text-brand-muted italic leading-snug">
           {{ . }}
         </blockquote>
       {{- end -}}

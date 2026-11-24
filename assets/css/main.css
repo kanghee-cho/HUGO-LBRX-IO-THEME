@@ -1,33 +1,161 @@
 @import "tailwindcss" source(none);
+@import "./fonts.css";
 @plugin "@tailwindcss/typography";
 
 @source "../../layouts";
 @source "../js";
 @source inline("grid-cols-{2..6} sm:grid-cols-4 lg:grid-cols-6");
-@source inline("text-orange-400 hover:text-orange-500 dark:text-orange-400 dark:hover:text-orange-300");
-@source inline("border-neutral-700 border-neutral-300 bg-neutral-200 bg-neutral-700 text-neutral-600 text-neutral-200");
-@source inline("bg-sky-100 border-sky-400 text-sky-700 bg-sky-900/50 border-sky-600 text-sky-300");
-@source inline("bg-amber-50 border-amber-400 text-amber-700 bg-amber-900/40 border-amber-600 text-amber-300");
 
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-  --font-sans: "Pretendard Variable", "Noto Sans JP", ui-sans-serif, system-ui, sans-serif;
-  --font-mono: "JetBrains Mono", ui-monospace, monospace;
-  --color-olive-50: #fafaf5;
-  --color-olive-100: #f0f2dc;
-  --color-olive-200: #dde3b0;
-  --color-olive-300: #c4cf7e;
-  --color-olive-400: #aab853;
-  --color-olive-500: #8a9e3a;
-  --color-olive-600: #6b7c2d;
-  --color-olive-700: #526022;
-  --color-olive-800: #3d4a1a;
-  --color-olive-900: #2c3612;
-  --color-olive-950: #1a1a0d;
+  --font-sans: "LINE Seed Sans", "LINE Seed Sans KR", "LINE Seed JP_TTF", sans-serif;
+  --font-mono: "D2Coding ligature", monospace;
+  --font-weight-light: 400;
+  --font-weight-medium: 400;
+  --font-weight-semibold: 700;
+}
+
+@theme inline {
+  --color-brand-background: var(--brand-background);
+  --color-brand-surface: var(--brand-surface);
+  --color-brand-text: var(--brand-text);
+  --color-brand-accent: var(--brand-accent);
+  --color-brand-muted: var(--brand-muted);
+  --color-brand-focus: var(--brand-focus);
+  --color-brand-selection-text: var(--brand-selection-text);
+  --color-brand-selection-background: var(--brand-selection-background);
+  --color-brand-prose-selection-background: var(--brand-prose-selection-background);
+  --color-brand-heading: var(--brand-heading);
+  --color-brand-link: var(--brand-link);
+  --color-brand-quote: var(--brand-quote);
+  --color-brand-inline-code: var(--brand-inline-code);
+  --color-brand-comment: var(--brand-comment);
+  --color-brand-string: var(--brand-string);
+  --color-brand-keyword: var(--brand-keyword);
+  --color-brand-function: var(--brand-function);
+  --color-brand-number: var(--brand-number);
+  --color-brand-error: var(--brand-error);
+  --color-brand-warning: var(--brand-warning);
+  --color-brand-success: var(--brand-success);
+  --color-brand-code-block-background: var(--brand-code-block-background);
+  --color-brand-syntax-declaration: var(--brand-syntax-declaration);
+  --color-brand-syntax-escape: var(--brand-syntax-escape);
+  --color-brand-syntax-builtin: var(--brand-syntax-builtin);
+  --color-brand-syntax-macro: var(--brand-syntax-macro);
+  --color-brand-syntax-type: var(--brand-syntax-type);
+  --color-brand-syntax-parameter: var(--brand-syntax-parameter);
+  --color-brand-syntax-property: var(--brand-syntax-property);
+  --color-brand-syntax-operator: var(--brand-syntax-operator);
+  --color-brand-syntax-attribute: var(--brand-syntax-attribute);
+  --color-brand-syntax-punctuation: var(--brand-syntax-punctuation);
+  --color-brand-border: var(--brand-border);
+  --color-brand-on-accent: var(--brand-on-accent);
 }
 
 @layer base {
+  :root {
+    color-scheme: light;
+    --brand-background: #F3F4EC;
+    --brand-surface: #E8EDE4;
+    --brand-text: #24362F;
+    --brand-accent: #246958;
+    --brand-muted: #52655B;
+    --brand-focus: #246958;
+    --brand-selection-text: #24362F;
+    --brand-selection-background: #D8E6DA;
+    --brand-prose-selection-background: #F3D3AB;
+    --brand-heading: #24362F;
+    --brand-link: #246958;
+    --brand-quote: #52655B;
+    --brand-inline-code: #80516A;
+    --brand-comment: #52655B;
+    --brand-string: #246958;
+    --brand-keyword: #80516A;
+    --brand-function: #43617B;
+    --brand-number: #815919;
+    --brand-error: #A44540;
+    --brand-warning: #815919;
+    --brand-success: #246958;
+    --brand-code-block-background: #E8EDE4;
+    --brand-syntax-declaration: #654878;
+    --brand-syntax-escape: #8A4D27;
+    --brand-syntax-builtin: #794C3B;
+    --brand-syntax-macro: #6F497F;
+    --brand-syntax-type: #365F55;
+    --brand-syntax-parameter: #5B567F;
+    --brand-syntax-property: #3D6070;
+    --brand-syntax-operator: #536057;
+    --brand-syntax-attribute: #78602D;
+    --brand-syntax-punctuation: #596B61;
+    --brand-border: #D8E6DA;
+    --brand-on-accent: #F3F4EC;
+  }
+
+  .dark {
+    color-scheme: dark;
+    --brand-background: #19231F;
+    --brand-surface: #25332C;
+    --brand-text: #DCE6DB;
+    --brand-accent: #84C7AC;
+    --brand-muted: #A3B5A9;
+    --brand-focus: #84C7AC;
+    --brand-selection-text: #DCE6DB;
+    --brand-selection-background: #304138;
+    --brand-prose-selection-background: #60402A;
+    --brand-heading: #DCE6DB;
+    --brand-link: #84C7AC;
+    --brand-quote: #A3B5A9;
+    --brand-inline-code: #D4A8BD;
+    --brand-comment: #A3B5A9;
+    --brand-string: #84C7AC;
+    --brand-keyword: #D4A8BD;
+    --brand-function: #97BBD6;
+    --brand-number: #D6B378;
+    --brand-error: #E59E91;
+    --brand-warning: #D6B378;
+    --brand-success: #84C7AC;
+    --brand-code-block-background: #25332C;
+    --brand-syntax-declaration: #BFA9DF;
+    --brand-syntax-escape: #F3B184;
+    --brand-syntax-builtin: #E7AA96;
+    --brand-syntax-macro: #CDB0EB;
+    --brand-syntax-type: #91C6BC;
+    --brand-syntax-parameter: #BFB9EC;
+    --brand-syntax-property: #9FC7DB;
+    --brand-syntax-operator: #AABDB1;
+    --brand-syntax-attribute: #DCC28D;
+    --brand-syntax-punctuation: #99ADA1;
+    --brand-border: #304138;
+    --brand-on-accent: #19231F;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    font-size: 16px;
+    line-height: 1.65;
+  }
+
+  code, kbd, samp, pre {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    line-height: 1.45;
+  }
+
+  ::selection {
+    color: var(--brand-selection-text);
+    background: var(--brand-prose-selection-background);
+  }
+
+  pre::selection, pre ::selection, code::selection, code ::selection {
+    color: var(--brand-selection-text);
+    background: var(--brand-selection-background);
+  }
+
+  :focus-visible {
+    outline-color: var(--brand-focus);
+  }
+
   /* Preserve the v3 pointer affordance after the v4 Preflight reset. */
   button:not(:disabled),
   [role="button"]:not(:disabled) {
@@ -38,35 +166,89 @@
 @utility prose {
   max-width: 70ch;
   font-family: var(--font-sans);
-  --tw-prose-body: var(--color-olive-800);
-  --tw-prose-headings: var(--color-olive-900);
-  --tw-prose-links: var(--color-olive-600);
-  --tw-prose-bold: var(--color-olive-800);
-  --tw-prose-counters: var(--color-olive-500);
-  --tw-prose-bullets: var(--color-olive-400);
-  --tw-prose-hr: var(--color-olive-200);
-  --tw-prose-quotes: var(--color-olive-700);
-  --tw-prose-quote-borders: var(--color-olive-300);
-  --tw-prose-captions: var(--color-olive-600);
-  --tw-prose-code: var(--color-olive-800);
-  --tw-prose-pre-bg: var(--color-olive-50);
-  --tw-prose-th-borders: var(--color-olive-200);
-  --tw-prose-td-borders: var(--color-olive-100);
-  --tw-prose-invert-body: var(--color-olive-200);
-  --tw-prose-invert-headings: var(--color-olive-100);
-  --tw-prose-invert-links: var(--color-olive-400);
-  --tw-prose-invert-bold: var(--color-olive-200);
-  --tw-prose-invert-counters: var(--color-olive-400);
-  --tw-prose-invert-bullets: var(--color-olive-500);
-  --tw-prose-invert-hr: var(--color-olive-700);
-  --tw-prose-invert-quotes: var(--color-olive-300);
-  --tw-prose-invert-quote-borders: var(--color-olive-600);
-  --tw-prose-invert-captions: var(--color-olive-400);
-  --tw-prose-invert-code: var(--color-olive-200);
-  --tw-prose-invert-pre-bg: var(--color-olive-950);
-  --tw-prose-invert-th-borders: var(--color-olive-700);
-  --tw-prose-invert-td-borders: var(--color-olive-800);
+  line-height: 1.65;
+  --tw-prose-body: var(--brand-text);
+  --tw-prose-headings: var(--brand-heading);
+  --tw-prose-links: var(--brand-link);
+  --tw-prose-bold: var(--brand-text);
+  --tw-prose-counters: var(--brand-muted);
+  --tw-prose-bullets: var(--brand-muted);
+  --tw-prose-hr: var(--brand-border);
+  --tw-prose-quotes: var(--brand-quote);
+  --tw-prose-quote-borders: var(--brand-border);
+  --tw-prose-captions: var(--brand-muted);
+  --tw-prose-code: var(--brand-inline-code);
+  --tw-prose-pre-code: var(--brand-text);
+  --tw-prose-pre-bg: var(--brand-code-block-background);
+  --tw-prose-th-borders: var(--brand-border);
+  --tw-prose-td-borders: var(--brand-border);
+  --tw-prose-invert-body: var(--brand-text);
+  --tw-prose-invert-headings: var(--brand-heading);
+  --tw-prose-invert-links: var(--brand-link);
+  --tw-prose-invert-bold: var(--brand-text);
+  --tw-prose-invert-counters: var(--brand-muted);
+  --tw-prose-invert-bullets: var(--brand-muted);
+  --tw-prose-invert-hr: var(--brand-border);
+  --tw-prose-invert-quotes: var(--brand-quote);
+  --tw-prose-invert-quote-borders: var(--brand-border);
+  --tw-prose-invert-captions: var(--brand-muted);
+  --tw-prose-invert-code: var(--brand-inline-code);
+  --tw-prose-invert-pre-code: var(--brand-text);
+  --tw-prose-invert-pre-bg: var(--brand-code-block-background);
+  --tw-prose-invert-th-borders: var(--brand-border);
+  --tw-prose-invert-td-borders: var(--brand-border);
 }
+
+.prose :where(pre, code, kbd, samp) {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.chroma {
+  color: var(--brand-text);
+  background-color: var(--brand-code-block-background);
+}
+
+.chroma .c, .chroma .ch, .chroma .cm, .chroma .c1, .chroma .cs,
+.chroma .ln, .chroma .lnt {
+  color: var(--brand-comment);
+}
+
+.chroma .k, .chroma .kc, .chroma .kn, .chroma .kp, .chroma .kr, .chroma .ow {
+  color: var(--brand-keyword);
+}
+
+.chroma .kd { color: var(--brand-syntax-declaration); }
+.chroma .kt, .chroma .nc { color: var(--brand-syntax-type); }
+.chroma .nf, .chroma .fm { color: var(--brand-function); }
+.chroma .nb, .chroma .bp { color: var(--brand-syntax-builtin); }
+.chroma .na, .chroma .nt { color: var(--brand-syntax-attribute); }
+.chroma .nd { color: var(--brand-syntax-macro); }
+.chroma .nv, .chroma .vc, .chroma .vg, .chroma .vi, .chroma .vm {
+  color: var(--brand-syntax-parameter);
+}
+.chroma .py { color: var(--brand-syntax-property); }
+.chroma .o { color: var(--brand-syntax-operator); }
+.chroma .p { color: var(--brand-syntax-punctuation); }
+.chroma .s, .chroma .sa, .chroma .sb, .chroma .sc, .chroma .dl,
+.chroma .sd, .chroma .s2, .chroma .sh, .chroma .sx, .chroma .sr,
+.chroma .s1, .chroma .ss {
+  color: var(--brand-string);
+}
+.chroma .se, .chroma .si { color: var(--brand-syntax-escape); }
+.chroma .m, .chroma .mb, .chroma .mf, .chroma .mh, .chroma .mi,
+.chroma .il, .chroma .mo {
+  color: var(--brand-number);
+}
+.chroma .err, .chroma .gd { color: var(--brand-error); }
+.chroma .gi { color: var(--brand-success); }
+.chroma .hl { background-color: var(--brand-selection-background); }
+.chroma .lntable { display: block; overflow-x: auto; }
+.chroma .lntd { padding: 0; border: 0; vertical-align: top; }
+.chroma .lntd pre { margin: 0; }
+.chroma .line { display: flex; }
+.chroma .cl { flex: 1; }
 
 /* ── Book 3D cover effect ──────────────────────────────── */
 .book-3d {
@@ -133,10 +315,6 @@
   content: '✦';
   display: inline-block;
   font-size: 1rem;
-  color: var(--color-olive-400);
+  color: var(--brand-muted);
   letter-spacing: 0.5em;
-}
-
-.dark .prose-fiction hr::after {
-  color: var(--color-olive-600);
 }

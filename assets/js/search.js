@@ -53,8 +53,8 @@
         isLoading = false;
         if (results) {
           results.innerHTML =
-            '<p class="text-sm text-olive-500 dark:text-olive-400 text-center py-6">' +
-            'Search index not found. Run <code class="font-mono bg-olive-100 dark:bg-olive-800 px-1 rounded-sm">npm run build</code> first.' +
+            '<p class="text-sm text-brand-muted dark:text-brand-muted text-center py-6">' +
+            'Search index not found. Run <code class="font-mono bg-brand-surface dark:bg-brand-surface px-1 rounded-sm">npm run build</code> first.' +
             '</p>';
         }
       });
@@ -72,7 +72,7 @@
     if (!results) return;
     if (!items || items.length === 0) {
       results.innerHTML =
-        '<p class="text-sm text-olive-500 dark:text-olive-400 text-center py-6">No results found.</p>';
+        '<p class="text-sm text-brand-muted dark:text-brand-muted text-center py-6">No results found.</p>';
       return;
     }
     Promise.all(items.slice(0, 10).map(function (item) { return item.data(); }))
@@ -80,15 +80,15 @@
         results.innerHTML = dataList
           .map(function (d) {
             return (
-              '<a href="' + d.url + '" class="block px-4 py-3 rounded-lg hover:bg-olive-100 dark:hover:bg-olive-800 transition-colors group" onclick="document.getElementById(\'search-modal\').setAttribute(\'hidden\',\'\');document.body.style.overflow=\'\'">' +
-              '<p class="text-xs text-olive-500 dark:text-olive-400 uppercase tracking-wider mb-0.5">' +
+              '<a href="' + d.url + '" class="block px-4 py-3 rounded-lg hover:bg-brand-surface dark:hover:bg-brand-surface transition-colors group" onclick="document.getElementById(\'search-modal\').setAttribute(\'hidden\',\'\');document.body.style.overflow=\'\'">' +
+              '<p class="text-xs text-brand-muted dark:text-brand-muted uppercase tracking-wider mb-0.5">' +
               (d.meta && d.meta.section ? d.meta.section : '') +
               '</p>' +
-              '<p class="font-medium text-olive-900 dark:text-olive-100 group-hover:text-olive-700 dark:group-hover:text-olive-300 line-clamp-1">' +
+              '<p class="font-medium text-brand-text dark:text-brand-text group-hover:text-brand-accent dark:group-hover:text-brand-accent line-clamp-1">' +
               (d.meta && d.meta.title ? d.meta.title : d.url) +
               '</p>' +
               (d.excerpt
-                ? '<p class="text-sm text-olive-600 dark:text-olive-400 mt-0.5 line-clamp-2">' + d.excerpt + '</p>'
+                ? '<p class="text-sm text-brand-accent dark:text-brand-muted mt-0.5 line-clamp-2">' + d.excerpt + '</p>'
                 : '') +
               '</a>'
             );

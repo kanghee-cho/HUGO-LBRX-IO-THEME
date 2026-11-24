@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <title>LBRX Press</title>
+  <rect width="64" height="64" rx="12" fill="#246958"/>
+  <g fill="#F3F4EC">
+    <rect x="14" y="8" width="36" height="5" rx="2"/>
+    <path d="M14 16H40L50 26V48H14Z"/>
+    <rect x="14" y="51" width="36" height="5" rx="2"/>
+  </g>
+  <path d="M40 16V26H50Z" fill="#D8E6DA"/>
+  <path d="M22 23H29V40H42V45H22Z" fill="#246958"/>
+</svg>
