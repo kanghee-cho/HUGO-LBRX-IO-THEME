@@ -5,10 +5,10 @@
 <section>
   {{- /* ── 헤더 */}}
   <header class="mb-10">
-    <h1 class="font-sans text-2xl sm:text-4xl font-bold text-olive-900 dark:text-olive-100">
+    <h1 class="font-sans text-2xl sm:text-4xl font-bold text-brand-text dark:text-brand-text">
       {{ i18n "shelf_title" | default "Shelf" }}
     </h1>
-    <p class="mt-2 text-base text-olive-600 dark:text-olive-400">
+    <p class="mt-2 text-base text-brand-accent dark:text-brand-muted">
       {{ i18n "shelf_desc" | default "Books I've read, reviewed, and recommended." }}
     </p>
   </header>
@@ -26,24 +26,24 @@
   {{- end -}}
   {{- $todayBooks := first 6 (sort $picks "score") -}}
   {{- if $todayBooks -}}
-    <div class="rounded-2xl bg-olive-100 dark:bg-olive-900 border border-olive-200 dark:border-olive-800 p-5 sm:p-7 mb-10">
+    <div class="rounded-2xl bg-brand-surface dark:bg-brand-surface border border-brand-border dark:border-brand-border p-5 sm:p-7 mb-10">
       <div class="flex items-start justify-between mb-5">
         <div class="flex items-center gap-3">
-          <div class="w-9 h-9 rounded-xl bg-olive-200 dark:bg-olive-800 flex items-center justify-center flex-none">
-            <svg class="w-4 h-4 text-olive-600 dark:text-olive-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+          <div class="w-9 h-9 rounded-xl bg-brand-surface dark:bg-brand-surface flex items-center justify-center flex-none">
+            <svg class="w-4 h-4 text-brand-accent dark:text-brand-accent" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
               <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
             </svg>
           </div>
           <div>
-            <h2 class="font-sans text-base sm:text-lg font-bold text-olive-900 dark:text-olive-100 leading-tight">
+            <h2 class="font-sans text-base sm:text-lg font-bold text-brand-text dark:text-brand-text leading-tight">
               {{ i18n "shelf_today" | default "Today's Shelf" }}
             </h2>
-            <p class="text-xs text-olive-500 dark:text-olive-400 mt-0.5">
+            <p class="text-xs text-brand-muted dark:text-brand-muted mt-0.5">
               {{ i18n "shelf_today_desc" | default "A selection chosen for today" }}
             </p>
           </div>
         </div>
-        <span class="text-xs text-olive-400 dark:text-olive-500 font-medium tabular-nums flex-none pt-0.5">
+        <span class="text-xs text-brand-muted dark:text-brand-muted font-medium tabular-nums flex-none pt-0.5">
           {{- if eq $lang "ko" }}{{ now.Format "2006. 1. 2" }}{{ else }}{{ now.Format "Jan 2, 2006" }}{{ end -}}
         </span>
       </div>
@@ -60,16 +60,16 @@
                   <div class="book-spine"></div>
                 </div>
               {{- else -}}
-                <div class="aspect-[2/3] rounded-md bg-white dark:bg-black flex flex-col items-center justify-center shadow-xs gap-1.5">
-                  <svg class="w-6 h-6 text-olive-300 dark:text-olive-400" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true">
+                <div class="aspect-[2/3] rounded-md bg-brand-surface dark:bg-black flex flex-col items-center justify-center shadow-xs gap-1.5">
+                  <svg class="w-6 h-6 text-brand-muted dark:text-brand-muted" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
                   </svg>
-                  <span class="text-[9px] text-olive-400 dark:text-olive-500 font-medium">{{ i18n "no_cover" | default "No image" }}</span>
+                  <span class="text-[9px] text-brand-muted dark:text-brand-muted font-medium">{{ i18n "no_cover" | default "No image" }}</span>
                 </div>
               {{- end -}}
               <div class="mt-1.5 space-y-0.5 pl-1">
-                <h3 class="text-xs font-semibold text-olive-900 dark:text-olive-100 group-hover:text-olive-600 dark:group-hover:text-olive-300 transition-colors line-clamp-2 leading-snug">{{ $book.Title }}</h3>
-                {{- with $book.Params.author -}}<p class="text-[10px] text-olive-500 dark:text-olive-400">{{ . }}</p>{{- end -}}
+                <h3 class="text-xs font-semibold text-brand-text dark:text-brand-text group-hover:text-brand-accent dark:group-hover:text-brand-accent transition-colors line-clamp-2 leading-snug">{{ $book.Title }}</h3>
+                {{- with $book.Params.author -}}<p class="text-[10px] text-brand-muted dark:text-brand-muted">{{ . }}</p>{{- end -}}
                 {{- with $book.Params.rating -}}<div class="pt-0.5">{{- partial "star-rating.html" (dict "rating" . "size" "sm" "uid" $uid) -}}</div>{{- end -}}
                 {{- with $book.Params.status -}}<div>{{- partial "status-badge.html" (dict "status" .) -}}</div>{{- end -}}
               </div>
@@ -84,11 +84,11 @@
   {{- /* ── 전체 책장 (페이지네이션) */}}
   <div>
     <div class="flex items-center gap-3 mb-5">
-      <h2 class="text-xs font-semibold uppercase tracking-widest text-olive-500 dark:text-olive-400">
+      <h2 class="text-xs font-semibold uppercase tracking-widest text-brand-muted dark:text-brand-muted">
         {{ i18n "shelf_all" | default "Full Shelf" }}
       </h2>
-      <div class="flex-1 h-px bg-olive-200 dark:bg-olive-800"></div>
-      <span class="text-xs text-olive-400 dark:text-olive-500 tabular-nums">
+      <div class="flex-1 h-px bg-brand-surface dark:bg-brand-surface"></div>
+      <span class="text-xs text-brand-muted dark:text-brand-muted tabular-nums">
         {{ $total }}{{ if eq $lang "ko" }}권{{ else }} books{{ end }}
       </span>
     </div>
@@ -105,16 +105,16 @@
                   <div class="book-spine"></div>
                 </div>
               {{- else -}}
-                <div class="aspect-[2/3] rounded-md bg-white dark:bg-black flex flex-col items-center justify-center shadow-xs gap-1.5">
-                  <svg class="w-6 h-6 text-olive-300 dark:text-olive-400" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true">
+                <div class="aspect-[2/3] rounded-md bg-brand-surface dark:bg-black flex flex-col items-center justify-center shadow-xs gap-1.5">
+                  <svg class="w-6 h-6 text-brand-muted dark:text-brand-muted" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
                   </svg>
-                  <span class="text-[9px] text-olive-400 dark:text-olive-500 font-medium">{{ i18n "no_cover" | default "No image" }}</span>
+                  <span class="text-[9px] text-brand-muted dark:text-brand-muted font-medium">{{ i18n "no_cover" | default "No image" }}</span>
                 </div>
               {{- end -}}
               <div class="mt-1.5 space-y-0.5 pl-1">
-                <h3 class="text-xs font-semibold text-olive-900 dark:text-olive-100 group-hover:text-olive-600 dark:group-hover:text-olive-300 transition-colors line-clamp-2 leading-snug">{{ .Title }}</h3>
-                {{- with .Params.author -}}<p class="text-[10px] text-olive-500 dark:text-olive-400">{{ . }}</p>{{- end -}}
+                <h3 class="text-xs font-semibold text-brand-text dark:text-brand-text group-hover:text-brand-accent dark:group-hover:text-brand-accent transition-colors line-clamp-2 leading-snug">{{ .Title }}</h3>
+                {{- with .Params.author -}}<p class="text-[10px] text-brand-muted dark:text-brand-muted">{{ . }}</p>{{- end -}}
                 {{- with .Params.rating -}}<div class="pt-0.5">{{- partial "star-rating.html" (dict "rating" . "size" "sm" "uid" $uid) -}}</div>{{- end -}}
                 {{- with .Params.status -}}<div>{{- partial "status-badge.html" (dict "status" .) -}}</div>{{- end -}}
               </div>

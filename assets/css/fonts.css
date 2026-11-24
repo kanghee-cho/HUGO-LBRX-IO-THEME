@@ -1,0 +1,63 @@
+@font-face {
+  font-family: "LINE Seed Sans";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("../fonts/LINESeedSans_Rg.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "LINE Seed Sans";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("../fonts/LINESeedSans_Bd.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "LINE Seed Sans KR";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("../fonts/LINESeedKR-Rg.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "LINE Seed Sans KR";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("../fonts/LINESeedKR-Bd.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "LINE Seed JP_TTF";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("../fonts/LINESeedJP_TTF_Rg.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "LINE Seed JP_TTF";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("../fonts/LINESeedJP_TTF_Bd.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "D2Coding ligature";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("../fonts/D2CodingLigature-Regular.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "D2Coding ligature";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("../fonts/D2CodingLigature-Bold.woff2") format("woff2");
+}

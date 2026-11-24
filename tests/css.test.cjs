@@ -36,6 +36,40 @@ function themeValue(property) {
   return values.at(-1);
 }
 
+test('default favicon and manifest links resolve to correctly sized theme assets', () => {
+  const staticDir = path.join(__dirname, '../static');
+  const head = fs.readFileSync(path.join(__dirname, '../layouts/partials/head.html'), 'utf8');
+  for (const name of ['favicon.ico', 'favicon.svg', 'apple-touch-icon.png', 'site.webmanifest']) {
+    assert.ok(head.includes(`"${name}" | relURL`), `${name} must respect the site URL subpath`);
+    assert.ok(fs.existsSync(path.join(staticDir, name)), `Missing default asset: ${name}`);
+    assert.ok(!fs.existsSync(path.join(__dirname, '../exampleSite/static', name)),
+      `The example site must not shadow the theme's default ${name}`);
+  }
+  const manifest = JSON.parse(fs.readFileSync(path.join(staticDir, 'site.webmanifest'), 'utf8'));
+  for (const icon of [...manifest.icons, {src: 'apple-touch-icon.png', sizes: '180x180'}]) {
+    assert.ok(!icon.src.startsWith('/'), 'Manifest icon URLs must be relative');
+    const png = fs.readFileSync(path.join(staticDir, icon.src));
+    assert.equal(png.subarray(0, 8).toString('hex'), '89504e470d0a1a0a');
+    assert.equal(`${png.readUInt32BE(16)}x${png.readUInt32BE(20)}`, icon.sizes);
+  }
+  const ico = fs.readFileSync(path.join(staticDir, 'favicon.ico'));
+  assert.equal(ico.readUInt16LE(2), 1);
+  const sizes = [];
+  for (let index = 0; index < ico.readUInt16LE(4); index++) {
+    const entry = 6 + index * 16;
+    const size = ico[entry];
+    assert.equal(ico[entry + 1], size);
+    const length = ico.readUInt32LE(entry + 8);
+    const offset = ico.readUInt32LE(entry + 12);
+    const frame = ico.subarray(offset, offset + length);
+    assert.equal(frame.subarray(0, 8).toString('hex'), '89504e470d0a1a0a');
+    assert.equal(frame.readUInt32BE(16), size);
+    assert.equal(frame.readUInt32BE(20), size);
+    sizes.push(size);
+  }
+  assert.deepEqual(sizes.sort((a, b) => a - b), [16, 32, 48]);
+});
+
 test('responsive book grids retain their column counts and breakpoints', () => {
   for (const [name, columns, breakpoint] of [
     ['grid-cols-3', 3, null],
@@ -53,22 +87,20 @@ test('responsive book grids retain their column counts and breakpoints', () => {
   }
 });
 
-test('all safelisted grid, RSS and status utilities survive compilation', () => {
+test('grid, RSS and semantic status utilities survive compilation', () => {
   for (const name of [
     'grid-cols-2', 'grid-cols-3', 'grid-cols-4', 'grid-cols-5', 'grid-cols-6',
     'sm:grid-cols-4', 'lg:grid-cols-6',
-    'text-orange-400', 'hover:text-orange-500', 'dark:text-orange-400', 'dark:hover:text-orange-300',
-    'border-neutral-700', 'border-neutral-300', 'bg-neutral-200', 'bg-neutral-700',
-    'text-neutral-600', 'text-neutral-200',
-    'bg-sky-100', 'border-sky-400', 'text-sky-700',
-    'bg-sky-900/50', 'border-sky-600', 'text-sky-300',
-    'bg-amber-50', 'border-amber-400', 'text-amber-700',
-    'bg-amber-900/40', 'border-amber-600', 'text-amber-300',
+    'text-brand-accent', 'hover:text-brand-accent',
+    'bg-brand-surface', 'text-brand-success', 'border-brand-success',
+    'text-brand-function', 'border-brand-function',
+    'text-brand-warning', 'border-brand-warning',
+    'text-brand-muted', 'border-brand-muted',
   ]) rulesFor(name);
 });
 
 test('dark mode remains controlled by the dark class, not a media query', () => {
-  for (const name of ['dark:bg-olive-950', 'dark:text-olive-100', 'dark:prose-invert']) {
+  for (const name of ['dark:bg-brand-background', 'dark:text-brand-text', 'dark:prose-invert']) {
     for (const rule of rulesFor(name)) {
       assert.ok(rule.selector.includes(':where(.dark,.dark *)'), rule.selector);
       for (let parent = rule.parent; parent; parent = parent.parent) {
@@ -78,15 +110,38 @@ test('dark mode remains controlled by the dark class, not a media query', () => 
   }
 });
 
-test('CSS-first theme preserves all olive colors and both font stacks', () => {
-  for (const [shade, color] of Object.entries({
-    50: '#fafaf5', 100: '#f0f2dc', 200: '#dde3b0', 300: '#c4cf7e',
-    400: '#aab853', 500: '#8a9e3a', 600: '#6b7c2d', 700: '#526022',
-    800: '#3d4a1a', 900: '#2c3612', 950: '#1a1a0d',
-  })) assert.equal(themeValue(`--color-olive-${shade}`), color);
-  assert.deepEqual(declarationsFor(rulesFor('text-olive-600'), 'color'), [
-    'var(--color-olive-600)',
-  ]);
+test('semantic utilities resolve the reference palette in both modes', () => {
+  for (const [selector, expected] of [
+    [':root', {
+      background: '#f3f4ec', surface: '#e8ede4', text: '#24362f',
+      accent: '#246958', muted: '#52655b', 'on-accent': '#f3f4ec',
+    }],
+    ['.dark', {
+      background: '#19231f', surface: '#25332c', text: '#dce6db',
+      accent: '#84c7ac', muted: '#a3b5a9', 'on-accent': '#19231f',
+    }],
+  ]) {
+    const rules = [];
+    css.walkRules(rule => {
+      if (rule.selector === selector) rules.push(rule);
+    });
+    for (const [role, color] of Object.entries(expected)) {
+      assert.equal(lastValue(rules, `--brand-${role}`), color);
+    }
+  }
+  for (const [utility, property, role] of [
+    ['bg-brand-background', 'background-color', 'background'],
+    ['dark:bg-brand-background', 'background-color', 'background'],
+    ['text-brand-text', 'color', 'text'],
+    ['dark:text-brand-text', 'color', 'text'],
+    ['text-brand-accent', 'color', 'accent'],
+    ['text-brand-on-accent', 'color', 'on-accent'],
+  ]) {
+    assert.equal(lastValue(rulesFor(utility), property), `var(--brand-${role})`);
+  }
+});
+
+test('local font stacks and weight mapping use only shipped Regular/Bold faces', () => {
   assert.deepEqual(declarationsFor(rulesFor('font-sans'), 'font-family'), [
     'var(--font-sans)',
   ]);
@@ -94,9 +149,28 @@ test('CSS-first theme preserves all olive colors and both font stacks', () => {
     'var(--font-mono)',
   ]);
   assert.equal(themeValue('--font-sans').replace(/["']/g, '').replace(/,\s*/g, ','),
-    'Pretendard Variable,Noto Sans JP,ui-sans-serif,system-ui,sans-serif');
+    'LINE Seed Sans,LINE Seed Sans KR,LINE Seed JP_TTF,sans-serif');
   assert.equal(themeValue('--font-mono').replace(/["']/g, '').replace(/,\s*/g, ','),
-    'JetBrains Mono,ui-monospace,monospace');
+    'D2Coding ligature,monospace');
+  for (const [name, weight] of [['light', '400'], ['medium', '400'], ['semibold', '700']]) {
+    assert.equal(themeValue(`--font-weight-${name}`), weight);
+  }
+  const faces = [];
+  css.walkAtRules('font-face', rule => faces.push(rule));
+  assert.equal(faces.length, 8);
+  for (const family of ['LINE Seed Sans', 'LINE Seed Sans KR', 'LINE Seed JP_TTF', 'D2Coding ligature']) {
+    const familyFaces = faces.filter(face =>
+      lastValue([face], 'font-family').replace(/["']/g, '') === family);
+    assert.deepEqual(familyFaces.map(face => lastValue([face], 'font-weight')).sort(), ['400', '700']);
+  }
+  for (const face of faces) {
+    assert.equal(lastValue([face], 'font-display'), 'swap');
+    const url = lastValue([face], 'src').match(/url\(["']?([^"')]+)["']?\)/)[1];
+    const font = fs.readFileSync(path.join(__dirname, '../static', url.replace('../', '')));
+    assert.equal(font.toString('ascii', 0, 4), 'wOF2');
+  }
+  const head = fs.readFileSync(path.join(__dirname, '../layouts/partials/head.html'), 'utf8');
+  assert.doesNotMatch(head, /fonts\.googleapis\.com|fonts\.gstatic\.com|cdn\.jsdelivr\.net/);
 });
 
 test('arbitrary shelf grid tracks retain two valid space-separated columns', () => {
@@ -122,15 +196,16 @@ test('renamed utilities retain v3 geometry and accessible focus outlines', () =>
   }
 });
 
-test('Typography preserves the prose width and light/dark olive palette', () => {
-  const rules = rulesFor('prose');
+test('Typography preserves prose width and follows semantic colors in both modes', () => {
+  const rules = rulesFor('prose').filter(rule => rule.selector === '.prose');
   for (const [property, value] of [
     ['max-width', '70ch'],
     ['font-family', 'var(--font-sans)'],
-    ['--tw-prose-body', 'var(--color-olive-800)'],
-    ['--tw-prose-links', 'var(--color-olive-600)'],
-    ['--tw-prose-invert-body', 'var(--color-olive-200)'],
-    ['--tw-prose-invert-pre-bg', 'var(--color-olive-950)'],
+    ['--tw-prose-body', 'var(--brand-text)'],
+    ['--tw-prose-links', 'var(--brand-link)'],
+    ['--tw-prose-code', 'var(--brand-inline-code)'],
+    ['--tw-prose-invert-body', 'var(--brand-text)'],
+    ['--tw-prose-invert-pre-bg', 'var(--brand-code-block-background)'],
   ]) {
     assert.equal(lastValue(rules, property), value);
   }
@@ -146,6 +221,22 @@ test('Typography preserves the prose width and light/dark olive palette', () => 
   assert.ok(orderedRules.indexOf(rulesFor('max-w-none')[0]) > orderedRules.indexOf(
     rules.findLast(rule => rule.nodes.some(node => node.prop === 'max-width'))),
   'Explicit width utilities must override the default prose width');
+});
+
+test('prose code and syntax highlighting follow the brand typography and selection roles', () => {
+  const codeRules = [];
+  const selections = [];
+  const keywords = [];
+  css.walkRules(rule => {
+    if (rule.selector === '.prose :where(pre,code,kbd,samp)') codeRules.push(rule);
+    if (rule.selector === '::selection') selections.push(rule);
+    if (rule.selector.split(',').includes('.chroma .k')) keywords.push(rule);
+  });
+  assert.equal(lastValue(codeRules, 'font-family'), 'var(--font-mono)');
+  assert.equal(lastValue(codeRules, 'font-size'), '14px');
+  assert.equal(lastValue(codeRules, 'line-height'), '1.45');
+  assert.equal(lastValue(selections, 'background'), 'var(--brand-prose-selection-background)');
+  assert.equal(lastValue(keywords, 'color'), 'var(--brand-keyword)');
 });
 
 test('interactive buttons keep their pointer affordance', () => {
@@ -173,7 +264,7 @@ test('all twelve edition palettes include light, dark and hover utilities', () =
 test('JavaScript-generated search result utilities are included', () => {
   for (const name of [
     'line-clamp-1', 'line-clamp-2', 'tracking-wider',
-    'group-hover:text-olive-700', 'dark:group-hover:text-olive-300',
+    'group-hover:text-brand-accent', 'dark:group-hover:text-brand-accent',
   ]) rulesFor(name);
 });
 
@@ -182,9 +273,9 @@ test('custom fiction ornaments and book cover effects remain compiled', () => {
   css.walkRules(rule => {
     if (/^(\.dark )?\.prose-fiction hr::?after$/.test(rule.selector)) ornaments.push(rule);
   });
-  assert.equal(ornaments.length, 2);
+  assert.equal(ornaments.length, 1);
   assert.deepEqual(declarationsFor(ornaments, 'color'), [
-    'var(--color-olive-400)', 'var(--color-olive-600)',
+    'var(--brand-muted)',
   ]);
   assert.deepEqual(declarationsFor(rulesFor('book-3d'), 'transform'), [
     'perspective(700px)rotateY(0)',

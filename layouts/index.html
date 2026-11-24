@@ -4,11 +4,11 @@
 
   {{/* ── 사이트 헤더 */}}
   <header>
-    <h1 class="font-sans text-3xl sm:text-5xl font-bold text-olive-900 dark:text-olive-100 leading-tight">
+    <h1 class="font-sans text-3xl sm:text-5xl font-bold text-brand-text dark:text-brand-text leading-tight">
       {{ .Site.Title }}
     </h1>
     {{- with .Site.Params.description -}}
-      <p class="mt-4 text-lg sm:text-xl text-olive-600 dark:text-olive-400 max-w-2xl">{{ . }}</p>
+      <p class="mt-4 text-lg sm:text-xl text-brand-accent dark:text-brand-muted max-w-2xl">{{ . }}</p>
     {{- end -}}
   </header>
 
@@ -21,8 +21,8 @@
       {{- $palette := partial "edition-palette.html" (.Params.accent_color | default "emerald") -}}
       <div>
         <div class="flex items-baseline justify-between mb-4">
-          <h2 class="font-sans text-xl font-semibold text-olive-900 dark:text-olive-100">{{ i18n "edition_current" | default "현재 에디션" }}</h2>
-          <a href="{{ "/editions" | relLangURL }}" class="text-sm text-olive-500 hover:text-olive-900 dark:hover:text-olive-100 transition-colors">{{ i18n "see_all" }} →</a>
+          <h2 class="font-sans text-xl font-semibold text-brand-text dark:text-brand-text">{{ i18n "edition_current" | default "현재 에디션" }}</h2>
+          <a href="{{ "/editions" | relLangURL }}" class="text-sm text-brand-muted hover:text-brand-accent dark:hover:text-brand-accent transition-colors">{{ i18n "see_all" }} →</a>
         </div>
         <div class="rounded-2xl {{ $palette.headerBg }} border {{ $palette.border }} p-6 sm:p-8">
           <p class="text-xs {{ $palette.meta }} uppercase tracking-wider mb-2">
@@ -88,11 +88,11 @@
     {{- if $todayBooks -}}
     <div>
       <div class="flex items-baseline justify-between mb-4">
-        <h2 class="font-sans text-xl font-semibold text-olive-900 dark:text-olive-100">{{ i18n "shelf_today" | default "오늘의 책장" }}</h2>
-        <a href="{{ "/shelf" | relLangURL }}" class="text-sm text-olive-500 hover:text-olive-900 dark:hover:text-olive-100 transition-colors">{{ i18n "see_all" }} →</a>
+        <h2 class="font-sans text-xl font-semibold text-brand-text dark:text-brand-text">{{ i18n "shelf_today" | default "오늘의 책장" }}</h2>
+        <a href="{{ "/shelf" | relLangURL }}" class="text-sm text-brand-muted hover:text-brand-accent dark:hover:text-brand-accent transition-colors">{{ i18n "see_all" }} →</a>
       </div>
-      <div class="rounded-2xl bg-olive-100 dark:bg-olive-900 border border-olive-200 dark:border-olive-800 p-5 sm:p-6">
-        <p class="text-xs text-olive-400 dark:text-olive-500 mb-4 tabular-nums">
+      <div class="rounded-2xl bg-brand-surface dark:bg-brand-surface border border-brand-border dark:border-brand-border p-5 sm:p-6">
+        <p class="text-xs text-brand-muted dark:text-brand-muted mb-4 tabular-nums">
           {{- if eq $lang "ko" }}{{ now.Format "2006. 1. 2" }}{{ else }}{{ now.Format "Jan 2, 2006" }}{{ end -}}
         </p>
         <ul class="grid grid-cols-3 sm:grid-cols-6 gap-3 sm:gap-4">
@@ -107,12 +107,12 @@
                     <div class="book-spine"></div>
                   </div>
                 {{- else -}}
-                  <div class="aspect-[2/3] rounded-md bg-white dark:bg-black flex items-center justify-center">
-                    <svg class="w-5 h-5 text-olive-300 dark:text-olive-500" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+                  <div class="aspect-[2/3] rounded-md bg-brand-surface dark:bg-black flex items-center justify-center">
+                    <svg class="w-5 h-5 text-brand-muted dark:text-brand-muted" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
                   </div>
                 {{- end -}}
-                <p class="mt-1.5 text-[10px] font-medium text-olive-800 dark:text-olive-200 line-clamp-2 leading-snug">{{ $book.Title }}</p>
-                {{- with $book.Params.author -}}<p class="text-[9px] text-olive-500 dark:text-olive-400">{{ . }}</p>{{- end -}}
+                <p class="mt-1.5 text-[10px] font-medium text-brand-text dark:text-brand-text line-clamp-2 leading-snug">{{ $book.Title }}</p>
+                {{- with $book.Params.author -}}<p class="text-[9px] text-brand-muted dark:text-brand-muted">{{ . }}</p>{{- end -}}
               </a>
             </li>
           {{- end -}}
@@ -138,43 +138,43 @@
   {{- if or $latestSerial $latestStandalone -}}
   <div>
     <div class="flex items-baseline justify-between mb-4">
-      <h2 class="font-sans text-xl font-semibold text-olive-900 dark:text-olive-100">{{ i18n "latest_fiction" | default "최신 픽션" }}</h2>
-      <a href="{{ "/fiction" | relLangURL }}" class="text-sm text-olive-500 hover:text-olive-900 dark:hover:text-olive-100 transition-colors">{{ i18n "see_all" }} →</a>
+      <h2 class="font-sans text-xl font-semibold text-brand-text dark:text-brand-text">{{ i18n "latest_fiction" | default "최신 픽션" }}</h2>
+      <a href="{{ "/fiction" | relLangURL }}" class="text-sm text-brand-muted hover:text-brand-accent dark:hover:text-brand-accent transition-colors">{{ i18n "see_all" }} →</a>
     </div>
     <div class="grid sm:grid-cols-2 gap-4">
 
       {{/* 최신연작 */}}
       {{- range $latestSerial -}}
-      <a href="{{ .RelPermalink }}" class="group block rounded-xl border border-olive-200 dark:border-olive-800 bg-white dark:bg-stone-900 p-5 hover:border-olive-400 dark:hover:border-olive-600 transition-colors">
-        <p class="text-[10px] font-semibold uppercase tracking-widest text-olive-400 dark:text-olive-500 mb-2">{{ i18n "fiction_serial_recent" | default "최신연작" }}</p>
-        <h3 class="font-sans text-base font-bold text-olive-900 dark:text-olive-100 group-hover:text-olive-600 dark:group-hover:text-olive-300 transition-colors leading-snug mb-1">{{ .Title }}</h3>
-        {{- with .Description -}}<p class="text-sm text-olive-600 dark:text-olive-400 line-clamp-2">{{ . }}</p>{{- end -}}
+      <a href="{{ .RelPermalink }}" class="group block rounded-xl border border-brand-border dark:border-brand-border bg-brand-surface dark:bg-brand-surface p-5 hover:border-brand-accent dark:hover:border-brand-accent transition-colors">
+        <p class="text-[10px] font-semibold uppercase tracking-widest text-brand-muted dark:text-brand-muted mb-2">{{ i18n "fiction_serial_recent" | default "최신연작" }}</p>
+        <h3 class="font-sans text-base font-bold text-brand-text dark:text-brand-text group-hover:text-brand-accent dark:group-hover:text-brand-accent transition-colors leading-snug mb-1">{{ .Title }}</h3>
+        {{- with .Description -}}<p class="text-sm text-brand-accent dark:text-brand-muted line-clamp-2">{{ . }}</p>{{- end -}}
         <div class="flex items-center gap-2 mt-3 flex-wrap">
-          {{- with .Params.genre -}}<span class="text-[10px] px-2 py-0.5 rounded-full bg-olive-100 dark:bg-olive-800 text-olive-600 dark:text-olive-400">{{ . }}</span>{{- end -}}
+          {{- with .Params.genre -}}<span class="text-[10px] px-2 py-0.5 rounded-full bg-brand-surface dark:bg-brand-surface text-brand-accent dark:text-brand-muted">{{ . }}</span>{{- end -}}
           {{- with .Params.status -}}
             {{- $s := . -}}
             <span class="text-[10px] px-2 py-0.5 rounded-full border
-              {{- if or (eq $s "complete") (eq $s "completed") }} border-olive-400 text-olive-600 dark:border-olive-500 dark:text-olive-400
+              {{- if or (eq $s "complete") (eq $s "completed") }} border-brand-border text-brand-accent dark:border-brand-border dark:text-brand-muted
               {{- else }} border-amber-400 text-amber-700 dark:border-amber-500 dark:text-amber-400{{ end }}">
               {{- if or (eq $s "complete") (eq $s "completed") }}{{ i18n "fiction_status_complete" }}{{ else }}{{ i18n "fiction_status_ongoing" }}{{ end -}}
             </span>
           {{- end -}}
           {{- $episodeCount := len .Pages -}}
-          {{- if gt $episodeCount 0 -}}<span class="text-[10px] text-olive-400 dark:text-olive-500">{{ $episodeCount }}{{ i18n "episode_label" }}</span>{{- end -}}
+          {{- if gt $episodeCount 0 -}}<span class="text-[10px] text-brand-muted dark:text-brand-muted">{{ $episodeCount }}{{ i18n "episode_label" }}</span>{{- end -}}
         </div>
       </a>
       {{- end -}}
 
       {{/* 최신단편 */}}
       {{- range $latestStandalone -}}
-      <a href="{{ .RelPermalink }}" class="group block rounded-xl border border-olive-200 dark:border-olive-800 bg-white dark:bg-stone-900 p-5 hover:border-olive-400 dark:hover:border-olive-600 transition-colors">
-        <p class="text-[10px] font-semibold uppercase tracking-widest text-olive-400 dark:text-olive-500 mb-2">{{ i18n "fiction_standalone_recent" | default "최신단편" }}</p>
-        <h3 class="font-sans text-base font-bold text-olive-900 dark:text-olive-100 group-hover:text-olive-600 dark:group-hover:text-olive-300 transition-colors leading-snug mb-1">{{ .Title }}</h3>
-        {{- with .Description -}}<p class="text-sm text-olive-600 dark:text-olive-400 line-clamp-2">{{ . }}</p>{{- end -}}
+      <a href="{{ .RelPermalink }}" class="group block rounded-xl border border-brand-border dark:border-brand-border bg-brand-surface dark:bg-brand-surface p-5 hover:border-brand-accent dark:hover:border-brand-accent transition-colors">
+        <p class="text-[10px] font-semibold uppercase tracking-widest text-brand-muted dark:text-brand-muted mb-2">{{ i18n "fiction_standalone_recent" | default "최신단편" }}</p>
+        <h3 class="font-sans text-base font-bold text-brand-text dark:text-brand-text group-hover:text-brand-accent dark:group-hover:text-brand-accent transition-colors leading-snug mb-1">{{ .Title }}</h3>
+        {{- with .Description -}}<p class="text-sm text-brand-accent dark:text-brand-muted line-clamp-2">{{ . }}</p>{{- end -}}
         <div class="flex items-center gap-2 mt-3 flex-wrap">
-          {{- with .Params.genre -}}<span class="text-[10px] px-2 py-0.5 rounded-full bg-olive-100 dark:bg-olive-800 text-olive-600 dark:text-olive-400">{{ . }}</span>{{- end -}}
-          {{- with .Params.word_count -}}<span class="text-[10px] text-olive-400 dark:text-olive-500">{{ . }}{{ i18n "words" }}</span>{{- end -}}
-          <time class="text-[10px] text-olive-400 dark:text-olive-500" datetime="{{ .Date.Format "2006-01-02" }}">
+          {{- with .Params.genre -}}<span class="text-[10px] px-2 py-0.5 rounded-full bg-brand-surface dark:bg-brand-surface text-brand-accent dark:text-brand-muted">{{ . }}</span>{{- end -}}
+          {{- with .Params.word_count -}}<span class="text-[10px] text-brand-muted dark:text-brand-muted">{{ . }}{{ i18n "words" }}</span>{{- end -}}
+          <time class="text-[10px] text-brand-muted dark:text-brand-muted" datetime="{{ .Date.Format "2006-01-02" }}">
             {{- if eq $lang "ko" }}{{ .Date.Format "2006. 1. 2" }}{{ else }}{{ .Date.Format "Jan 2, 2006" }}{{ end -}}
           </time>
         </div>

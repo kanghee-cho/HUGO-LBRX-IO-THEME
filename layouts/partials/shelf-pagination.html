@@ -20,7 +20,7 @@
       {{- /* ⇤ First page */}}
       {{- if gt $c 1 -}}
         <a href="{{ (index $pag.Pagers 0).URL }}"
-           class="inline-flex items-center gap-1 px-3 py-2 rounded-lg text-sm font-medium text-olive-700 dark:text-olive-300 border border-olive-200 dark:border-olive-700 hover:bg-olive-100 dark:hover:bg-olive-900 transition-colors"
+           class="inline-flex items-center gap-1 px-3 py-2 rounded-lg text-sm font-medium text-brand-accent dark:text-brand-accent border border-brand-border dark:border-brand-border hover:bg-brand-surface dark:hover:bg-brand-surface transition-colors"
            aria-label="{{ if eq $lang "ko" }}첫 페이지{{ else }}First page{{ end }}">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
             <path stroke-linecap="round" stroke-linejoin="round" d="M11 19l-7-7 7-7M18 19l-7-7 7-7"/>
@@ -31,7 +31,7 @@
       {{- /* ← Prev */}}
       {{- if $pag.HasPrev -}}
         <a href="{{ $pag.Prev.URL }}"
-           class="inline-flex items-center gap-1 px-3 py-2 rounded-lg text-sm font-medium text-olive-700 dark:text-olive-300 border border-olive-200 dark:border-olive-700 hover:bg-olive-100 dark:hover:bg-olive-900 transition-colors">
+           class="inline-flex items-center gap-1 px-3 py-2 rounded-lg text-sm font-medium text-brand-accent dark:text-brand-accent border border-brand-border dark:border-brand-border hover:bg-brand-surface dark:hover:bg-brand-surface transition-colors">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
             <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
           </svg>
@@ -42,9 +42,9 @@
       {{- /* Page 1 if outside window */}}
       {{- if gt $wStart 1 -}}
         <a href="{{ (index $pag.Pagers 0).URL }}"
-           class="w-9 h-9 inline-flex items-center justify-center rounded-lg text-sm font-medium text-olive-700 dark:text-olive-300 border border-olive-200 dark:border-olive-700 hover:bg-olive-100 dark:hover:bg-olive-900 transition-colors">1</a>
+           class="w-9 h-9 inline-flex items-center justify-center rounded-lg text-sm font-medium text-brand-accent dark:text-brand-accent border border-brand-border dark:border-brand-border hover:bg-brand-surface dark:hover:bg-brand-surface transition-colors">1</a>
         {{- if gt $wStart 2 -}}
-          <span class="w-9 h-9 inline-flex items-center justify-center text-olive-400 dark:text-olive-600 text-sm select-none">…</span>
+          <span class="w-9 h-9 inline-flex items-center justify-center text-brand-muted dark:text-brand-muted text-sm select-none">…</span>
         {{- end -}}
       {{- end -}}
 
@@ -54,8 +54,8 @@
         {{- if and (ge $n $wStart) (le $n $wEnd) -}}
           <a href="{{ .URL }}"
              class="w-9 h-9 inline-flex items-center justify-center rounded-lg text-sm font-medium transition-colors
-               {{- if eq $n $c }} bg-olive-600 dark:bg-olive-500 text-white
-               {{- else }} text-olive-700 dark:text-olive-300 border border-olive-200 dark:border-olive-700 hover:bg-olive-100 dark:hover:bg-olive-900
+               {{- if eq $n $c }} bg-brand-accent dark:bg-brand-accent text-brand-on-accent
+               {{- else }} text-brand-accent dark:text-brand-accent border border-brand-border dark:border-brand-border hover:bg-brand-surface dark:hover:bg-brand-surface
                {{- end }}"
              {{- if eq $n $c }} aria-current="page"{{ end }}>{{ $n }}</a>
         {{- end -}}
@@ -64,26 +64,27 @@
       {{- /* Last page if outside window */}}
       {{- if lt $wEnd $t -}}
         {{- if lt $wEnd (sub $t 1) -}}
-          <span class="w-9 h-9 inline-flex items-center justify-center text-olive-400 dark:text-olive-600 text-sm select-none">…</span>
+          <span class="w-9 h-9 inline-flex items-center justify-center text-brand-muted dark:text-brand-muted text-sm select-none">…</span>
         {{- end -}}
         <a href="{{ (index $pag.Pagers (sub $t 1)).URL }}"
-           class="w-9 h-9 inline-flex items-center justify-center rounded-lg text-sm font-medium text-olive-700 dark:text-olive-300 border border-olive-200 dark:border-olive-700 hover:bg-olive-100 dark:hover:bg-olive-900 transition-colors">{{ $t }}</a>
+           class="w-9 h-9 inline-flex items-center justify-center rounded-lg text-sm font-medium text-brand-accent dark:text-brand-accent border border-brand-border dark:border-brand-border hover:bg-brand-surface dark:hover:bg-brand-surface transition-colors">{{ $t }}</a>
       {{- end -}}
 
       {{- /* Next → */}}
       {{- if $pag.HasNext -}}
         <a href="{{ $pag.Next.URL }}"
-           class="inline-flex items-center gap-1 px-3 py-2 rounded-lg text-sm font-medium text-olive-700 dark:text-olive-300 border border-olive-200 dark:border-olive-700 hover:bg-olive-100 dark:hover:bg-olive-900 transition-colors">
+           class="inline-flex items-center gap-1 px-3 py-2 rounded-lg text-sm font-medium text-brand-accent dark:text-brand-accent border border-brand-border dark:border-brand-border hover:bg-brand-surface dark:hover:bg-brand-surface transition-colors">
           <span class="hidden sm:inline">{{- if eq $lang "ko" }}다음{{ else }}Next{{ end -}}</span>
           <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
             <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
           </svg>
         </a>
       {{- end -}}
-      {{- /* ⇥ Last page */}}
+
+      {{- /* ⇥ Last page */}}
       {{- if lt $c $t -}}
         <a href="{{ (index $pag.Pagers (sub $t 1)).URL }}"
-           class="inline-flex items-center gap-1 px-3 py-2 rounded-lg text-sm font-medium text-olive-700 dark:text-olive-300 border border-olive-200 dark:border-olive-700 hover:bg-olive-100 dark:hover:bg-olive-900 transition-colors"
+           class="inline-flex items-center gap-1 px-3 py-2 rounded-lg text-sm font-medium text-brand-accent dark:text-brand-accent border border-brand-border dark:border-brand-border hover:bg-brand-surface dark:hover:bg-brand-surface transition-colors"
            aria-label="{{ if eq $lang "ko" }}마지막 페이지{{ else }}Last page{{ end }}">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
             <path stroke-linecap="round" stroke-linejoin="round" d="M13 5l7 7-7 7M6 5l7 7-7 7"/>
@@ -94,7 +95,7 @@
     </div>
 
     {{- /* 권수 정보 */}}
-    <p class="text-xs text-olive-400 dark:text-olive-500 tabular-nums">
+    <p class="text-xs text-brand-muted dark:text-brand-muted tabular-nums">
       {{- if eq $lang "ko" -}}
         총 {{ $total }}권 중 {{ $from }}–{{ $to }}권
       {{- else -}}

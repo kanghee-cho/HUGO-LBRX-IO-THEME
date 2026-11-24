@@ -1,12 +1,12 @@
 {{- /* Desktop nav */}}
-<nav class="hidden md:flex items-center gap-6 text-sm font-medium text-olive-600 dark:text-olive-400" aria-label="Main navigation">
+<nav class="hidden md:flex items-center gap-6 text-sm font-medium text-brand-accent dark:text-brand-muted" aria-label="Main navigation">
   {{- $currentPage := . -}}
   {{- range .Site.Menus.main -}}
     {{- if .HasChildren -}}
       {{- $isActive := or ($currentPage.IsMenuCurrent "main" .) ($currentPage.HasMenuCurrent "main" .) -}}
       <div class="relative group">
         <a href="{{ .URL | relLangURL }}"
-          class="inline-flex items-center gap-1 hover:text-olive-900 dark:hover:text-olive-100 transition-colors{{ if $isActive }} text-olive-900 dark:text-olive-100 font-semibold{{ end }}"
+          class="inline-flex items-center gap-1 hover:text-brand-accent dark:hover:text-brand-accent transition-colors{{ if $isActive }} text-brand-text dark:text-brand-text font-semibold{{ end }}"
           {{- if $currentPage.IsMenuCurrent "main" . }} aria-current="page"{{ end }}>
           {{ .Name }}
           <svg class="w-3 h-3 opacity-60 group-hover:opacity-100 transition-opacity mt-px" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true">
@@ -15,13 +15,13 @@
         </a>
         {{- /* Dropdown */}}
         <div class="absolute top-full left-1/2 -translate-x-1/2 pt-3 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-150 z-40">
-          <div class="bg-white dark:bg-olive-950 border border-olive-200 dark:border-olive-800 rounded-xl shadow-lg overflow-hidden min-w-[120px]">
+          <div class="bg-brand-surface dark:bg-brand-background border border-brand-border dark:border-brand-border rounded-xl shadow-lg overflow-hidden min-w-[120px]">
             {{- range .Children -}}
               {{- $isChildActive := $currentPage.IsMenuCurrent "main" . -}}
               <a href="{{ .URL | relLangURL }}"
                 class="flex items-center px-4 py-2.5 text-sm whitespace-nowrap transition-colors
-                  {{- if $isChildActive }} text-olive-900 dark:text-olive-100 font-semibold bg-olive-50 dark:bg-olive-900/80
-                  {{- else }} text-olive-600 dark:text-olive-400 hover:text-olive-900 dark:hover:text-olive-100 hover:bg-olive-50 dark:hover:bg-olive-900/50
+                  {{- if $isChildActive }} text-brand-text dark:text-brand-text font-semibold bg-brand-background dark:bg-brand-surface/80
+                  {{- else }} text-brand-accent dark:text-brand-muted hover:text-brand-accent dark:hover:text-brand-accent hover:bg-brand-background dark:hover:bg-brand-surface/50
                   {{- end }}"
                 {{- if $isChildActive }} aria-current="page"{{ end }}>
                 {{ .Name }}
@@ -32,7 +32,7 @@
       </div>
     {{- else -}}
       <a href="{{ .URL | relLangURL }}"
-        class="hover:text-olive-900 dark:hover:text-olive-100 transition-colors{{ if $currentPage.IsMenuCurrent "main" . }} text-olive-900 dark:text-olive-100 font-semibold{{ end }}"
+        class="hover:text-brand-accent dark:hover:text-brand-accent transition-colors{{ if $currentPage.IsMenuCurrent "main" . }} text-brand-text dark:text-brand-text font-semibold{{ end }}"
         {{- if $currentPage.IsMenuCurrent "main" . }} aria-current="page"{{ end }}>
         {{ .Name }}
       </a>
@@ -45,7 +45,7 @@
   id="mobile-nav"
   data-nav-menu
   hidden
-  class="md:hidden absolute top-16 left-0 right-0 z-30 bg-white dark:bg-olive-950 border-b-2 border-olive-200 dark:border-olive-800 shadow-xl"
+  class="md:hidden absolute top-16 left-0 right-0 z-30 bg-brand-surface dark:bg-brand-background border-b-2 border-brand-border dark:border-brand-border shadow-xl"
   aria-label="Mobile navigation"
 >
   <nav class="flex flex-col py-2" aria-label="Mobile menu">
@@ -57,9 +57,9 @@
         <a href="{{ .URL | relLangURL }}"
           class="flex items-center gap-3 px-6 py-3 text-base font-medium border-l-4 transition-colors
             {{- if $isActive }}
-              border-olive-500 text-olive-800 dark:text-olive-100 bg-olive-50 dark:bg-olive-900
+              border-brand-border text-brand-text dark:text-brand-text bg-brand-background dark:bg-brand-surface
             {{- else }}
-              border-transparent text-olive-700 dark:text-olive-300 hover:border-olive-300 hover:bg-olive-50 dark:hover:bg-olive-900/50
+              border-transparent text-brand-accent dark:text-brand-accent hover:border-brand-accent hover:bg-brand-background dark:hover:bg-brand-surface/50
             {{- end }}"
           {{- if $currentPage.IsMenuCurrent "main" . }} aria-current="page"{{ end }}>
           {{ .Name }}
@@ -70,15 +70,15 @@
           <a href="{{ .URL | relLangURL }}"
             class="flex items-center gap-2 pl-12 pr-6 py-2.5 text-sm font-medium border-l-4 transition-colors
               {{- if $isChildActive }}
-                border-olive-400 text-olive-800 dark:text-olive-100 bg-olive-50/70 dark:bg-olive-900/60
+                border-brand-border text-brand-text dark:text-brand-text bg-brand-background/70 dark:bg-brand-surface/60
               {{- else }}
-                border-transparent text-olive-500 dark:text-olive-400 hover:border-olive-200 dark:hover:border-olive-700 hover:bg-olive-50 dark:hover:bg-olive-900/30 hover:text-olive-800 dark:hover:text-olive-100
+                border-transparent text-brand-muted dark:text-brand-muted hover:border-brand-accent dark:hover:border-brand-accent hover:bg-brand-background dark:hover:bg-brand-surface/30 hover:text-brand-accent dark:hover:text-brand-accent
               {{- end }}"
             {{- if $isChildActive }} aria-current="page"{{ end }}>
-            <span class="w-1 h-1 rounded-full bg-olive-300 dark:bg-olive-600 flex-none" aria-hidden="true"></span>
+            <span class="w-1 h-1 rounded-full bg-brand-surface dark:bg-brand-accent flex-none" aria-hidden="true"></span>
             {{ .Name }}
             {{- if $isChildActive }}
-              <span class="ml-auto w-1.5 h-1.5 rounded-full bg-olive-500" aria-hidden="true"></span>
+              <span class="ml-auto w-1.5 h-1.5 rounded-full bg-brand-accent" aria-hidden="true"></span>
             {{- end }}
           </a>
         {{- end -}}
@@ -87,14 +87,14 @@
         <a href="{{ .URL | relLangURL }}"
           class="flex items-center gap-3 px-6 py-4 text-base font-medium border-l-4 transition-colors
             {{- if $isActive }}
-              border-olive-500 text-olive-800 dark:text-olive-100 bg-olive-50 dark:bg-olive-900
+              border-brand-border text-brand-text dark:text-brand-text bg-brand-background dark:bg-brand-surface
             {{- else }}
-              border-transparent text-olive-700 dark:text-olive-300 hover:border-olive-300 hover:bg-olive-50 dark:hover:bg-olive-900/50 hover:text-olive-900 dark:hover:text-olive-100
+              border-transparent text-brand-accent dark:text-brand-accent hover:border-brand-accent hover:bg-brand-background dark:hover:bg-brand-surface/50 hover:text-brand-accent dark:hover:text-brand-accent
             {{- end }}"
           {{- if $isActive }} aria-current="page"{{ end }}>
           {{ .Name }}
           {{- if $isActive }}
-            <span class="ml-auto w-1.5 h-1.5 rounded-full bg-olive-500" aria-hidden="true"></span>
+            <span class="ml-auto w-1.5 h-1.5 rounded-full bg-brand-accent" aria-hidden="true"></span>
           {{- end }}
         </a>
       {{- end -}}

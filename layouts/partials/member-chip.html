@@ -21,15 +21,15 @@
   {{- end -}}
 
   {{- /* 변형별 클래스 */}}
-  {{- $cardCls  := "bg-white dark:bg-olive-900/60 border-olive-300 dark:border-olive-700" -}}
-  {{- $labelCls := "text-olive-500 dark:text-olive-500" -}}
-  {{- $nameCls  := "text-olive-900 dark:text-olive-200" -}}
-  {{- $initCls  := "bg-olive-200 dark:bg-olive-700 text-olive-700 dark:text-olive-300" -}}
+  {{- $cardCls  := "bg-brand-surface dark:bg-brand-surface/60 border-brand-border dark:border-brand-border" -}}
+  {{- $labelCls := "text-brand-muted dark:text-brand-muted" -}}
+  {{- $nameCls  := "text-brand-text dark:text-brand-text" -}}
+  {{- $initCls  := "bg-brand-surface dark:bg-brand-surface text-brand-accent dark:text-brand-accent" -}}
   {{- if eq $variant "neutral" -}}
     {{- $cardCls  = "bg-white/90 dark:bg-black/30 border-white dark:border-white/10" -}}
-    {{- $labelCls = "text-stone-500 dark:text-stone-500" -}}
-    {{- $nameCls  = "text-stone-900 dark:text-stone-100" -}}
-    {{- $initCls  = "bg-stone-200 dark:bg-stone-700 text-stone-700 dark:text-stone-200" -}}
+    {{- $labelCls = "text-brand-muted dark:text-brand-muted" -}}
+    {{- $nameCls  = "text-brand-text dark:text-brand-text" -}}
+    {{- $initCls  = "bg-brand-surface dark:bg-brand-surface text-brand-muted dark:text-brand-text" -}}
   {{- end -}}
 
   <div class="inline-flex items-center gap-3 rounded-xl border {{ $cardCls }} px-4 py-1.5">
